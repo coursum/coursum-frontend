@@ -1,38 +1,23 @@
 <template>
   <div>
-    <div v-if="isLoading">
-      ロード中
-    </div>
-    <div v-else>
-      {{ courseDatas[0] }}
-    </div>
+    <course-data />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import CourseData from '@/components/CourseData.vue';
 
 export default Vue.extend({
   name: 'CourseList',
 
+  components: {
+    CourseData,
+  },
+
   data: () => ({
 
   }),
-  computed: {
-    courseDatas() {
-      return this.$store.state.courseDatas;
-    },
-    isLoading() {
-      return this.$store.state.isLoading;
-    },
-  },
-  async created() {
-    this.fetchData('pretty');
-  },
-  methods: {
-    async fetchData(search: string) {
-      this.$store.commit('fetchData', search);
-    },
-  },
+
 });
 </script>
