@@ -54,6 +54,7 @@ interface CourseInfo {
   curriculumCode: string | null;
   credit: number | null;
 }
+
 const courses: CourseInfo[] = [];
 
 export default new Vuex.Store({

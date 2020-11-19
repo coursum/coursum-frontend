@@ -4,7 +4,7 @@
       ロード中
     </div>
     <div v-else>
-      {{ courseDatas }}
+      {{ courseDatas[0] }}
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  name: 'HelloWorld',
+  name: 'CourseList',
 
   data: () => ({
 
@@ -26,11 +26,11 @@ export default Vue.extend({
       return this.$store.state.isLoading;
     },
   },
-  created() {
+  async created() {
     this.fetchData('pretty');
   },
   methods: {
-    fetchData(search: string) {
+    async fetchData(search: string) {
       this.$store.commit('fetchData', search);
     },
   },
