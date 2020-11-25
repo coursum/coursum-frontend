@@ -1,0 +1,43 @@
+{
+  "indexPage": "全て",
+  "categories": {
+    "研究会": [],
+    "基盤": [
+      "総合講座",
+      "言語コミュニケーション",
+      "データサイエンス",
+      "情報技術基礎",
+      "ウェルネス",
+      "共通"
+    ],
+    "先端": [
+      "総合政策系",
+      "環境情報系"
+    ],
+    "その他": [
+      "特設科目",
+      "教職課程教科に関する科目",
+      "SFC設置の諸研究所科目",
+      "単位互換科目",
+      "自由科目"
+    ]
+  },
+  "search": "検索",
+  "credit": "単位",
+  "categoryList": {
+    "research": "研究会",
+    "introductory": "総合講座",
+    "language-communication": "言語コミュニケーション",
+    "data-science": "データサイエンス",
+    "information-technology": "情報技術基礎",
+    "wellness": "ウェルネス",
+    "interdisciplinary": "共通",
+    "series-of-policy-management": "総合政策系",
+    "series-of-environment-and-information-studies": "環境情報系",
+    "special-subjects": "特設科目",
+    "specialized-subjects-in-teacher-training": "教職課程教科に関する科目",
+    "courses-offered-at-research-institutes-on-sfc": "SFC設置の諸研究所科目",
+    "courses-offered-at-other-faculties": "単位互換科目",
+    "optional-subjects": "自由科目"
+  }
+}

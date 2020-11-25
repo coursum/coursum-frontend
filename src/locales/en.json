@@ -1,0 +1,43 @@
+{
+  "indexPage": "All",
+  "categories": {
+    "Research": [],
+    "Fundamental": [
+      "Introductory",
+      "Language Communication",
+      "Data Science",
+      "Information Technology",
+      "Wellness",
+      "Interdisciplinary"
+    ],
+    "Advanced": [
+      "Series of Policy Management",
+      "Series of Environment and Information Studies"
+    ],
+    "Others": [
+      "Special Subjects",
+      "Specialized Subjects in Teacher Training",
+      "Courses offered at Research Institutes on SFC",
+      "Courses Offered at Other Faculties",
+      "Optional Subjects"
+    ]
+  },
+  "search": "search",
+  "credit": "credit",
+  "categoryList": {
+    "research": "Research",
+    "introductory": "Introductory",
+    "language-communication": "Language Communication",
+    "data-science": "Data Science",
+    "information-technology": "Information Technology",
+    "wellness": "Wellness",
+    "interdisciplinary": "Interdisciplinary",
+    "series-of-policy-management": "Series of Policy Management",
+    "series-of-environment-and-information-studies": "Series of Environment and Information Studies",
+    "special-subjects": "Special Subjects",
+    "specialized-subjects-in-teacher-training": "Specialized Subjects in Teacher Training",
+    "courses-offered-at-research-institutes-on-sfc": "Courses offered at Research Institutes on SFC",
+    "courses-offered-at-other-faculties": "Courses Offered at Other Faculties",
+    "optional-subjects": "Optional Subjects"
+  }
+}

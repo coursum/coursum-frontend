@@ -10,6 +10,21 @@ const routes: Array<RouteConfig> = [
     name: 'CourseList',
     component: CourseList,
   },
+  {
+    path: '*',
+    name: 'NotFound',
+    component: () => import('@/views/NotFound.vue'),
+  },
+  {
+    path: '/category/*',
+    name: 'Category',
+    component: () => import('@/views/CourseList.vue'),
+  },
+  {
+    path: '/setting',
+    name: 'SettingPage',
+    component: () => import('@/views/SettingPage.vue'),
+  },
 ];
 
 const router = new VueRouter({
