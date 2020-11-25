@@ -21,7 +21,9 @@ export default Vue.extend({
     NavBar,
   },
   data: () => ({
-    //
   }),
+  async created() {
+    this.$store.commit('getIdsFromLocalStorage');
+  },
 });
 </script>

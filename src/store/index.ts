@@ -57,10 +57,15 @@ interface CourseInfo {
 
 const courses: CourseInfo[] = [];
 
+const setTimetable = (timetable: string) => {
+  localStorage.setItem('idsInTimetable', timetable);
+};
+
 export default new Vuex.Store({
   state: {
     isLoading: false,
     courseDatas: courses,
+    idsInTimetable: [''],
   },
   mutations: {
     async fetchData(state, search: string) {
@@ -75,6 +80,22 @@ export default new Vuex.Store({
       } finally {
         state.isLoading = false;
       }
+    },
+    getIdsFromLocalStorage(state) {
+      const idsInlocalStorage = localStorage.getItem('idsInTimetable');
+      if (typeof idsInlocalStorage === 'string') {
+        state.idsInTimetable = JSON.parse(idsInlocalStorage);
+      } else {
+        setTimetable(JSON.stringify(state.idsInTimetable));
+      }
+    },
+    addToTimetable(state, payload: string) {
+      state.idsInTimetable = [...state.idsInTimetable, payload];
+      setTimetable(JSON.stringify(state.idsInTimetable));
+    },
+    removeFromTimetable(state, payload: string) {
+      state.idsInTimetable = state.idsInTimetable.filter((id) => id !== payload);
+      setTimetable(JSON.stringify(state.idsInTimetable));
     },
   },
   actions: {
