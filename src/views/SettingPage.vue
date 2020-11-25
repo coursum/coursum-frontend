@@ -20,7 +20,7 @@
         <v-chip-group
           v-model="language"
           mandatory
-          active-class="deep-purple--text text--accent-4"
+          active-class="blue--text"
         >
           <v-chip
             v-for="([locale, localeName], idx) in Object.entries(languages)"
@@ -45,11 +45,12 @@ export default Vue.extend({
   data: () => ({
     languages: { jp: '日本語', en: 'English' },
     language: 0,
-    themeSwitch: true,
+    themeSwitch: false,
   }),
   watch: {
     themeSwitch() {
       this.$vuetify.theme.dark = this.themeSwitch;
+      this.setDarkModeState();
     },
   },
   created() {
@@ -58,10 +59,15 @@ export default Vue.extend({
     } else {
       this.language = 1;
     }
+
+    this.themeSwitch = this.$vuetify.theme.dark;
   },
   methods: {
     setLang(locale: string) {
       this.$root.$i18n.locale = locale;
+    },
+    setDarkModeState() {
+      localStorage.setItem('darkModeState', JSON.stringify(this.$vuetify.theme.dark));
     },
   },
 });

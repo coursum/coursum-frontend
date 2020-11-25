@@ -23,7 +23,16 @@ export default Vue.extend({
   data: () => ({
   }),
   async created() {
+    this.getDarkModeState();
     this.$store.commit('getIdsFromLocalStorage');
+  },
+  methods: {
+    getDarkModeState() {
+      const darkModeState = localStorage.getItem('darkModeState');
+      if (typeof darkModeState === 'string') {
+        this.$vuetify.theme.dark = Boolean(JSON.parse(darkModeState));
+      }
+    },
   },
 });
 </script>
