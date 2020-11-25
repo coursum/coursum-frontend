@@ -1,16 +1,5 @@
 <template>
   <div>
-    <div
-      v-if="$vuetify.breakpoint.lgAndUp"
-      style="width: 40%"
-      class="mx-auto my-6"
-    >
-      <div class="text-h1 text-center secondary--text">
-        Coursum
-      </div>
-      <search-bar />
-    </div>
-
     <v-row
       v-if="isLoading"
       justify="space-around"
@@ -53,12 +42,18 @@
 <script lang="ts">
 import Vue from 'vue';
 import CourseData from '@/components/CourseData.vue';
-import SearchBar from '@/components/SearchBar.vue';
+
+interface To {
+  path: string;
+  fullPath: string;
+  params: {pathMatch: string};
+  name: string;
+  matched: [];
+}
 
 export default Vue.extend({
   name: 'CourseList',
   components: {
-    SearchBar,
     CourseData,
   },
   data: () => ({
@@ -79,7 +74,9 @@ export default Vue.extend({
   },
   methods: {
     async fetchData() {
-      this.$store.commit('fetchData', '');
+      const curPath = this.$route.path.split('/');
+      const curCategory = curPath[curPath.length - 1];
+      this.$store.commit('fetchData', curCategory);
     },
   },
 });

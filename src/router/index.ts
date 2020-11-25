@@ -17,8 +17,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/category/*',
-    name: 'Category',
-    component: () => import('@/views/CourseList.vue'),
+    name: 'CategoryPage',
+    component: () => import('@/views/CategoryPage.vue'),
   },
   {
     path: '/setting',
