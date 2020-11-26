@@ -199,10 +199,81 @@ export default Vue.extend({
   name: 'TimeTable',
 
   data: () => ({
+    dialog: false,
+    dialog2: false,
+    passphrase: '',
+    convertedURL: '',
+    tableDatas: [...Array(6).fill(0).map(() => Array(7).fill(0).map(() => [-1])), [[-1]]],
+    days: ['月', '火', '水', '木', '金', '土', 'その他'],
+    copiedURL: false,
+    isLoading: true,
+    isSharedPage: false,
   }),
-
+  computed: {
+  },
+  mounted() {
+    if (this.$route.path.split('/')[2] === 'shared') {
+      this.isSharedPage = true;
+    } else {
+      this.isSharedPage = false;
+    }
+  },
   methods: {
+    idsInTimetable(): string[] {
+      return this.$store.state.idsInTimetable;
+    },
+    updateTable() {
+      // const tempTableDatas = [...Array(6).fill(0)
+      //   .map(() => Array(7)
+      //     .fill(0).map(() => [-1])), [[-1]]];
+      // let idsList = [];
+      // if (this.isSharedPage) {
+      //   const arr = this.$route.path.split('/')[3];
+      //   if (arr) {
+      //     idsList = arr.split('_');
+      //   }
+      // } else {
+      //   idsList = this.$store.state.idsInTimetable.slice(1);
+      // }
+      // this.coursesInTimeTable = idsList
+      //   .map((id: string | null) => this.courseDatas
+      //     .filter((data) => data.title.name.en === id));
+      // this.coursesInTimeTable.forEach((courseInTimeTable: CourseInfo, index: number) => {
+      //   if (courseInTimeTable.schedule === undefined
+      //       || courseInTimeTable.schedule.times === undefined
+      //     || courseInTimeTable.schedule.times.en === null) {
+      //     tempTableDatas[6][0].push(index); // put in "others"
+      //   } else {
+      //     const classInfo = courseInTimeTable.schedule.times.en[0].split(' ');
+      //     const classTime: number = parseInt(classInfo[1][0], 10);
+      //     const classDay: number = ['Monday', 'Tuesday', 'Wednesday', 'Thursday',
+      // 'Friday', 'Saturday']
+      //       .findIndex((day) => day === classInfo[0]);
+      //     tempTableDatas[classDay][classTime - 1].push(index);
+      //   }
+      // });
+      // this.tableDatas = tempTableDatas;
+    },
 
+    convertToURL() {
+      this.convertedURL = `http://localhost:8080/timetable/shared/${this.idsInTimetable().slice(1).join('_')}`;
+      this.passphrase = '';
+    },
+    doCopy() {
+      const copyText = document.querySelector('#input') as HTMLInputElement;
+      if (copyText !== null) {
+        copyText.select();
+      }
+      document.execCommand('copy');
+      this.copiedURL = true;
+    },
+    closeDialog() {
+      this.dialog2 = false;
+      this.copiedURL = false;
+    },
+    curLang() {
+      return this.$i18n.locale;
+    },
   },
 });
 </script>

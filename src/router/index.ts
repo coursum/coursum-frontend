@@ -25,6 +25,16 @@ const routes: Array<RouteConfig> = [
     name: 'SettingPage',
     component: () => import('@/views/SettingPage.vue'),
   },
+  {
+    path: '/timetable',
+    name: 'TimeTable',
+    component: () => import('@/views/TimeTable.vue'),
+    children: [
+      {
+        path: 'shared/:id',
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
