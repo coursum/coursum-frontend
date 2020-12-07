@@ -221,7 +221,7 @@ import Vue from 'vue';
 
 export default Vue.extend({
 
-  name: 'CourseDetail',
+  name: 'DetailPage',
 
   data() {
     return {
