@@ -11,4 +11,9 @@ module.exports = {
       enableInSFC: true,
     },
   },
+
+  devServer: {
+    hot: false,
+    open: true,
+  },
 };
