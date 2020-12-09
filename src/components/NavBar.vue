@@ -375,6 +375,7 @@ export default Vue.extend({
   data() {
     return {
       drawer: null,
+      drawerMobile: null,
       mini: true,
       type: 0,
       categoryLists: [
