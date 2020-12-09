@@ -112,9 +112,7 @@
         <v-btn
           v-else
           icon
-          @click="
-            $store.commit('addToTimetable', courseData.title.name.en)
-          "
+          @click="$store.commit('addToTimetable', courseData.title.name.en)"
         >
           <v-icon
             small
@@ -123,6 +121,7 @@
             mdi-star-outline
           </v-icon>
         </v-btn>
+
         <!-- /favorite button -->
       </v-card>
 
@@ -186,9 +185,7 @@
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header>
-            {{
-              $t("content")
-            }}
+            {{ $t("content") }}
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-card
@@ -226,10 +223,12 @@ export default Vue.extend({
 
   name: 'CourseDetail',
 
-  data: () => ({
-    panel: [0],
-    isAllPanels: false,
-  }),
+  data() {
+    return {
+      panel: [0],
+      isAllPanels: false,
+    };
+  },
   computed: {
     labels() {
       return [this.$t('registration'), this.$t('content'), this.$t('planning')];
