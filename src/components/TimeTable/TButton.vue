@@ -1,8 +1,10 @@
 <template>
   <div
-    v-if="courseDatas[idx].title
-      && courseDatas[idx].title.name
-      && courseDatas[idx].title.name.en"
+    v-if="
+      courseDatas[idx].title &&
+        courseDatas[idx].title.name &&
+        courseDatas[idx].title.name.en
+    "
   >
     <v-btn
       v-if="idsInTimetable.includes(courseDatas[idx].title.name.en)"
@@ -21,9 +23,7 @@
     <v-btn
       v-else
       icon
-      @click="
-        $store.commit('addToTimetable', courseDatas[idx].title.name.en)
-      "
+      @click="$store.commit('addToTimetable', courseDatas[idx].title.name.en)"
     >
       <v-icon
         small

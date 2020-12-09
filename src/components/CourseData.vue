@@ -31,7 +31,7 @@
         <v-spacer />
 
         <detail-button :idx="idx" />
-        <t-button :id="courseDatas[idx].title.name.en" />
+        <t-button :idx="idx" />
       </v-row>
     </div>
   </v-card>
