@@ -198,17 +198,19 @@ export default Vue.extend({
 
   name: 'TimeTable',
 
-  data: () => ({
-    dialog: false,
-    dialog2: false,
-    passphrase: '',
-    convertedURL: '',
-    tableDatas: [...Array(6).fill(0).map(() => Array(7).fill(0).map(() => [-1])), [[-1]]],
-    days: ['月', '火', '水', '木', '金', '土', 'その他'],
-    copiedURL: false,
-    isLoading: true,
-    isSharedPage: false,
-  }),
+  data() {
+    return {
+      dialog: false,
+      dialog2: false,
+      passphrase: '',
+      convertedURL: '',
+      tableDatas: [...Array(6).fill(0).map(() => Array(7).fill(0).map(() => [-1])), [[-1]]],
+      days: ['月', '火', '水', '木', '金', '土', 'その他'],
+      copiedURL: false,
+      isLoading: true,
+      isSharedPage: false,
+    };
+  },
   computed: {
   },
   mounted() {

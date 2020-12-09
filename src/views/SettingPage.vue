@@ -42,11 +42,13 @@ export default Vue.extend({
 
   name: 'SettingPage',
 
-  data: () => ({
-    languages: { jp: '日本語', en: 'English' },
-    language: 0,
-    themeSwitch: false,
-  }),
+  data() {
+    return {
+      languages: { jp: '日本語', en: 'English' },
+      language: 0,
+      themeSwitch: false,
+    };
+  },
   watch: {
     themeSwitch() {
       this.$vuetify.theme.dark = this.themeSwitch;

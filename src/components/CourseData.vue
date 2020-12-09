@@ -218,8 +218,6 @@ export default Vue.extend({
     },
   },
 
-  data: () => ({
-  }),
   computed: {
     courseDatas(): CourseInfo[] {
       return this.$store.state.courseDatas;

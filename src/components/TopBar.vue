@@ -83,9 +83,11 @@ export default Vue.extend({
   components: {
     SearchBar,
   },
-  data: () => ({
-    drawerMobile: null,
-  }),
+  data() {
+    return {
+      drawerMobile: null,
+    };
+  },
   methods: {
     isIndexPage() {
       if (this.$route.path === '/') {

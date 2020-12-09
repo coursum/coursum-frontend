@@ -18,9 +18,11 @@ import Vue from 'vue';
 export default Vue.extend({
   name: 'SearchBar',
 
-  data: () => ({
-    searchWord: '',
-  }),
+  data() {
+    return {
+      searchWord: '',
+    };
+  },
   methods: {
     async fetchData() {
       console.log(this.searchWord);

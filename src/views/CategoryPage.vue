@@ -56,11 +56,13 @@ export default Vue.extend({
   components: {
     CourseData,
   },
-  data: () => ({
-    pgPage: 1,
-    pgPageSize: 12,
-    pgLength: 20,
-  }),
+  data() {
+    return {
+      pgPage: 1,
+      pgPageSize: 12,
+      pgLength: 20,
+    };
+  },
   computed: {
     isLoading() {
       return this.$store.state.isLoading;

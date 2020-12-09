@@ -372,24 +372,26 @@ export default Vue.extend({
 
   name: 'NavBar',
 
-  data: () => ({
-    drawer: null,
-    mini: true,
-    type: 0,
-    categoryLists: [
-      { research: [] },
-      {
-        fundamental: ['introductory', 'language-communication', 'data-science',
-          'information-technology', 'wellness', 'interdisciplinary'],
-      },
-      { advanced: ['series-of-policy-management', 'series-of-environment-and-information-studies'] },
-      {
-        others: ['special-subjects', 'specialized-subjects-in-teacher-training',
-          'courses-offered-at-research-institutes-on-sfc',
-          'courses-offered-at-other-faculties', 'optional-subjects'],
-      },
-    ],
-  }),
+  data() {
+    return {
+      drawer: null,
+      mini: true,
+      type: 0,
+      categoryLists: [
+        { research: [] },
+        {
+          fundamental: ['introductory', 'language-communication', 'data-science',
+            'information-technology', 'wellness', 'interdisciplinary'],
+        },
+        { advanced: ['series-of-policy-management', 'series-of-environment-and-information-studies'] },
+        {
+          others: ['special-subjects', 'specialized-subjects-in-teacher-training',
+            'courses-offered-at-research-institutes-on-sfc',
+            'courses-offered-at-other-faculties', 'optional-subjects'],
+        },
+      ],
+    };
+  },
   methods: {
     isIndexPage() {
       if (this.$route.path === '/') {

@@ -9,8 +9,5 @@ export default Vue.extend({
 
   name: 'NotFound',
 
-  data: () => ({
-  }),
-
 });
 </script>
