@@ -31,7 +31,6 @@
       >
         <v-pagination
           v-model="pgPage"
-          class="mb-12"
           :length="pgLength"
         />
       </div>
@@ -76,8 +75,7 @@ export default Vue.extend({
   },
   methods: {
     async fetchData() {
-      const curPath = this.$route.path.split('/');
-      const curCategory = curPath[curPath.length - 1];
+      const curCategory = this.$route.path.split('/').slice(2).join(' ');
       this.$store.commit('fetchData', curCategory);
     },
   },
