@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    v-if="$vuetify.breakpoint.mdAndDown"
+  >
     <!-- top bar for mobile -->
     <v-app-bar
       color="white"
