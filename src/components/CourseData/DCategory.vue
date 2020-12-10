@@ -1,18 +1,16 @@
 <template>
   <div
-    v-if="
-      courseDatas[idx].category && courseDatas[idx].category[`${curLang}`]
-    "
+    v-if="category && category[`${curLang}`]"
     style="color: #929292"
     class="text-truncate text-caption"
   >
-    {{ courseDatas[idx].category[`${curLang}`] }}
+    {{ category[`${curLang}`] }}
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { CourseInfo } from '@/assets/CourseInfo';
+import { Basic } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DCategory',
@@ -24,8 +22,8 @@ export default Vue.extend({
   },
 
   computed: {
-    courseDatas(): CourseInfo[] {
-      return this.$store.state.courseDatas;
+    category(): Basic {
+      return this.$store.state.courseDatas[this.idx].category;
     },
     curLang(): string {
       return this.$i18n.locale;

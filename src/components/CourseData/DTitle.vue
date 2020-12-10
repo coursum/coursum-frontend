@@ -1,19 +1,15 @@
 <template>
   <span
-    v-if="
-      courseDatas[idx].title &&
-        courseDatas[idx].title.name &&
-        courseDatas[idx].title.name[`${curLang}`]
-    "
+    v-if="title && title.name && title.name[`${curLang}`]"
     class="font-weight-black text-subtitle-1 text-truncate"
   >
-    {{ courseDatas[idx].title.name[`${curLang}`] }}
+    {{ title.name[`${curLang}`] }}
   </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { CourseInfo } from '@/assets/CourseInfo';
+import { Title } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DTitle',
@@ -25,8 +21,8 @@ export default Vue.extend({
   },
 
   computed: {
-    courseDatas(): CourseInfo[] {
-      return this.$store.state.courseDatas;
+    title(): Title {
+      return this.$store.state.courseDatas[this.idx].title;
     },
     curLang(): string {
       return this.$i18n.locale;

@@ -1,23 +1,30 @@
 <template>
   <div
-    v-if="courseDatas[idx].summary && courseDatas[idx].summary[`${curLang}`]"
+    v-if="summary && summary[`${curLang}`]"
     class="summary text-body-1"
   >
-    <p>{{ courseDatas[idx].summary[`${curLang}`] }}</p>
+    <p>
+      {{ summary[`${curLang}`] }}
+    </p>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { CourseInfo } from '@/assets/CourseInfo';
+import { Basic } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DSummary',
-  props: { idx: Number },
+  props: {
+    idx: {
+      type: Number,
+      default: 0,
+    },
+  },
 
   computed: {
-    courseDatas(): CourseInfo[] {
-      return this.$store.state.courseDatas;
+    summary(): Basic {
+      return this.$store.state.courseDatas[this.idx].summary;
     },
     curLang(): string {
       return this.$i18n.locale;

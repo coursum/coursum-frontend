@@ -1,20 +1,16 @@
 <template>
   <span
-    v-if="
-      courseDatas[idx].title &&
-        courseDatas[idx].title.postscript &&
-        courseDatas[idx].title.postscript[`${curLang}`]
-    "
+    v-if="title && title.postscript && title.postscript[`${curLang}`]"
     style="color: #929292"
     class="text-caption text-truncate"
   >
-    {{ courseDatas[idx].title.postscript[`${curLang}`] }}
+    {{ title.postscript[`${curLang}`] }}
   </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { CourseInfo } from '@/assets/CourseInfo';
+import { Title } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DPostsctipt',
@@ -26,8 +22,8 @@ export default Vue.extend({
   },
 
   computed: {
-    courseDatas(): CourseInfo[] {
-      return this.$store.state.courseDatas;
+    title(): Title {
+      return this.$store.state.courseDatas[this.idx].title;
     },
     curLang(): string {
       return this.$i18n.locale;

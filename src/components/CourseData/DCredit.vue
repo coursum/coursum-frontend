@@ -1,15 +1,14 @@
 <template>
-  <span v-if="lecturers">
-    {{ lecturers }}
+  <span v-if="credit">
+    {{ credit }}
   </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Lecturer } from '@/assets/CourseInfo';
 
 export default Vue.extend({
-  name: 'DLectures',
+  name: 'DCredit',
   props: {
     idx: {
       type: Number,
@@ -18,8 +17,8 @@ export default Vue.extend({
   },
 
   computed: {
-    lecturers(): Lecturer[] {
-      return this.$store.state.courseDatas[this.idx].lecturers;
+    credit(): number | null | undefined {
+      return this.$store.state.courseDatas[this.idx].credit;
     },
     curLang(): string {
       return this.$i18n.locale;

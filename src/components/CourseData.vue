@@ -1,5 +1,6 @@
 <template>
   <v-card
+    v-if="courseDatas"
     elevation="2"
     height="190"
     width="500"
@@ -16,7 +17,7 @@
         <v-spacer />
 
         <div class="col-3 pa-0 ma-0">
-          <d-schedule-semester :idx="idx" />
+          <d-schedule-semester :idx="idx" />・<d-credit :idx="idx" />
           <d-schedule-times :idx="idx" />
         </div>
       </v-row>
@@ -45,6 +46,7 @@ import DCategory from '@/components/CourseData/DCategory.vue';
 import DPostscript from '@/components/CourseData/DPostscript.vue';
 import DScheduleSemester from '@/components/CourseData/DScheduleSemester.vue';
 import DScheduleTimes from '@/components/CourseData/DScheduleTimes.vue';
+import DCredit from '@/components/CourseData/DCredit.vue';
 import DSummary from '@/components/CourseData/DSummary.vue';
 import DLectures from '@/components/CourseData/DLectures.vue';
 import DTitle from '@/components/CourseData/DTitle.vue';
@@ -61,6 +63,7 @@ export default Vue.extend({
     DPostscript,
     DScheduleSemester,
     DScheduleTimes,
+    DCredit,
     DSummary,
     DLectures,
     DTitle,
@@ -74,7 +77,7 @@ export default Vue.extend({
 
   computed: {
     courseDatas(): CourseInfo[] {
-      return this.$store.state.courseDatas;
+      return this.$store.state.courseDatas[this.idx];
     },
     curLang(): string {
       return this.$i18n.locale;

@@ -1,34 +1,34 @@
-interface Basic {
-  en: string | null;
-  jp: string | null;
-  kana: string |null;
+export interface Basic {
+  en: string | null | undefined;
+  jp: string | null | undefined;
+  kana: string | null | undefined;
 }
 
-interface Lecturer {
-  imgUrl: string | null;
+export interface Lecturer {
+  imgUrl: string | null | undefined;
   name: Basic;
-  id: string | null;
-  email: string | null;
-  inCharge: boolean | null;
+  id: string | null | undefined;
+  email: string | null | undefined;
+  inCharge: boolean | null | undefined;
 }
 
-interface Title {
+export interface Title {
   postscript: Basic;
   name: Basic;
 }
 
-interface Schedule {
-  year: number | null;
+export interface Schedule {
+  year: number | null | undefined;
   span: Basic;
   semester: Basic;
   times: Basic;
 }
 
-interface Registration {
-  number: null;
+export interface Registration {
+  number: null | undefined;
   suggestion: Basic;
   requirement: Basic;
-  prerequisite: null;
+  prerequisite: null | undefined;
 }
 
 export interface CourseInfo {
@@ -37,13 +37,13 @@ export interface CourseInfo {
   lecturers: Lecturer[];
   title: Title;
   schedule: Schedule;
-  related: null;
+  related: null | undefined;
   registration: Registration;
-  classroom: string | null;
+  classroom: string | null | undefined;
   summary: Basic;
-  types: null;
-  yearClassId: null;
-  tag: {giga: boolean };
-  curriculumCode: string | null;
-  credit: number | null;
+  types: null | undefined;
+  yearClassId: null | undefined;
+  tag: {giga: boolean | undefined};
+  curriculumCode: string | null | undefined;
+  credit: number | null | undefined;
 }
