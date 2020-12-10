@@ -5,101 +5,69 @@
   >
     <div v-if="!isLoading">
       <course-data />
-    </div>
 
-    <div>
-      <v-switch
-        v-model="isAllPanels"
-        @change="showAllPanels()"
-      />
-    </div>
+      <div>
+        <v-switch
+          v-model="isAllPanels"
+          @change="showAllPanels()"
+        />
+      </div>
 
-    <v-expansion-panels
-      v-model="panel"
-      multiple
-      accordion
-    >
-      <v-expansion-panel>
-        <v-expansion-panel-header>
-          {{ $t("registration") }}
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-card
-            flat
-            class="mx-auto"
-            style="width: 800px; padding: 20px"
-          >
-            <div v-if="courseData.registration">
-              <div v-if="courseData.registration.prerequisite">
-                <div v-if="courseData.registration.prerequisite.mandatory">
-                  <span
-                    v-for="(manInfo, index) in courseData.registration
-                      .prerequisite.mandatory"
-                    :key="index"
-                  >
-                    {{ manInfo }}
-                  </span>
-                </div>
-                <div v-if="courseData.registration.prerequisite.recommended">
-                  <span
-                    v-for="(recInfo, index) in courseData.registration
-                      .prerequisite.recommended"
-                    :key="index"
-                  >
-                    {{ recInfo }}
-                  </span>
-                </div>
-              </div>
-              <div
-                v-if="
-                  courseData.registration.requirement &&
-                    courseData.registration.requirement[`${curLang()}`]
-                "
-              >
-                {{ courseData.registration.requirement[`${curLang()}`] }}
-              </div>
-              <div v-if="courseData.title.name[`${curLang()}`]">
-                {{ courseData.title.name[`${curLang()}`] }}
-              </div>
-            </div>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header>
-          {{ $t("content") }}
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-card
-            flat
-            class="mx-auto"
-            style="width: 800px; padding: 20px"
-          >
-            <div v-if="courseData.classTypes">
-              {{ courseData.classTypes }}
-            </div>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header>
-          {{ $t("planning") }}
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-card
-            flat
-            class="mx-auto"
-            style="width: 800px; padding: 20px"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+      <v-expansion-panels
+        v-model="panel"
+        multiple
+        accordion
+      >
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            {{ $t("registration") }}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-card
+              flat
+              class="mx-auto"
+              style="width: 800px; padding: 20px"
+            >
+              <d-registration />
+            </v-card>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            {{ $t("content") }}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-card
+              flat
+              class="mx-auto"
+              style="width: 800px; padding: 20px"
+            >
+              <d-class />
+            </v-card>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            {{ $t("planning") }}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-card
+              flat
+              class="mx-auto"
+              style="width: 800px; padding: 20px"
+            />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import CourseData from '@/components/CourseData.vue';
+import DRegistration from '@/components/CourseData/Detail/DRegistration.vue';
+import DClass from '@/components/CourseData/Detail/DClass.vue';
 
 export default Vue.extend({
 
@@ -107,6 +75,8 @@ export default Vue.extend({
 
   components: {
     CourseData,
+    DRegistration,
+    DClass,
   },
 
   data() {
@@ -119,6 +89,9 @@ export default Vue.extend({
   computed: {
     labels() {
       return [this.$t('registration'), this.$t('content'), this.$t('planning')];
+    },
+    isLoading() {
+      return this.$store.state.isLoading;
     },
   },
 
@@ -140,3 +113,18 @@ export default Vue.extend({
 
 });
 </script>
+
+<i18n>
+{
+  "en": {
+    "registration": "registration",
+    "content": "content",
+    "planning": "planning"
+  },
+  "jp": {
+    "registration": "履修",
+    "content": "授業",
+    "planning": "計画"
+  }
+}
+</i18n>
