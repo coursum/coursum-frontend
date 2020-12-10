@@ -1,16 +1,10 @@
 <template>
-  <div
-    v-if="
-      courseDatas[idx].title &&
-        courseDatas[idx].title.name &&
-        courseDatas[idx].title.name.en
-    "
-  >
+  <div>
     <v-btn
-      v-if="idsInTimetable.includes(courseDatas[idx].title.name.en)"
+      v-if="idsInTimetable.includes(generateId)"
       icon
       @click="
-        $store.commit('removeFromTimetable', courseDatas[idx].title.name.en)
+        $store.commit('removeFromTimetable', generateId)
       "
     >
       <v-icon
@@ -23,7 +17,7 @@
     <v-btn
       v-else
       icon
-      @click="$store.commit('addToTimetable', courseDatas[idx].title.name.en)"
+      @click="$store.commit('addToTimetable', generateId)"
     >
       <v-icon
         small
@@ -37,7 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { CourseInfo } from '@/assets/CourseInfo';
+import { Title, Lecturer } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'TButton',
@@ -51,11 +45,14 @@ export default Vue.extend({
     idsInTimetable(): string[] {
       return this.$store.state.idsInTimetable;
     },
-    courseDatas(): CourseInfo[] {
-      return this.$store.state.courseDatas;
+    title(): Title {
+      return this.$store.state.courseDatas[this.idx].title;
     },
-    curLang(): string {
-      return this.$i18n.locale;
+    lecturer(): Lecturer {
+      return this.$store.state.courseDatas[this.idx].lecturers[0];
+    },
+    generateId(): string {
+      return `${this.title.name.jp} ${this.lecturer.name.jp}`;
     },
   },
 });
