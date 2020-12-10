@@ -58,8 +58,7 @@
     <v-navigation-drawer
       v-model="drawerMobile"
       color="secondary"
-      absolute
-      temporary
+      app
     >
       <v-list
         class="grow"
