@@ -25,7 +25,6 @@ export default Vue.extend({
   },
   methods: {
     async fetchData() {
-      console.log(this.searchWord);
       this.$store.commit('fetchData', `query=${this.searchWord}`);
     },
   },
