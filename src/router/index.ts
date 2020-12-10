@@ -8,16 +8,19 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'CourseListPage',
     component: () => import('@/views/CourseListPage.vue'),
+    children: [
+      {
+        path: 'search/:id',
+      },
+      {
+        path: 'category/*',
+      },
+    ],
   },
   {
     path: '*',
     name: 'NotFoundPage',
     component: () => import('@/views/NotFoundPage.vue'),
-  },
-  {
-    path: '/category/*',
-    name: 'CategoryPage',
-    component: () => import('@/views/CategoryPage.vue'),
   },
   {
     path: '/course-detail/*',
