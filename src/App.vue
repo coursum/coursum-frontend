@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <top-bar />
-    <nav-bar />
+    <desktop-bar />
+    <mobile-bar />
     <v-main>
       <router-view />
     </v-main>
@@ -10,15 +10,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import TopBar from '@/components/TopBar.vue';
-import NavBar from '@/components/NavBar.vue';
+import DesktopBar from '@/components/DesktopBar.vue';
+import MobileBar from '@/components/MobileBar.vue';
 
 export default Vue.extend({
 
   name: 'App',
   components: {
-    TopBar,
-    NavBar,
+    DesktopBar,
+    MobileBar,
   },
   data: () => ({
   }),
@@ -26,6 +26,7 @@ export default Vue.extend({
     this.getDarkModeState();
     this.$store.commit('getIdsFromLocalStorage');
   },
+
   methods: {
     getDarkModeState() {
       const darkModeState = localStorage.getItem('darkModeState');
