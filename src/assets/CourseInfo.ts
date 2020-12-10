@@ -31,6 +31,10 @@ export interface Registration {
   prerequisite: null | undefined;
 }
 
+export interface Tag {
+  giga: boolean | undefined;
+}
+
 export interface CourseInfo {
   category: Basic;
   language: Basic;
@@ -43,7 +47,7 @@ export interface CourseInfo {
   summary: Basic;
   types: null | undefined;
   yearClassId: null | undefined;
-  tag: {giga: boolean | undefined};
+  tag: Tag;
   curriculumCode: string | null | undefined;
   credit: number | null | undefined;
 }
