@@ -1,25 +1,7 @@
 <template>
   <div>
-    <!-- top bar-->
-    <v-app-bar
-      v-if="!isIndexPage() && $vuetify.breakpoint.lgAndUp"
-      color="white"
-      app
-    >
-      <v-btn
-        icon
-        @click="forward()"
-      >
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
-
-      <SearchBar />
-    </v-app-bar>
-    <!-- /top bar-->
-
     <!-- top bar for mobile -->
     <v-app-bar
-      v-else-if="$vuetify.breakpoint.mdAndDown"
       color="white"
       app
     >
@@ -33,7 +15,6 @@
       </v-btn>
 
       <v-btn
-        v-if="!isIndexPage()"
         icon
         @click="forward()"
       >
@@ -70,31 +51,56 @@
       </router-link>
     </v-app-bar>
     <!-- /top bar for mobile -->
+
+    <!-- side bar for mobile -->
+    <v-navigation-drawer
+      v-model="drawerMobile"
+      color="secondary"
+      absolute
+      temporary
+    >
+      <v-list
+        class="grow"
+        dense
+      >
+        <category-list />
+      </v-list>
+    </v-navigation-drawer>
+    <!-- /side bar for mobile -->
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import SearchBar from '@/components/SearchBar.vue';
+import CategoryList from '@/components/SideBar/CategoryList.vue';
 
 export default Vue.extend({
 
   name: 'TopBar',
   components: {
     SearchBar,
+    CategoryList,
   },
   data() {
     return {
       drawerMobile: null,
+      categoryLists: [
+        { research: [] },
+        {
+          fundamental: ['introductory', 'language-communication', 'data-science',
+            'information-technology', 'wellness', 'interdisciplinary'],
+        },
+        { advanced: ['series-of-policy-management', 'series-of-environment-and-information-studies'] },
+        {
+          others: ['special-subjects', 'specialized-subjects-in-teacher-training',
+            'courses-offered-at-research-institutes-on-sfc',
+            'courses-offered-at-other-faculties', 'optional-subjects'],
+        },
+      ],
     };
   },
   methods: {
-    isIndexPage() {
-      if (this.$route.path === '/') {
-        return true;
-      }
-      return false;
-    },
     forward() {
       this.$router.go(-1);
     },
