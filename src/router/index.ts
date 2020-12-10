@@ -20,7 +20,7 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/CategoryPage.vue'),
   },
   {
-    path: '/detail',
+    path: '/course-detail/*',
     name: 'CourseDetailPage',
     component: () => import('@/views/CourseDetailPage.vue'),
   },
