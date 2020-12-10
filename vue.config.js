@@ -13,7 +13,7 @@ module.exports = {
   },
 
   devServer: {
-    hot: false,
+    hot: true,
     open: true,
   },
 };
