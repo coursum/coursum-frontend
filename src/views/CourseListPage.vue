@@ -56,7 +56,7 @@ import CourseData from '@/components/CourseData.vue';
 import SearchBar from '@/components/SearchBar.vue';
 
 export default Vue.extend({
-  name: 'CourseList',
+  name: 'CourseListPage',
   components: {
     SearchBar,
     CourseData,
@@ -71,9 +71,6 @@ export default Vue.extend({
   computed: {
     isLoading() {
       return this.$store.state.isLoading;
-    },
-    courseDatas() {
-      return this.$store.state.courseDatas;
     },
   },
   async created() {

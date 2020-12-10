@@ -1,6 +1,7 @@
 <template>
   <div v-if="!isLoading">
-    <div class="d-flex align-center flex-column py-12">
+    <time-table />
+    <!-- <div class="d-flex align-center flex-column py-12">
       <div>TimeTable</div>
       <v-dialog
         v-model="dialog2"
@@ -127,59 +128,6 @@
                       </v-btn>
                     </router-link>
 
-                    <!-- <span v-if="isSharedPage">
-                      <v-btn
-                        v-if="
-                          idsInTimetable().includes(
-                            coursesInTimeTable[courseId].title.name.en
-                          )
-                        "
-                        icon
-                        @click="
-                          $store.commit(
-                            'removeFromTimetable',
-                            coursesInTimeTable[courseId].title.name.en
-                          )
-                        "
-                      >
-                        <v-icon
-                          small
-                          color="orange"
-                        >mdi-star</v-icon>
-                      </v-btn>
-                      <v-btn
-                        v-else
-                        icon
-                        @click="
-                          $store.commit(
-                            'addToTimetable',
-                            coursesInTimeTable[courseId].title.name.en
-                          )
-                        "
-                      >
-                        <v-icon
-                          small
-                          color="#929292"
-                        >mdi-star-outline</v-icon>
-                      </v-btn>
-                    </span>
-                    <span v-else>
-                      <v-btn
-                        icon
-                        @click="
-                          $store.commit(
-                            'removeFromTimetable',
-                            coursesInTimeTable[courseId].title.name.en
-                          ),
-                          updateTable()
-                        "
-                      >
-                        <v-icon
-                          small
-                          color="orange"
-                        >mdi-star</v-icon>
-                      </v-btn>
-                    </span> -->
                   </span>
                 </div>
               </div>
@@ -187,16 +135,20 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import TimeTable from '@/components/TimeTable.vue';
 
 export default Vue.extend({
 
-  name: 'TimeTable',
+  name: 'TimeTablePage',
+  components: {
+    TimeTable,
+  },
 
   data() {
     return {

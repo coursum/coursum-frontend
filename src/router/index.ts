@@ -1,24 +1,28 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import CourseList from '../views/CourseList.vue';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'CourseList',
-    component: CourseList,
+    name: 'CourseListPage',
+    component: () => import('@/views/CourseListPage.vue'),
   },
   {
     path: '*',
-    name: 'NotFound',
-    component: () => import('@/views/NotFound.vue'),
+    name: 'NotFoundPage',
+    component: () => import('@/views/NotFoundPage.vue'),
   },
   {
     path: '/category/*',
     name: 'CategoryPage',
     component: () => import('@/views/CategoryPage.vue'),
+  },
+  {
+    path: '/detail',
+    name: 'CourseDetailPage',
+    component: () => import('@/views/CourseDetailPage.vue'),
   },
   {
     path: '/setting',
@@ -27,8 +31,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/timetable',
-    name: 'TimeTable',
-    component: () => import('@/views/TimeTable.vue'),
+    name: 'TimeTablePage',
+    component: () => import('@/views/TimeTablePage.vue'),
     children: [
       {
         path: 'shared/:id',

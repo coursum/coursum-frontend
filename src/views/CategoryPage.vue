@@ -52,7 +52,7 @@ interface To {
 }
 
 export default Vue.extend({
-  name: 'CourseList',
+  name: 'CategoryPage',
   components: {
     CourseData,
   },
