@@ -16,6 +16,7 @@ export default new Vuex.Store({
   state: {
     isLoading: false,
     courseDatas: courses,
+    length: 0,
     idsInTimetable: [''],
   },
   mutations: {
@@ -26,7 +27,13 @@ export default new Vuex.Store({
       try {
         const response = await axios.get(url.href);
         state.courseDatas = JSON.parse(JSON.stringify(response.data)).Hits;
+        if (state.courseDatas === null) {
+          throw new Error();
+        } else {
+          state.length = state.courseDatas.length;
+        }
       } catch (e) {
+        state.courseDatas = courses;
         router.push('/404');
       } finally {
         state.isLoading = false;
