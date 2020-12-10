@@ -1,7 +1,14 @@
 <template>
-  <span v-if="lecturers">
-    {{ lecturers }}
-  </span>
+  <div v-if="lecturers">
+    <span
+      v-for="(lecturer, i) in lecturers"
+      :key="i"
+    >
+      <span v-if="lecturer.name && lecturer.name[`${curLang}`]">
+        {{ lecturer.name[`${curLang}`] }}
+      </span>
+    </span>
+  </div>
 </template>
 
 <script lang="ts">
