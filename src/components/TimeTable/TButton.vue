@@ -41,8 +41,12 @@ import { CourseInfo } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'TButton',
-  props: { idx: Number },
-
+  props: {
+    idx: {
+      type: Number,
+      default: 0,
+    },
+  },
   computed: {
     idsInTimetable(): string[] {
       return this.$store.state.idsInTimetable;
