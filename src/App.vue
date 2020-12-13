@@ -23,8 +23,9 @@ export default Vue.extend({
   data: () => ({
   }),
   async created() {
-    this.getDarkModeState();
+    this.$store.commit('fetchData', '');
     this.$store.commit('getIdsFromLocalStorage');
+    this.getDarkModeState();
   },
 
   methods: {

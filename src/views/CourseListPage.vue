@@ -71,6 +71,7 @@
 import Vue from 'vue';
 import CourseData from '@/components/CourseData.vue';
 import SearchBar from '@/components/SearchBar.vue';
+import { CourseInfo } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'CourseListPage',
@@ -82,7 +83,7 @@ export default Vue.extend({
     return {
       pgPage: 1,
       pgPageSize: 12,
-      isCategPage: true,
+      isCategPage: false,
       word: '',
     };
   },
@@ -91,17 +92,17 @@ export default Vue.extend({
       return this.$store.state.isLoading;
     },
     pgLength() {
-      const tmp = Math.ceil(this.$store.state.length / this.pgPageSize);
+      const tmp = Math.ceil(this.courseDatas.length / this.pgPageSize);
       return tmp;
+    },
+    courseDatas(): CourseInfo[] {
+      return this.$store.state.courseDatas;
     },
   },
   watch: {
     async $route() {
       this.fetchData();
     },
-  },
-  async created() {
-    this.fetchData();
   },
   methods: {
     async fetchData() {
