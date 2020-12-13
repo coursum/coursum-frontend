@@ -27,7 +27,7 @@
 
     <div style="border-top: solid 1px #ebebeb">
       <v-row class="pa-0 ma-0">
-        <d-lectures :idx="idx " />
+        <d-lectures :idx="idx" />
 
         <v-spacer />
 
@@ -42,14 +42,14 @@
 import Vue from 'vue';
 import TButton from '@/components/TimeTable/TButton.vue';
 import DetailButton from '@/components/CourseDetail/DetailButton.vue';
-import DCategory from '@/components/CourseData/Primary/DCategory.vue';
-import DPostscript from '@/components/CourseData/Primary/DPostscript.vue';
-import DScheduleSemester from '@/components/CourseData/Primary/DScheduleSemester.vue';
-import DScheduleTimes from '@/components/CourseData/Primary/DScheduleTimes.vue';
-import DCredit from '@/components/CourseData/Primary/DCredit.vue';
-import DSummary from '@/components/CourseData/Primary/DSummary.vue';
-import DLectures from '@/components/CourseData/Primary/DLectures.vue';
-import DTitle from '@/components/CourseData/Primary/DTitle.vue';
+import DCategory from '@/components/CourseData/DCategory.vue';
+import DPostscript from '@/components/CourseData/DPostscript.vue';
+import DScheduleSemester from '@/components/CourseData/DScheduleSemester.vue';
+import DScheduleTimes from '@/components/CourseData/DScheduleTimes.vue';
+import DCredit from '@/components/CourseData/DCredit.vue';
+import DSummary from '@/components/CourseData/DSummary.vue';
+import DLectures from '@/components/CourseData/DLectures.vue';
+import DTitle from '@/components/CourseData/DTitle.vue';
 import { CourseInfo } from '@/assets/CourseInfo';
 
 export default Vue.extend({
