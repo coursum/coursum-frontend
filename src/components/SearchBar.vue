@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-auto">
     <v-text-field
       v-model="searchWord"
       rounded
