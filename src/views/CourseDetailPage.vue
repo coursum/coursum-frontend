@@ -66,8 +66,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import CourseData from '@/components/CourseData.vue';
-import DRegistration from '@/components/CourseData/Detail/DRegistration.vue';
-import DClass from '@/components/CourseData/Detail/DClass.vue';
+import DRegistration from '@/components/CourseData/DRegistration.vue';
+import DClass from '@/components/CourseData/DClass.vue';
 
 export default Vue.extend({
 
@@ -98,6 +98,7 @@ export default Vue.extend({
   async created() {
     this.fetchData();
   },
+
   methods: {
     async fetchData() {
       this.$store.commit('fetchData', this.$route.params.id);
