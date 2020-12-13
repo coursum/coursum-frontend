@@ -1,5 +1,5 @@
 // Components
-import DCategory from '@/components/CourseData/Primary/DCategory.vue';
+import DCategory from '@/components/CourseData/DCategory.vue';
 
 // Utilities
 import { shallowMount } from '@vue/test-utils';
