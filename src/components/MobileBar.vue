@@ -1,26 +1,18 @@
 <template>
-  <div
-    v-if="$vuetify.breakpoint.mdAndDown"
-  >
+  <div>
     <!-- top bar for mobile -->
     <v-app-bar
       color="white"
       app
+      dense
     >
       <v-btn
         icon
-        @click.stop="drawerMobile = !drawerMobile"
+        @click.stop="drawer = !drawer"
       >
-        <v-icon color="black">
+        <v-icon color="secondary">
           mdi-view-headline
         </v-icon>
-      </v-btn>
-
-      <v-btn
-        icon
-        @click="forward()"
-      >
-        <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
 
       <div
@@ -35,29 +27,33 @@
         class="text-decoration-none"
       >
         <v-btn icon>
-          <v-icon color="black">
+          <v-icon color="secondary">
             mdi-grid
           </v-icon>
         </v-btn>
       </router-link>
 
-      <router-link
-        to="/setting"
-        class="text-decoration-none"
-      >
-        <v-btn icon>
-          <v-icon color="black">
-            mdi-account-circle
-          </v-icon>
-        </v-btn>
-      </router-link>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            class="text-decoration-none"
+            v-on="on"
+            @click.prevent="attrs['aria-expanded'] = !attrs['aria-expanded']"
+          >
+            <v-icon color="secondary">
+              mdi-account-circle
+            </v-icon>
+          </v-btn>
+        </template>
+        <settings />
+      </v-menu>
     </v-app-bar>
     <!-- /top bar for mobile -->
 
     <!-- side bar for mobile -->
     <v-navigation-drawer
-      v-model="drawerMobile"
-      color="secondary"
+      v-model="drawer"
       app
     >
       <v-list
@@ -75,6 +71,7 @@
 import Vue from 'vue';
 import SearchBar from '@/components/SearchBar.vue';
 import CategoryList from '@/components/SideBar/CategoryList.vue';
+import Settings from '@/components/Settings.vue';
 
 export default Vue.extend({
 
@@ -82,29 +79,12 @@ export default Vue.extend({
   components: {
     SearchBar,
     CategoryList,
+    Settings,
   },
   data() {
     return {
-      drawerMobile: null,
-      categoryLists: [
-        { research: [] },
-        {
-          fundamental: ['introductory', 'language-communication', 'data-science',
-            'information-technology', 'wellness', 'interdisciplinary'],
-        },
-        { advanced: ['series-of-policy-management', 'series-of-environment-and-information-studies'] },
-        {
-          others: ['special-subjects', 'specialized-subjects-in-teacher-training',
-            'courses-offered-at-research-institutes-on-sfc',
-            'courses-offered-at-other-faculties', 'optional-subjects'],
-        },
-      ],
+      drawer: null,
     };
-  },
-  methods: {
-    forward() {
-      this.$router.go(-1);
-    },
   },
 });
 </script>
