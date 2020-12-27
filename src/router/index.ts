@@ -23,14 +23,9 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/NotFoundPage.vue'),
   },
   {
-    path: '/course-detail/*',
+    path: '/course-detail/:id',
     name: 'CourseDetailPage',
     component: () => import('@/views/CourseDetailPage.vue'),
-  },
-  {
-    path: '/setting',
-    name: 'SettingPage',
-    component: () => import('@/views/SettingPage.vue'),
   },
   {
     path: '/timetable',
