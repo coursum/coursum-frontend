@@ -1,60 +1,96 @@
 <template>
   <div>
     <div
-      v-if="$vuetify.breakpoint.lgAndUp"
-      style="width: 40%"
-      class="mx-auto my-6"
+      class="d-flex flex-row-reverse pt-3 pr-3"
     >
-      <div class="text-h1 text-center secondary--text">
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            class="text-decoration-none mx-1"
+            v-on="on"
+            @click.prevent="attrs['aria-expanded'] = !attrs['aria-expanded']"
+          >
+            <v-icon
+              color="secondary"
+            >
+              mdi-cog-outline
+            </v-icon>
+          </v-btn>
+        </template>
+
+        <settings />
+      </v-menu>
+
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            class="text-decoration-none mx-1"
+            v-on="on"
+            @click.prevent="attrs['aria-expanded'] = !attrs['aria-expanded']"
+          >
+            <v-icon
+              color="secondary"
+            >
+              mdi-account-circle-outline
+            </v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item-group>
+            <v-list-item
+              to="/timetable"
+              link
+            >
+              <v-list-item-title>
+                {{ $t('myTable') }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
+    </div>
+    <div
+      :style="{ width : width + '%' }"
+      class="mx-auto"
+    >
+      <div
+        class="text-center primary--text"
+        :style="{ 'font-size' : fontSize + 'rem' }"
+      >
         Coursum
       </div>
       <search-bar />
     </div>
 
-    <div class="mx-0 my-6 pa-5">
-      <v-chip
-        v-if="isCategPage"
-        large
-        class="px-6"
-        color="primary"
-        outlined
-        label
-      >
-        {{ word }}
-      </v-chip>
-
-      <v-row
+    <div class="mx-0 my-6">
+      <div
         v-if="isLoading"
-        justify="space-around"
+        class="d-flex flex-column px-3"
       >
         <v-skeleton-loader
           v-for="n in pgPageSize"
           :key="n"
-          width="500"
-          height="190"
+          height="180"
           type="card"
-          class="my-2"
+          class="my-1"
         />
-      </v-row>
+      </div>
 
       <div
         v-else
       >
-        <v-row justify="space-around">
-          <!-- <course-data
-            v-for="n in pgPageSize"
-            :key="n"
-            :idx="(pgPageSize * pgPage + n) - pgPageSize"
-          /> -->
+        <div class="d-flex flex-wrap justify-space-around px-3">
           <course-data
             v-for="n in pgPageSize"
             :key="n-1"
-            :idx="(pgPageSize * pgPage + n-1) - pgPageSize"
+            :course-data="courseDatas[(pgPageSize * pgPage + n-1) - pgPageSize]"
           />
-        </v-row>
+        </div>
         <div
           style="max-width: 500px"
-          class="mx-auto my-12"
+          class="mx-auto my-6"
         >
           <v-pagination
             v-model="pgPage"
@@ -72,22 +108,29 @@ import Vue from 'vue';
 import CourseData from '@/components/CourseData.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import { CourseInfo } from '@/assets/CourseInfo';
+import Settings from '@/components/Settings.vue';
 
 export default Vue.extend({
   name: 'CourseListPage',
   components: {
     SearchBar,
     CourseData,
+    Settings,
   },
   data() {
     return {
       pgPage: 1,
       pgPageSize: 12,
-      isCategPage: false,
       word: '',
     };
   },
   computed: {
+    width(): number {
+      return this.$vuetify.breakpoint.lgAndUp ? 40 : 80;
+    },
+    fontSize(): number {
+      return this.$vuetify.breakpoint.lgAndUp ? 3 : 2;
+    },
     isLoading() {
       return this.$store.state.isLoading;
     },
@@ -113,15 +156,24 @@ export default Vue.extend({
       if (params[0] === 'category') {
         word = params.slice(1).join(' ');
         this.word = word;
-        this.isCategPage = true;
       } else if (params[0] === 'search') {
         word = params.slice(1);
       } else {
         word = '';
-        this.isCategPage = false;
       }
       this.$store.commit('fetchData', `query=${word}`);
     },
   },
 });
 </script>
+
+<i18n>
+{
+  "en": {
+    "myTable": "My Time Table"
+  },
+  "jp": {
+    "myTable": "マイ時間割"
+  }
+}
+</i18n>
