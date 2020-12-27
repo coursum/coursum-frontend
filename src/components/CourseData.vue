@@ -1,39 +1,47 @@
 <template>
   <v-card
     v-if="courseData"
-    elevation="2"
-    height="190"
-    width="500"
-    class="my-2 black--text d-flex flex-column justify-space-between px-5 pt-5"
+    :to="genRoute"
+    :ripple="false"
+    class="px-5 py-3 my-2 rounded-lg"
+    :class="{ 'data-card': textTruncate, backgroundnone: !textTruncate }"
+    :elevation="textTruncate ? 2 : 0"
+    :style="{width: cardWidth + '%'}"
   >
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          style="position: absolute; right: 5px; top: 5px"
+          icon
+          color="#BDBDBD"
+          v-on="on"
+          @click.prevent="attrs['aria-expanded'] = !attrs['aria-expanded']"
+        >
+          <v-icon> mdi-dots-horizontal </v-icon>
+        </v-btn>
+      </template>
+
+      <t-button :id="genId" />
+    </v-menu>
+
+    <d-title :title="title" />
+    <d-lectures
+      :text-truncate="textTruncate"
+      :lecturers="lecturers"
+    />
+    <d-postscript :postscript="postscript" />
+    <d-summary
+      v-if="showSummary"
+      :title="courseData.title.name.jp"
+      :summary="summary"
+      :en="courseData.summary.en"
+      :text-truncate="textTruncate"
+    />
+
     <div>
-      <v-row class="pa-0 ma-0">
-        <div class="col-9 pa-0 ma-0">
-          <d-category :idx="idx" />
-          <d-title :idx="idx" />
-          <d-postscript :idx="idx" />
-        </div>
-
-        <v-spacer />
-
-        <div class="col-3 pa-0 ma-0">
-          <d-schedule-semester :idx="idx" />・<d-credit :idx="idx" />
-          <d-schedule-times :idx="idx" />
-        </div>
-      </v-row>
-
-      <d-summary :idx="idx" />
-    </div>
-
-    <div style="border-top: solid 1px #ebebeb">
-      <v-row class="pa-0 ma-0">
-        <d-lectures :idx="idx" />
-
-        <v-spacer />
-
-        <detail-button :idx="idx" />
-        <t-button :idx="idx" />
-      </v-row>
+      <d-credit :credit="credit" />
+      <d-schedule-semester :semester="semester" />
+      <d-schedule-times :times="times" />
     </div>
   </v-card>
 </template>
@@ -41,8 +49,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import TButton from '@/components/TimeTable/TButton.vue';
-import DetailButton from '@/components/CourseDetail/DetailButton.vue';
-import DCategory from '@/components/CourseData/DCategory.vue';
 import DPostscript from '@/components/CourseData/DPostscript.vue';
 import DScheduleSemester from '@/components/CourseData/DScheduleSemester.vue';
 import DScheduleTimes from '@/components/CourseData/DScheduleTimes.vue';
@@ -50,7 +56,7 @@ import DCredit from '@/components/CourseData/DCredit.vue';
 import DSummary from '@/components/CourseData/DSummary.vue';
 import DLectures from '@/components/CourseData/DLectures.vue';
 import DTitle from '@/components/CourseData/DTitle.vue';
-import { CourseInfo } from '@/assets/CourseInfo';
+import { Lecturer } from '@/assets/CourseInfo';
 
 export default Vue.extend({
 
@@ -58,8 +64,6 @@ export default Vue.extend({
 
   components: {
     TButton,
-    DetailButton,
-    DCategory,
     DPostscript,
     DScheduleSemester,
     DScheduleTimes,
@@ -69,19 +73,98 @@ export default Vue.extend({
     DTitle,
   },
   props: {
-    idx: {
-      type: Number,
-      default: 0,
+    courseData: {
+      type: Object,
+      default() {
+        return undefined;
+      },
     },
+    textTruncate: {
+      type: Boolean,
+      default: true,
+    },
+    showSummary: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  data() {
+    return {
+      dialog: false,
+    };
   },
 
   computed: {
-    courseData(): CourseInfo[] {
-      return this.$store.state.courseDatas[this.idx];
-    },
     curLang(): string {
       return this.$i18n.locale;
+    },
+    genRoute(): string | undefined {
+      if (this.textTruncate) {
+        return `/course-detail/${this.courseData?.title?.name?.jp} ${this.courseData.lecturers[0]?.name?.jp}`;
+      }
+      return undefined;
+    },
+    title(): string {
+      return this.courseData?.title?.name?.[`${this.curLang}`];
+    },
+    postscript(): string {
+      return this.courseData?.title?.postscript?.[`${this.curLang}`];
+    },
+    lecturers(): Lecturer[] {
+      return this.courseData?.lecturers;
+    },
+    credit(): number {
+      return this.courseData?.credit;
+    },
+    semester(): string {
+      return this.courseData?.schedule?.semester?.[`${this.curLang}`];
+    },
+    times(): string {
+      return this.courseData?.schedule?.times?.[`${this.curLang}`];
+    },
+    summary(): string {
+      return this.courseData?.summary?.[`${this.curLang}`];
+    },
+    genId(): string {
+      const id = `${this.title} ${this.lecturers?.[0]?.name?.jp}`;
+
+      return id;
+    },
+    cardWidth(): number {
+      const breakpoint = this.$vuetify.breakpoint.name;
+      let size;
+      switch (breakpoint) {
+        case 'xs':
+          size = 100;
+          break;
+        case 'sm':
+          size = 48;
+          break;
+        case 'md':
+          size = 48;
+          break;
+        case 'lg':
+          size = 32;
+          break;
+        case 'xl':
+          size = 30;
+          break;
+        default:
+          size = 30;
+          break;
+      }
+      return size;
     },
   },
 });
 </script>
+
+<style scoped>
+.data-card:hover {
+  background-color: var(--v-cover-base);
+}
+
+.backgroundnone {
+  background-color: var(--v-white-base);
+}
+</style>
