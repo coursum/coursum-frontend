@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <desktop-bar />
-    <mobile-bar />
+    <!-- <mobile-bar /> -->
     <v-main>
+      <!-- <desktop-bar /> -->
       <router-view />
     </v-main>
   </v-app>
@@ -10,15 +10,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import DesktopBar from '@/components/DesktopBar.vue';
-import MobileBar from '@/components/MobileBar.vue';
+// import DesktopBar from '@/components/DesktopBar.vue';
+// import MobileBar from '@/components/MobileBar.vue';
 
 export default Vue.extend({
 
   name: 'App',
   components: {
-    DesktopBar,
-    MobileBar,
+    // DesktopBar,
+    // MobileBar,
   },
   data: () => ({
   }),
@@ -38,3 +38,11 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+#app {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+</style>
