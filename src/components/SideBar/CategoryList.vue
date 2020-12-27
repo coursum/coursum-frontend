@@ -1,17 +1,6 @@
 <template>
-  <div>
-    <v-list-item>
-      <v-list-item-content>
-        <v-list-item-title
-          style="color: #cacfd3"
-          class="font-weight-black"
-        >
-          {{ $t("indexPage") }}
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-
-    <v-divider />
+  <v-list dense>
+    <v-subheader>科目から探す</v-subheader>
 
     <template v-for="(key, index) in Object.keys($t('categories'))">
       <v-list-group
@@ -20,10 +9,7 @@
       >
         <template v-slot:activator>
           <v-list-item-content>
-            <v-list-item-title
-              style="color: #cacfd3"
-              class="font-weight-black"
-            >
+            <v-list-item-title>
               {{ key }}
             </v-list-item-title>
           </v-list-item-content>
@@ -33,28 +19,19 @@
           v-for="(item, idx) in $t('categories')[key]"
           :key="idx"
           links
+          :to="
+            '/category' +
+              '/' +
+              Object.keys(categoryLists[index])[0] +
+              '/' +
+              categoryLists[index][
+                Object.keys(categoryLists[index])[0]
+              ][idx]
+          "
         >
-          <v-list-item-content class="pl-5">
-            <router-link
-              :to="
-                '/category' +
-                  '/' +
-                  Object.keys(categoryLists[index])[0] +
-                  '/' +
-                  categoryLists[index][
-                    Object.keys(categoryLists[index])[0]
-                  ][idx]
-              "
-              class="text-decoration-none"
-            >
-              <v-list-item-title
-                style="color: #cacfd3; width: 160px"
-                class="font-weight-black text-truncate"
-              >
-                {{ item }}
-              </v-list-item-title>
-            </router-link>
-          </v-list-item-content>
+          <v-list-item-title>
+            {{ item }}
+          </v-list-item-title>
         </v-list-item>
       </v-list-group>
 
@@ -62,55 +39,14 @@
         v-else
         :key="`second-${index}`"
         link
+        :to="'/category' + '/' + Object.keys(categoryLists[index])[0]"
       >
-        <v-list-item-content>
-          <router-link
-            :to="'/category' + '/' + Object.keys(categoryLists[index])[0]"
-            class="text-decoration-none"
-          >
-            <v-list-item-title
-              style="color: #cacfd3; width: 160px"
-              class="font-weight-black text-truncate"
-            >
-              {{ key }}
-            </v-list-item-title>
-          </router-link>
-        </v-list-item-content>
+        <v-list-item-title>
+          {{ key }}
+        </v-list-item-title>
       </v-list-item>
     </template>
-    <v-divider />
-
-    <v-list-item>
-      <v-list-item-content>
-        <router-link
-          to="/"
-          class="text-decoration-none"
-        >
-          <v-list-item-title
-            style="color: #cacfd3"
-            class="font-weight-black"
-          >
-            教員一覧
-          </v-list-item-title>
-        </router-link>
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-content>
-        <router-link
-          to="/"
-          class="text-decoration-none"
-        >
-          <v-list-item-title
-            style="color: #cacfd3"
-            class="font-weight-black"
-          >
-            アスペクト
-          </v-list-item-title>
-        </router-link>
-      </v-list-item-content>
-    </v-list-item>
-  </div>
+  </v-list>
 </template>
 
 <script lang="ts">
