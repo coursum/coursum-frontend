@@ -1,6 +1,6 @@
 <template>
   <router-link
-    :to="'/course-detail/' + generateId"
+    :to="'/course-detail/' + genId"
     class="text-decoration-none"
   >
     <v-btn icon>
@@ -31,7 +31,7 @@ export default Vue.extend({
     lecturer(): Lecturer {
       return this.$store.state.courseDatas[this.idx].lecturers[0];
     },
-    generateId(): string {
+    genId(): string {
       return `${this.title.name.jp} ${this.lecturer.name.jp}`;
     },
   },
