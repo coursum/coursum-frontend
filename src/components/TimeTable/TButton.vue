@@ -1,59 +1,65 @@
 <template>
-  <div>
-    <v-btn
-      v-if="idsInTimetable.includes(generateId)"
-      icon
-      @click="
-        $store.commit('removeFromTimetable', generateId)
+  <v-list
+    width="200"
+    class="text-center"
+    nav
+  >
+    <v-list-item
+      v-if="isInclude"
+      @click.stop="
+        $store.commit('removeFromTimetable', id)
       "
     >
-      <v-icon
-        small
-        color="orange"
-      >
-        mdi-star
-      </v-icon>
-    </v-btn>
-    <v-btn
+      <v-list-item-title>
+        {{ $t("remove") }}
+      </v-list-item-title>
+    </v-list-item>
+    <v-list-item
       v-else
-      icon
-      @click="$store.commit('addToTimetable', generateId)"
+      @click.stop="
+        $store.commit('addToTimetable', id)
+      "
     >
-      <v-icon
-        small
-        color="#929292"
-      >
-        mdi-star-outline
-      </v-icon>
-    </v-btn>
-  </div>
+      <v-list-item-title>
+        {{ $t("add") }}
+      </v-list-item-title>
+    </v-list-item>
+  </v-list>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Title, Lecturer } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'TButton',
   props: {
-    idx: {
-      type: Number,
-      default: 0,
+    id: {
+      type: String,
+      default: '',
     },
   },
   computed: {
     idsInTimetable(): string[] {
       return this.$store.state.idsInTimetable;
     },
-    title(): Title {
-      return this.$store.state.courseDatas[this.idx].title;
-    },
-    lecturer(): Lecturer {
-      return this.$store.state.courseDatas[this.idx].lecturers[0];
-    },
-    generateId(): string {
-      return `${this.title.name.jp} ${this.lecturer.name.jp}`;
+    isInclude(): boolean {
+      const b = this.idsInTimetable.some((str) => str === this.id);
+      return b;
     },
   },
+
 });
 </script>
+
+<i18n>
+{
+  "en": {
+    "add": "add to time table",
+    "remove": "remove from time table"
+  },
+  "jp": {
+    "add": "時間割に追加",
+    "remove": "時間割から外す"
+  }
+}
+</i18n>
