@@ -1,31 +1,57 @@
 <template>
-  <div class="mx-auto">
-    <v-text-field
+  <div
+    id="search"
+    class="mx-auto"
+  >
+    <v-autocomplete
       v-model="searchWord"
-      rounded
-      filled
-      height="40"
-      hide-details
+      solo
+      prepend-inner-icon="mdi-magnify"
       type="text"
-      @change="fetchData()"
-    />
+      hide-details
+      :placeholder="$t('placeholder')"
+      @keydown.enter="goResultPage()"
+    >
+      <template v-slot:no-data>
+        <category-list />
+      </template>
+    </v-autocomplete>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import CategoryList from '@/components/SideBar/CategoryList.vue';
 
 export default Vue.extend({
   name: 'SearchBar',
-
+  components: {
+    CategoryList,
+  },
   data() {
     return {
       searchWord: '',
     };
   },
+
   methods: {
     async fetchData() {
       this.$store.commit('fetchData', `query=${this.searchWord}`);
+    },
+    goResultPage() {
+      let pushPath;
+
+      if (this.searchWord === '') {
+        pushPath = '/';
+      } else {
+        pushPath = `/search/${this.searchWord}`;
+      }
+
+      if (this.$route.path !== pushPath) {
+        this.$router.push(pushPath);
+      }
+
+      this.fetchData();
     },
   },
 
@@ -33,7 +59,23 @@ export default Vue.extend({
 </script>
 
 <style>
-.v-input__slot {
-  min-height: auto !important;
+#search .v-text-field input {
+  padding: 0px;
+  line-height: 30px !important;
+}
+
+#search .v-icon {
+  color: #bdbdbd;
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "placeholder": "what do you learn?"
+  },
+  "jp": {
+    "placeholder": "何を学びますか？"
+  }
+}
+</i18n>
