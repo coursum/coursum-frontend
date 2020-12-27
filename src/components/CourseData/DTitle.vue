@@ -1,32 +1,25 @@
 <template>
   <span
-    v-if="title && title.name && title.name[`${curLang}`]"
-    class="font-weight-black text-subtitle-1 text-truncate"
+    v-if="title"
+    class="font-weight-black text-truncate primary--text"
   >
-    {{ title.name[`${curLang}`] }}
+    {{ title }}
   </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Title } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DTitle',
   props: {
-    idx: {
-      type: Number,
-      default: 0,
-    },
-  },
-
-  computed: {
-    title(): Title {
-      return this.$store.state.courseDatas[this.idx].title;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
+    title: { type: String, default: undefined },
   },
 });
 </script>
+
+<style scoped>
+span {
+  font-size: 14px;
+}
+</style>

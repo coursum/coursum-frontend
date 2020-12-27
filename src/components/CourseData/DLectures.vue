@@ -1,10 +1,17 @@
 <template>
-  <div v-if="lecturers">
+  <div
+    v-if="lecturers && 0 < lecturers.length"
+    style="line-height: 17px"
+    :class="{'text-truncate': textTruncate}"
+  >
     <span
       v-for="(lecturer, i) in lecturers"
       :key="i"
     >
-      <span v-if="lecturer.name && lecturer.name[`${curLang}`]">
+      <span
+        v-if="lecturer.name && lecturer.name[`${curLang}`]"
+        class="secondary--text"
+      >
         {{ lecturer.name[`${curLang}`] }}
       </span>
     </span>
@@ -13,21 +20,23 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Lecturer } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DLectures',
   props: {
-    idx: {
-      type: Number,
-      default: 0,
+    lecturers: {
+      type: Array,
+      default() {
+        return undefined;
+      },
+    },
+    textTruncate: {
+      type: Boolean,
+      default: true,
     },
   },
 
   computed: {
-    lecturers(): Lecturer[] {
-      return this.$store.state.courseDatas[this.idx].lecturers;
-    },
     curLang(): string {
       return this.$i18n.locale;
     },
@@ -35,3 +44,10 @@ export default Vue.extend({
 
 });
 </script>
+
+<style scoped>
+span {
+  font-size: 13px;
+  font-weight: bold;
+}
+</style>

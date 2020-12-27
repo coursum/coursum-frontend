@@ -1,33 +1,24 @@
 <template>
   <span
-    v-if="title && title.postscript && title.postscript[`${curLang}`]"
+    v-if="postscript"
     style="color: #929292"
     class="text-caption text-truncate"
   >
-    {{ title.postscript[`${curLang}`] }}
+    {{ postscript }}
   </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Title } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DPostsctipt',
   props: {
-    idx: {
-      type: Number,
-      default: 0,
+    postscript: {
+      type: String,
+      default: undefined,
     },
   },
 
-  computed: {
-    title(): Title {
-      return this.$store.state.courseDatas[this.idx].title;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
-  },
 });
 </script>

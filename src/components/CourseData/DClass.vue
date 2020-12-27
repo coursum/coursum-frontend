@@ -20,35 +20,29 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Tag } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DClass',
   props: {
-    idx: {
-      type: Number,
-      default: 0,
+    related: {
+      type: String,
+      default: undefined,
     },
-  },
-
-  computed: {
-    related(): null | undefined {
-      return this.$store.state.courseDatas[this.idx].related;
+    classroom: {
+      type: String,
+      default: undefined,
     },
-    classroom(): string | null | undefined {
-      return this.$store.state.courseDatas[this.idx].classroom;
+    types: {
+      type: String,
+      default: undefined,
     },
-    types(): null | undefined {
-      return this.$store.state.courseDatas[this.idx].types;
+    tag: {
+      type: Object,
+      default: undefined,
     },
-    tag(): Tag {
-      return this.$store.state.courseDatas[this.idx].tag;
-    },
-    curriculumCode(): string | null | undefined {
-      return this.$store.state.courseDatas[this.idx].curriculumCode;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
+    curriculumCode: {
+      type: String,
+      default: undefined,
     },
   },
 

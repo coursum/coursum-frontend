@@ -1,32 +1,31 @@
 <template>
-  <span
-    v-if="schedule && schedule.semester && schedule.semester[`${curLang}`]"
-    class="text-right text-truncate text-caption"
+  <v-chip
+    v-if="semester"
     style="color: #929292"
+    outlined
+    x-small
   >
-    {{ schedule.semester[`${curLang}`] }}
-  </span>
+    {{ semester }}
+  </v-chip>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Schedule } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DScheduleSemester',
   props: {
-    idx: {
-      type: Number,
-      default: 0,
+    semester: {
+      type: String,
+      default: undefined,
     },
   },
-
   computed: {
-    schedule(): Schedule {
-      return this.$store.state.courseDatas[this.idx].schedule;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
+    isSpring() {
+      if (this.semester === 'Spring' || this.semester.includes('春')) {
+        return true;
+      }
+      return false;
     },
   },
 });

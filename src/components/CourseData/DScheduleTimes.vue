@@ -1,41 +1,51 @@
 <template>
-  <div
-    v-if="schedule &&
-      schedule.times &&
-      schedule.times[`${curLang}`]
-    "
-    style="color: #929292"
-    class="text-right text-truncate text-caption"
+  <span
+    v-if="times"
   >
-    <span
-      v-for="(time, i) in schedule.times[`${curLang}`]"
+    <v-chip
+      v-for="(display, i) in displays"
       :key="i"
+      color="primary"
+      outlined
+      x-small
     >
-      {{ time[0] }}{{ time[3] }}
-    </span>
-  </div>
+      {{ display }}
+    </v-chip>
+  </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Schedule } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DScheduleTimes',
   props: {
-    idx: {
-      type: Number,
-      default: 0,
+    times: {
+      type: String,
+      default: undefined,
     },
   },
 
   computed: {
-    schedule(): Schedule {
-      return this.$store.state.courseDatas[this.idx].shedule;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
+    displays(): string[] {
+      const { times } = this;
+      const pattern = /([月火水木金土日])曜日([１２３４５６７1234567])時限/;
+      const schedule: string[] = times.split(',').map((str) => {
+        const arr = pattern.exec(str);
+        let [day, time]: [string, number] = ['', -1];
+
+        if (arr) {
+          const toHalfWidth = String.fromCharCode(arr[2].charCodeAt(0) - 0xFEE0);
+          [, day] = arr;
+          time = Number(toHalfWidth);
+        }
+
+        return day + time;
+      });
+
+      return schedule;
     },
   },
+
 });
 </script>

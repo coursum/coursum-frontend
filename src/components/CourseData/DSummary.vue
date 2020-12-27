@@ -1,43 +1,66 @@
 <template>
   <div
-    v-if="summary && summary[`${curLang}`]"
-    class="summary text-body-1"
+    v-if="summary"
+    :class="{summary: textTruncate}"
+    class="primary--text"
+    style="font-size: 13.5px; line-height: 1.35;"
   >
-    <p>
-      {{ summary[`${curLang}`] }}
+    <p
+      v-if="showEn"
+      class="my-0"
+    >
+      {{ en }}
+    </p>
+    <p
+      v-else
+      class="my-0"
+    >
+      {{ summary }}
     </p>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Basic } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DSummary',
   props: {
-    idx: {
-      type: Number,
-      default: 0,
+    summary: {
+      type: String,
+      default: undefined,
+    },
+    textTruncate: {
+      type: Boolean,
+      default: true,
+    },
+    title: {
+      type: String,
+      default: '',
+    },
+    en: {
+      type: String,
+      default: '',
     },
   },
-
   computed: {
-    summary(): Basic {
-      return this.$store.state.courseDatas[this.idx].summary;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
+    showEn() {
+      if (this.title === '研究会Ａ' || this.title === '研究会Ｂ') {
+        return true;
+      }
+      return false;
     },
   },
 });
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
 .summary p {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 5;
   overflow: hidden;
 }
 </style>
