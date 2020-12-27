@@ -1,73 +1,76 @@
 <template>
   <div
-    style="width: 90%"
-    class="mx-auto my-12"
+    class="mx-auto my-6 px-5"
   >
-    <div v-if="!isLoading">
-      <course-data />
+    <div
+      v-if="!isLoading"
+    >
+      <course-data
+        :course-data="courseData"
+        :text-truncate="false"
+      />
 
       <div>
-        <v-switch
-          v-model="isAllPanels"
-          @change="showAllPanels()"
-        />
+        <d-registration :registration="registration" />
       </div>
-
-      <v-expansion-panels
-        v-model="panel"
-        multiple
-        accordion
-      >
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            {{ $t("registration") }}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-card
-              flat
-              class="mx-auto"
-              style="width: 800px; padding: 20px"
-            >
-              <d-registration />
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            {{ $t("content") }}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-card
-              flat
-              class="mx-auto"
-              style="width: 800px; padding: 20px"
-            >
-              <d-class />
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            {{ $t("planning") }}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-card
-              flat
-              class="mx-auto"
-              style="width: 800px; padding: 20px"
-            />
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <d-class
+        :classroom="classroom"
+        :related="related"
+        :types="types"
+        :tag="tag"
+        :curriculum-code="curriculumCode"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import CourseData from '@/components/CourseData.vue';
 import DRegistration from '@/components/CourseData/DRegistration.vue';
 import DClass from '@/components/CourseData/DClass.vue';
+import axios from 'axios';
+import CourseData from '@/components/CourseData.vue';
+import { CourseInfo, Tag, Registration } from '@/assets/CourseInfo';
+
+const data: CourseInfo = {
+  category: { en: undefined, jp: undefined, kana: undefined },
+  language: { en: undefined, jp: undefined, kana: undefined },
+  lecturers: [{
+    imgUrl: undefined,
+    name: { en: undefined, jp: undefined, kana: undefined },
+    id: undefined,
+    email: undefined,
+    inCharge: undefined,
+  }],
+  title: {
+    postscript: { en: undefined, jp: undefined, kana: undefined },
+    name: { en: undefined, jp: undefined, kana: undefined },
+  },
+  schedule: {
+    year: undefined,
+    span: { en: undefined, jp: undefined, kana: undefined },
+    semester: { en: undefined, jp: undefined, kana: undefined },
+    times: { en: undefined, jp: undefined, kana: undefined },
+  },
+  related: undefined,
+  registration: {
+    number: undefined,
+    suggestion: { en: undefined, jp: undefined, kana: undefined },
+    requirement: { en: undefined, jp: undefined, kana: undefined },
+    prerequisite: undefined,
+  },
+  classroom: undefined,
+  summary: {
+    en: undefined,
+    jp: undefined,
+    kana: undefined,
+  },
+  types: undefined,
+  yearClassId: undefined,
+  tag: { giga: undefined },
+  curriculumCode: undefined,
+  credit: undefined,
+};
 
 export default Vue.extend({
 
@@ -75,23 +78,38 @@ export default Vue.extend({
 
   components: {
     CourseData,
-    DRegistration,
     DClass,
+    DRegistration,
   },
 
   data() {
     return {
-      panel: [0],
-      isAllPanels: false,
+      isLoading: true,
+      courseData: data,
     };
   },
 
   computed: {
-    labels() {
-      return [this.$t('registration'), this.$t('content'), this.$t('planning')];
+    curLang(): string {
+      return this.$i18n.locale;
     },
-    isLoading() {
-      return this.$store.state.isLoading;
+    registration(): Registration {
+      return this.courseData?.registration;
+    },
+    related(): null | undefined {
+      return this.courseData?.related;
+    },
+    classroom(): string | null | undefined {
+      return this.courseData?.classroom;
+    },
+    types(): null | undefined {
+      return this.courseData?.types;
+    },
+    tag(): Tag {
+      return this.courseData?.tag;
+    },
+    curriculumCode(): string | null | undefined {
+      return this.courseData?.curriculumCode;
     },
   },
 
@@ -101,31 +119,26 @@ export default Vue.extend({
 
   methods: {
     async fetchData() {
-      this.$store.commit('fetchData', this.$route.params.id);
-    },
-    showAllPanels() {
-      if (this.isAllPanels) {
-        this.panel = this.labels.map((k, i) => i);
-      } else {
-        this.panel = [];
+      const url = new URL('http://54.248.214.173:8000/search');
+      url.search = `query=${this.$route.params.id}`;
+      this.isLoading = true;
+      try {
+        const response = await axios.get(url.href);
+        const datas = JSON.parse(JSON.stringify(response.data)).Hits;
+        [this.courseData] = datas.filter((dataObj: CourseInfo) => {
+          const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers[0]?.name?.jp}`;
+          return this.$route.params.id === id;
+        });
+        if (this.courseData === null) {
+          throw new Error();
+        }
+      } catch (e) {
+        this.$router.push('/404');
+      } finally {
+        this.isLoading = false;
       }
     },
   },
 
 });
 </script>
-
-<i18n>
-{
-  "en": {
-    "registration": "registration",
-    "content": "content",
-    "planning": "planning"
-  },
-  "jp": {
-    "registration": "履修",
-    "content": "授業",
-    "planning": "計画"
-  }
-}
-</i18n>
