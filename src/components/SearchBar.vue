@@ -3,19 +3,20 @@
     id="search"
     class="mx-auto"
   >
-    <v-autocomplete
-      v-model="searchWord"
+    <v-combobox
+      v-model="model"
+      :search-input.sync="searchWord"
       solo
       prepend-inner-icon="mdi-magnify"
       type="text"
       hide-details
       :placeholder="$t('placeholder')"
-      @keydown.enter="goResultPage()"
+      @keydown.enter="goResultPage"
     >
       <template v-slot:no-data>
         <category-list />
       </template>
-    </v-autocomplete>
+    </v-combobox>
   </div>
 </template>
 
@@ -31,13 +32,11 @@ export default Vue.extend({
   data() {
     return {
       searchWord: '',
+      model: '',
     };
   },
 
   methods: {
-    async fetchData() {
-      this.$store.commit('fetchData', `query=${this.searchWord}`);
-    },
     goResultPage() {
       let pushPath;
 
@@ -50,8 +49,7 @@ export default Vue.extend({
       if (this.$route.path !== pushPath) {
         this.$router.push(pushPath);
       }
-
-      this.fetchData();
+      this.model = this.searchWord;
     },
   },
 
