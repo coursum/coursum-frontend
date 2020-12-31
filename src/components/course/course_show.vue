@@ -13,7 +13,7 @@
         <v-btn
           style="position: absolute; right: 5px; top: 5px"
           icon
-          color="#BDBDBD"
+          color="secondary"
           v-on="on"
           @click.prevent="attrs['aria-expanded'] = !attrs['aria-expanded']"
         >
@@ -38,11 +38,9 @@
       :text-truncate="textTruncate"
     />
 
-    <div>
-      <d-credit :credit="credit" />
-      <d-schedule-semester :semester="semester" />
-      <d-schedule-times :times="times" />
-    </div>
+    <d-credit :credit="credit" />
+    <d-schedule-semester :semester="semester" />
+    <d-schedule-times :times="times" />
   </v-card>
 </template>
 
