@@ -67,7 +67,7 @@ import Vue from 'vue';
 
 export default Vue.extend({
 
-  name: 'TShareModal',
+  name: 'ShareModal',
 
 });
 </script>

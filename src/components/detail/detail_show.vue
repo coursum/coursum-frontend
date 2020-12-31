@@ -1,11 +1,11 @@
 <template>
   <div
-    class="mx-auto my-6 px-5"
+    class="my-6 px-5"
   >
     <div
       v-if="!isLoading"
     >
-      <course-data
+      <course-show
         :course-data="courseData"
         :text-truncate="false"
       />
@@ -26,10 +26,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import DRegistration from '@/components/CourseData/DRegistration.vue';
-import DClass from '@/components/CourseData/DClass.vue';
+import DRegistration from '@/components/detail/data/d_registration.vue';
+import DClass from '@/components/detail/data/d_class.vue';
 import axios from 'axios';
-import CourseData from '@/components/CourseData.vue';
+import CourseShow from '@/components/course/course_show.vue';
 import { CourseInfo, Tag, Registration } from '@/assets/CourseInfo';
 
 const data: CourseInfo = {
@@ -74,10 +74,10 @@ const data: CourseInfo = {
 
 export default Vue.extend({
 
-  name: 'CourseDetailPage',
+  name: 'DetailShow',
 
   components: {
-    CourseData,
+    CourseShow,
     DClass,
     DRegistration,
   },

@@ -22,7 +22,7 @@
             {{ $t("days")[idx(d)] }}
           </div>
 
-          <course-data
+          <course-show
             v-for="(t, n) in d"
             :key="n"
             :course-data="courseDatas[t[0]]"
@@ -38,14 +38,14 @@
 import Vue from 'vue';
 import axios from 'axios';
 import { CourseInfo } from '@/assets/CourseInfo';
-import CourseData from '@/components/CourseData.vue';
+import CourseShow from '@/components/course/course_show.vue';
 
 export default Vue.extend({
 
-  name: 'TimeTablePage',
+  name: 'TimetableShow',
 
   components: {
-    CourseData,
+    CourseShow,
   },
 
   data() {

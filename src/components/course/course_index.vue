@@ -19,7 +19,7 @@
           </v-btn>
         </template>
 
-        <settings />
+        <setting-show />
       </v-menu>
 
       <v-menu offset-y>
@@ -37,6 +37,7 @@
             </v-icon>
           </v-btn>
         </template>
+
         <v-list>
           <v-list-item-group>
             <v-list-item
@@ -58,6 +59,8 @@
       <div
         class="text-center primary--text"
         :style="{ 'font-size' : fontSize + 'rem' }"
+        style="cursor: pointer"
+        @click="homePage"
       >
         Coursum
       </div>
@@ -82,10 +85,11 @@
         v-else
       >
         <div class="d-flex flex-wrap justify-space-around px-3">
-          <course-data
+          <course-show
             v-for="n in pgPageSize"
             :key="n-1"
             :course-data="courseDatas[(pgPageSize * pgPage + n-1) - pgPageSize]"
+            :has-width="true"
           />
         </div>
         <div
@@ -105,17 +109,17 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import CourseData from '@/components/CourseData.vue';
-import SearchBar from '@/components/SearchBar.vue';
+import CourseShow from '@/components/course/course_show.vue';
+import SearchBar from '@/components/search/search_bar.vue';
 import { CourseInfo } from '@/assets/CourseInfo';
-import Settings from '@/components/Settings.vue';
+import SettingShow from '@/components/setting/setting_show.vue';
 
 export default Vue.extend({
-  name: 'CourseListPage',
+  name: 'CourseIndex',
   components: {
     SearchBar,
-    CourseData,
-    Settings,
+    CourseShow,
+    SettingShow,
   },
   data() {
     return {
@@ -162,6 +166,11 @@ export default Vue.extend({
         word = '';
       }
       this.$store.commit('fetchData', `query=${word}`);
+    },
+    homePage() {
+      if (this.$route.path !== '/') {
+        this.$router.push('/');
+      }
     },
   },
 });

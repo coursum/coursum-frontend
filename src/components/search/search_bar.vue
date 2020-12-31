@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import CategoryList from '@/components/SideBar/CategoryList.vue';
+import CategoryList from '@/components/search/category_list.vue';
 
 export default Vue.extend({
   name: 'SearchBar',
@@ -35,7 +35,6 @@ export default Vue.extend({
       model: '',
     };
   },
-
   methods: {
     goResultPage() {
       let pushPath;

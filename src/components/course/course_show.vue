@@ -21,7 +21,7 @@
         </v-btn>
       </template>
 
-      <t-button :id="genId" />
+      <timetable-mutation-button :id="genId" />
     </v-menu>
 
     <d-title :title="title" />
@@ -48,22 +48,22 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import TButton from '@/components/TimeTable/TButton.vue';
-import DPostscript from '@/components/CourseData/DPostscript.vue';
-import DScheduleSemester from '@/components/CourseData/DScheduleSemester.vue';
-import DScheduleTimes from '@/components/CourseData/DScheduleTimes.vue';
-import DCredit from '@/components/CourseData/DCredit.vue';
-import DSummary from '@/components/CourseData/DSummary.vue';
-import DLectures from '@/components/CourseData/DLectures.vue';
-import DTitle from '@/components/CourseData/DTitle.vue';
+import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
+import DPostscript from '@/components/course/data/d_postscript.vue';
+import DScheduleSemester from '@/components/course/data/d_schedule_semester.vue';
+import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
+import DCredit from '@/components/course/data/d_credit.vue';
+import DSummary from '@/components/course/data/d_summary.vue';
+import DLectures from '@/components/course/data/d_lectures.vue';
+import DTitle from '@/components/course/data/d_title.vue';
 import { Lecturer } from '@/assets/CourseInfo';
 
 export default Vue.extend({
 
-  name: 'CourseData',
+  name: 'CourseShow',
 
   components: {
-    TButton,
+    TimetableMutationButton,
     DPostscript,
     DScheduleSemester,
     DScheduleTimes,

@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <!-- <mobile-bar /> -->
     <v-main>
-      <!-- <desktop-bar /> -->
       <router-view />
     </v-main>
   </v-app>
@@ -10,16 +8,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-// import DesktopBar from '@/components/DesktopBar.vue';
-// import MobileBar from '@/components/MobileBar.vue';
 
 export default Vue.extend({
 
   name: 'App',
-  components: {
-    // DesktopBar,
-    // MobileBar,
-  },
   data: () => ({
   }),
   async created() {

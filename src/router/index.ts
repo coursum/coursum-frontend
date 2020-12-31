@@ -6,8 +6,8 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'CourseListPage',
-    component: () => import('@/views/CourseListPage.vue'),
+    name: 'CourseIndex',
+    component: () => import('@/components/course/course_index.vue'),
     children: [
       {
         path: 'search/:id',
@@ -19,18 +19,18 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '*',
-    name: 'NotFoundPage',
-    component: () => import('@/views/NotFoundPage.vue'),
+    name: 'NotFound',
+    component: () => import('@/components/not_found.vue'),
   },
   {
     path: '/course-detail/:id',
-    name: 'CourseDetailPage',
-    component: () => import('@/views/CourseDetailPage.vue'),
+    name: 'DetailShow',
+    component: () => import('@/components/detail/detail_show.vue'),
   },
   {
     path: '/timetable',
-    name: 'TimeTablePage',
-    component: () => import('@/views/TimeTablePage.vue'),
+    name: 'TimetableShow',
+    component: () => import('@/components/timetable/timetable_show.vue'),
     children: [
       {
         path: 'shared/:id',
