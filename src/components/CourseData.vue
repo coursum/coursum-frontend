@@ -6,7 +6,7 @@
     class="px-5 py-3 my-2 rounded-lg"
     :class="{ 'data-card': textTruncate, backgroundnone: !textTruncate }"
     :elevation="textTruncate ? 2 : 0"
-    :style="{width: cardWidth + '%'}"
+    :style="hasWidth ? styleObject: ''"
   >
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
@@ -87,6 +87,11 @@ export default Vue.extend({
       type: Boolean,
       default: true,
     },
+    hasWidth: {
+      type: Boolean,
+      default: false,
+    },
+
   },
   data() {
     return {
@@ -133,6 +138,7 @@ export default Vue.extend({
     cardWidth(): number {
       const breakpoint = this.$vuetify.breakpoint.name;
       let size;
+
       switch (breakpoint) {
         case 'xs':
           size = 100;
@@ -155,7 +161,11 @@ export default Vue.extend({
       }
       return size;
     },
+    styleObject(): object {
+      return { width: `${this.cardWidth}%` };
+    },
   },
+
 });
 </script>
 
