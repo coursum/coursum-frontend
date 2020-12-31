@@ -54,16 +54,16 @@
     </div>
     <div
       :style="{ width : width + '%' }"
-      class="mx-auto"
+      class="mx-auto text-center"
     >
-      <div
-        class="text-center primary--text"
+      <span
+        class="primary--text"
         :style="{ 'font-size' : fontSize + 'rem' }"
         style="cursor: pointer"
         @click="homePage"
       >
         Coursum
-      </div>
+      </span>
       <search-bar />
     </div>
 
