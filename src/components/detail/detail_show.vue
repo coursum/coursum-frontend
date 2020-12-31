@@ -10,9 +10,8 @@
         :text-truncate="false"
       />
 
-      <div>
-        <d-registration :registration="registration" />
-      </div>
+      <d-registration :registration="registration" />
+
       <d-class
         :classroom="classroom"
         :related="related"
