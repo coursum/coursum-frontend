@@ -142,7 +142,7 @@ export default Vue.extend({
           size = 100;
           break;
         case 'sm':
-          size = 48;
+          size = 80;
           break;
         case 'md':
           size = 48;
