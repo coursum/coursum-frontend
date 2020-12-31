@@ -11,7 +11,7 @@
       <v-col>
         <v-switch
           v-model="themeSwitch"
-          @click.native.stop
+          @click.stop
         />
       </v-col>
     </v-row>
@@ -71,6 +71,7 @@ export default Vue.extend({
   methods: {
     setLang(locale: string) {
       this.$root.$i18n.locale = locale;
+      localStorage.setItem('switchLang', JSON.stringify(locale));
     },
     setDarkModeState() {
       localStorage.setItem('darkModeState', JSON.stringify(this.$vuetify.theme.dark));

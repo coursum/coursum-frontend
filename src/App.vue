@@ -26,6 +26,7 @@ export default Vue.extend({
     this.$store.commit('fetchData', '');
     this.$store.commit('getIdsFromLocalStorage');
     this.getDarkModeState();
+    this.getSwitchLang();
   },
 
   methods: {
@@ -33,6 +34,12 @@ export default Vue.extend({
       const darkModeState = localStorage.getItem('darkModeState');
       if (typeof darkModeState === 'string') {
         this.$vuetify.theme.dark = Boolean(JSON.parse(darkModeState));
+      }
+    },
+    getSwitchLang() {
+      const switchLang = localStorage.getItem('switchLang');
+      if (typeof switchLang === 'string') {
+        this.$root.$i18n.locale = JSON.parse(switchLang);
       }
     },
   },
