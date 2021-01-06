@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseShow should render correct markup when prop is correct 1`] = `
+<v-hover-stub
+  closedelay="0"
+  opendelay="0"
+>
+  <v-card-stub
+    class="my-2 rounded-lg d-flex flex-column justify-space-between elevation-1 transition-swing"
+    loaderheight="4"
+    tag="div"
+    to="/course/name jp name jp"
+  >
+    <div
+      class="rounded-t-lg py-2 title-bg"
+    >
+      <d-category-stub
+        category="[object Object]"
+      />
+       
+      <d-lectures-stub
+        lecturers="[object Object]"
+        texttruncate="true"
+      />
+       
+      <d-title-stub
+        title="[object Object]"
+      />
+    </div>
+     
+    <d-postscript-stub
+      postscript="[object Object]"
+    />
+     
+    <d-summary-stub
+      class="py-2"
+      summary="[object Object]"
+      texttruncate="true"
+      title="[object Object]"
+    />
+     
+    <div
+      class="px-4 py-2"
+    >
+      <d-credit-stub
+        credit="2"
+      />
+       
+      <d-schedule-semester-stub
+        semester="[object Object]"
+      />
+       
+      <d-schedule-times-stub
+        times="[object Object]"
+      />
+    </div>
+  </v-card-stub>
+</v-hover-stub>
+`;
+
+exports[`CourseShow should render correct markup when prop is correct 2`] = `
+<router-link
+  class="my-2 rounded-lg d-flex flex-column justify-space-between v-card v-card--link v-sheet theme--light elevation-1 transition-swing"
+  tabindex="0"
+>
+  <div
+    class="rounded-t-lg py-2 title-bg"
+  >
+    <div
+      class="px-6 text-truncate"
+      style="font-size: 0.7rem; color: white;"
+    >
+      
+  category en
+
+    </div>
+     
+    <div
+      class="px-6 text-truncate"
+    >
+      <span
+        class="mr-2"
+        style="display: inline-block; font-size: 0.98rem; color: white;"
+      >
+        
+      name en
+    
+      </span>
+    </div>
+     
+    <div
+      class="px-6 font-weight-black text-truncate"
+      style="font-size: 1.1rem; color: white;"
+    >
+      
+  name en
+
+    </div>
+  </div>
+   
+  <span
+    class="px-6 text-caption text-truncate"
+    style="color: rgb(146, 146, 146);"
+  >
+    
+  postscript en
+
+  </span>
+   
+  <div
+    class="px-6 primary--text py-1 py-2 summary"
+    style="font-size: 1rem;"
+  >
+    <p
+      class="my-0"
+    >
+      
+    summary en
+  
+    </p>
+  </div>
+   
+  <div
+    class="px-4 py-2"
+  >
+    <span
+      class="v-chip v-chip--no-color v-chip--outlined theme--light v-size--x-small"
+      style="color: rgb(146, 146, 146);"
+    >
+      <span
+        class="v-chip__content"
+      >
+        
+  2credit
+
+      </span>
+    </span>
+     
+    <span
+      class="v-chip v-chip--no-color v-chip--outlined theme--light v-size--x-small"
+      style="color: rgb(146, 146, 146);"
+    >
+      <span
+        class="v-chip__content"
+      >
+        
+  semester en
+
+      </span>
+    </span>
+     
+    <span>
+      <span
+        class="v-chip v-chip--outlined theme--light v-size--x-small primary primary--text"
+      >
+        <span
+          class="v-chip__content"
+        >
+          
+    月1
+  
+        </span>
+      </span>
+    </span>
+  </div>
+</router-link>
+`;

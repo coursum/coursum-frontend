@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DCategory should render correct markup when prop is correct 1`] = `
+<div
+  class="px-6 text-truncate"
+  style="font-size: 0.7rem; color: white;"
+>
+  
+  category en
+
+</div>
+`;
+
+exports[`DCategory should render correct markup when prop is falsy 1`] = `
+<div
+  class="px-6 text-truncate"
+  style="font-size: 0.7rem; color: white;"
+>
+  
+  others
+
+</div>
+`;
+
+exports[`DCategory should render correct markup when prop is falsy 2`] = `
+<div
+  class="px-6 text-truncate"
+  style="font-size: 0.7rem; color: white;"
+>
+  
+  others
+
+</div>
+`;
+
+exports[`DCategory should render correct markup when prop is falsy 3`] = `
+<div
+  class="px-6 text-truncate"
+  style="font-size: 0.7rem; color: white;"
+>
+  
+  others
+
+</div>
+`;

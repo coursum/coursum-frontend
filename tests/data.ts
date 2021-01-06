@@ -6,7 +6,7 @@ const categoryMock: Basic = { en: 'category en', jp: 'category jp', kana: 'categ
 
 const languageMock: Basic = { en: 'language en', jp: 'language jp', kana: 'language kana' };
 
-const lecturersMock: Lecturer[] = [{
+const lecturersMock: Lecturer[] | never[] = [{
   imgUrl: 'imgUrl',
   name: { en: 'name en', jp: 'name jp', kana: 'name kana' },
   id: 'id',
@@ -22,11 +22,15 @@ const titleMock: Title = {
   name: titleNameMock,
 };
 
+const scheduleSemesterMock: Basic = { en: 'semester en', jp: 'semester jp', kana: 'semseter kana' };
+
+const scheduleTimesMock: Basic = { en: 'times en', jp: '月曜日１時限', kana: 'times kana' };
+
 const scheduleMock: Schedule = {
   year: 2020,
   span: { en: 'span en', jp: 'span jp', kana: 'span kana' },
-  semester: { en: 'semester en', jp: 'semester jp', kana: 'semseter kana' },
-  times: { en: 'times en', jp: 'times jp', kana: 'times kana' },
+  semester: scheduleSemesterMock,
+  times: scheduleTimesMock,
 };
 
 const relatedMock: null | undefined = null;
@@ -75,11 +79,24 @@ const courseDataMock: CourseInfo = {
 
 const courseDatasMock: CourseInfo[] = [
   courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
+  courseDataMock,
 ];
 
 export {
   courseDatasMock,
   courseDataMock,
+  scheduleTimesMock,
+  scheduleSemesterMock,
   titlePostscriptMock,
   titleNameMock,
   categoryMock,

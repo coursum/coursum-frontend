@@ -29,7 +29,7 @@ import {
   CourseInfo, Tag, Registration, courseTemplate,
 } from '@/assets/CourseInfo';
 import DetailShow from '@/components/detail/detail_show.vue';
-import request from '../api/request';
+import request from '@/api/request';
 
 export default Vue.extend({
   name: 'DetailIndex',

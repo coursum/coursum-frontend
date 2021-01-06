@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DCredit should not render anything when prop is falsy 1`] = `<!---->`;
+
+exports[`DCredit should not render anything when prop is falsy 2`] = `<!---->`;
+
+exports[`DCredit should render correct markup when prop is correct 1`] = `
+<v-chip-stub
+  active="true"
+  activeclass=""
+  closeicon="$delete"
+  filtericon="$complete"
+  outlined="true"
+  style="color: rgb(146, 146, 146);"
+  tag="span"
+  xsmall="true"
+>
+  
+  2credit
+
+</v-chip-stub>
+`;

@@ -65,7 +65,7 @@ import SettingButton from '@/components/setting/setting_button.vue';
 import CoursumLogo from '@/components/course/coursum_logo.vue';
 import SearchInput from '@/components/search/search_input.vue';
 import CourseShow from '@/components/course/course_show.vue';
-import request from '../api/request';
+import request from '@/api/request';
 
 export default Vue.extend({
   name: 'CourseIndex',
@@ -82,7 +82,7 @@ export default Vue.extend({
       pgPageSize: 12,
       word: '',
       courseDatas: [courseTemplate],
-      isLoading: true,
+      isLoading: false,
     };
   },
   computed: {

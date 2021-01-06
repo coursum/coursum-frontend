@@ -8,7 +8,7 @@ Vue.use(VueI18n);
 Vue.use(Vuex);
 
 const i18n = new VueI18n({
-  locale: 'jp',
+  locale: 'en',
 });
 
 const stateDatas = {

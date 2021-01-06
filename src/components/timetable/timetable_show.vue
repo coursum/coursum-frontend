@@ -38,7 +38,7 @@
 import Vue from 'vue';
 import { CourseInfo, courseTemplate } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
-import request from '../api/request';
+import request from '@/api/request';
 
 export default Vue.extend({
 

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DSummary should not render anything when prop is falsy 1`] = `<!---->`;
+
+exports[`DSummary should not render anything when prop is falsy 2`] = `<!---->`;
+
+exports[`DSummary should not render anything when prop is falsy 3`] = `<!---->`;
+
+exports[`DSummary should render correct markup when prop is correct 1`] = `
+<div
+  class="px-6 primary--text py-1 summary"
+  style="font-size: 1rem;"
+>
+  <p
+    class="my-0"
+  >
+    
+    summary en
+  
+  </p>
+</div>
+`;
