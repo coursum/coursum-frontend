@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseShow should render correct markup when prop is correct 1`] = `
+<v-card-stub
+  flat="true"
+  loaderheight="4"
+  tag="div"
+>
+  <table>
+    <tr>
+      <th>
+        number
+      </th>
+       
+      <!---->
+    </tr>
+     
+    <tr>
+      <th>
+        suggestion
+      </th>
+       
+      <td>
+        
+          suggestion en
+        
+      </td>
+    </tr>
+     
+    <tr>
+      <th>
+        requirement
+      </th>
+       
+      <td>
+        
+          requirement en
+        
+      </td>
+    </tr>
+     
+    <tr>
+      <th>
+        requirement
+      </th>
+       
+      <!---->
+    </tr>
+     
+    <tr>
+      <th>
+        related
+      </th>
+       
+      <!---->
+    </tr>
+     
+    <tr>
+      <th>
+        classroom
+      </th>
+       
+      <td>
+        
+        classroom
+      
+      </td>
+    </tr>
+     
+    <tr>
+      <th>
+        types
+      </th>
+       
+      <!---->
+    </tr>
+     
+    <tr>
+      <th>
+        GIGA
+      </th>
+       
+      <td>
+        
+        true
+      
+      </td>
+    </tr>
+     
+    <tr>
+      <th>
+        curriculumCode
+      </th>
+       
+      <td>
+        
+        curriculumCode
+      
+      </td>
+    </tr>
+  </table>
+</v-card-stub>
+`;
