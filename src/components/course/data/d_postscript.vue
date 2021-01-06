@@ -1,5 +1,6 @@
-<template v-if="postscriptData">
+<template>
   <span
+    v-if="postscriptData"
     style="color: #929292"
     class="px-6 text-caption text-truncate"
   >

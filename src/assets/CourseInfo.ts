@@ -38,7 +38,7 @@ export interface Tag {
 export interface CourseInfo {
   category: Basic;
   language: Basic;
-  lecturers: Lecturer[];
+  lecturers: Lecturer[] | never[];
   title: Title;
   schedule: Schedule;
   related: null | undefined;

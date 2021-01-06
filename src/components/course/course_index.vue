@@ -28,7 +28,7 @@
         />
       </div>
 
-      <div
+      <template
         v-else-if="courseDatas !== null"
       >
         <div
@@ -52,7 +52,7 @@
             :length="pgLength"
           />
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>

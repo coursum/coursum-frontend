@@ -1,5 +1,6 @@
-<template v-if="lecturers && 0 < lecturers.length">
+<template>
   <div
+    v-if="lecturers && 0 < lecturers.length"
     :class="{'text-truncate': textTruncate}"
     class="px-6"
   >

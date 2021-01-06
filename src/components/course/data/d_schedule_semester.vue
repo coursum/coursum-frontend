@@ -1,5 +1,6 @@
-<template v-if="semesterData">
+<template>
   <v-chip
+    v-if="semesterData"
     style="color: #929292"
     outlined
     x-small

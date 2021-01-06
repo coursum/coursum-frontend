@@ -1,5 +1,6 @@
-<template v-if="summaryData">
+<template>
   <div
+    v-if="summaryData"
     :class="{summary: textTruncate}"
     class="px-6 primary--text py-1"
     :style="summaryStyle"

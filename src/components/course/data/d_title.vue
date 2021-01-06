@@ -1,5 +1,6 @@
-<template v-if="titleData">
+<template>
   <div
+    v-if="titleData"
     class="px-6 font-weight-black text-truncate"
     :style="styleObj"
   >

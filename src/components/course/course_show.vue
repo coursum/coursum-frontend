@@ -26,14 +26,13 @@
         </div>
 
         <d-postscript :postscript="postscript" />
-        <div class="py-2">
-          <d-summary
-            v-if="showSummary"
-            :title="title"
-            :summary="summary"
-            :text-truncate="textTruncate"
-          />
-        </div>
+        <d-summary
+          v-if="showSummary"
+          class="py-2"
+          :title="title"
+          :summary="summary"
+          :text-truncate="textTruncate"
+        />
 
         <div
           class="px-4 py-2"

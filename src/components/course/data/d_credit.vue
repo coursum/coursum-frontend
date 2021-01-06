@@ -1,5 +1,6 @@
-<template v-if="credit">
+<template>
   <v-chip
+    v-if="credit"
     style="color: #929292"
     outlined
     x-small
