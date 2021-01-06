@@ -10,22 +10,14 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/components/course/course_index.vue'),
     children: [
       {
-        path: 'search/:id',
-      },
-      {
-        path: 'category/*',
+        path: 'search/:query',
       },
     ],
   },
   {
-    path: '*',
-    name: 'NotFound',
-    component: () => import('@/components/not_found.vue'),
-  },
-  {
-    path: '/course-detail/:id',
-    name: 'DetailShow',
-    component: () => import('@/components/detail/detail_show.vue'),
+    path: '/course/:id',
+    name: 'DetailIndex',
+    component: () => import('@/components/detail/detail_index.vue'),
   },
   {
     path: '/timetable',

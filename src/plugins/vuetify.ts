@@ -12,15 +12,17 @@ export default new Vuetify({
     dark: false,
     themes: {
       light: {
-        cover: '#f7f7f7',
+        blue: colors.blue.darken1,
+        subtitle: '#757575',
         white: colors.shades.white,
         black: '#757575',
-        primary: '#424242',
+        primary: '#222222',
         secondary: '#BDBDBD',
         accent: colors.shades.white,
       },
       dark: {
-        cover: '#2a2a2a',
+        blue: colors.blue.darken4,
+        subtitle: '#2a2a2a',
         white: '#121212',
         black: '#b2b2b2',
         primary: '#E0E0E0',

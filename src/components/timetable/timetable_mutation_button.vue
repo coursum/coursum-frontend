@@ -1,30 +1,31 @@
 <template>
-  <v-list
-    width="200"
-    class="text-center"
-    nav
-  >
-    <v-list-item
+  <span>
+    <v-btn
       v-if="isInclude"
-      @click.stop="
+      icon
+      color="#ffc91a"
+      @click.prevent="
         $store.commit('removeFromTimetable', id)
       "
     >
-      <v-list-item-title>
-        {{ $t("remove") }}
-      </v-list-item-title>
-    </v-list-item>
-    <v-list-item
+      <v-icon>
+        mdi-star
+      </v-icon>
+    </v-btn>
+
+    <v-btn
       v-else
-      @click.stop="
+      icon
+      color="#ffc91a"
+      @click.prevent="
         $store.commit('addToTimetable', id)
       "
     >
-      <v-list-item-title>
-        {{ $t("add") }}
-      </v-list-item-title>
-    </v-list-item>
-  </v-list>
+      <v-icon>
+        mdi-star-outline
+      </v-icon>
+    </v-btn>
+  </span>
 </template>
 
 <script lang="ts">

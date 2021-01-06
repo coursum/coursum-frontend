@@ -1,47 +1,50 @@
 <template>
-  <v-card
-    v-if="courseData"
-    :to="genRoute"
-    :ripple="false"
-    class="px-5 py-3 my-2 rounded-lg"
-    :class="{ 'data-card': textTruncate, backgroundnone: !textTruncate }"
-    :elevation="textTruncate ? 2 : 0"
-    :style="hasWidth ? styleObject: ''"
-  >
-    <v-menu offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          style="position: absolute; right: 5px; top: 5px"
-          icon
-          color="secondary"
-          v-on="on"
-          @click.prevent="attrs['aria-expanded'] = !attrs['aria-expanded']"
+  <v-hover v-if="courseData">
+    <template v-slot:default="{ hover }">
+      <v-card
+        :class="cardClass(hover)"
+        class="my-2 rounded-lg d-flex flex-column justify-space-between"
+        :to="genRoute"
+        :style="hasWidth ? styleObject: ''"
+      >
+        <timetable-mutation-button
+          :id="genId"
+          style="position: absolute; bottom: 5px; right: 5px"
+        />
+
+        <div
+          class="rounded-t-lg py-2 title-bg"
         >
-          <v-icon> mdi-dots-horizontal </v-icon>
-        </v-btn>
-      </template>
+          <d-category :category="category" />
+          <d-lectures
+            :text-truncate="textTruncate"
+            :lecturers="lecturers"
+          />
+          <d-title
+            :title="title"
+          />
+        </div>
 
-      <timetable-mutation-button :id="genId" />
-    </v-menu>
+        <d-postscript :postscript="postscript" />
+        <div class="py-2">
+          <d-summary
+            v-if="showSummary"
+            :title="title"
+            :summary="summary"
+            :text-truncate="textTruncate"
+          />
+        </div>
 
-    <d-title :title="title" />
-    <d-lectures
-      :text-truncate="textTruncate"
-      :lecturers="lecturers"
-    />
-    <d-postscript :postscript="postscript" />
-    <d-summary
-      v-if="showSummary"
-      :title="courseData.title.name.jp"
-      :summary="summary"
-      :en="courseData.summary.en"
-      :text-truncate="textTruncate"
-    />
-
-    <d-credit :credit="credit" />
-    <d-schedule-semester :semester="semester" />
-    <d-schedule-times :times="times" />
-  </v-card>
+        <div
+          class="px-4 py-2"
+        >
+          <d-credit :credit="credit" />
+          <d-schedule-semester :semester="semester" />
+          <d-schedule-times :times="times" />
+        </div>
+      </v-card>
+    </template>
+  </v-hover>
 </template>
 
 <script lang="ts">
@@ -54,7 +57,8 @@ import DCredit from '@/components/course/data/d_credit.vue';
 import DSummary from '@/components/course/data/d_summary.vue';
 import DLectures from '@/components/course/data/d_lectures.vue';
 import DTitle from '@/components/course/data/d_title.vue';
-import { Lecturer } from '@/assets/CourseInfo';
+import { Lecturer, Basic } from '@/assets/CourseInfo';
+import DCategory from '@/components/course/data/d_category.vue';
 
 export default Vue.extend({
 
@@ -69,6 +73,7 @@ export default Vue.extend({
     DSummary,
     DLectures,
     DTitle,
+    DCategory,
   },
   props: {
     courseData: {
@@ -89,44 +94,45 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
-
   },
   data() {
     return {
       dialog: false,
     };
   },
-
   computed: {
     curLang(): string {
       return this.$i18n.locale;
     },
     genRoute(): string | undefined {
       if (this.textTruncate) {
-        return `/course-detail/${this.courseData?.title?.name?.jp} ${this.courseData.lecturers[0]?.name?.jp}`;
+        return `/course/${this.courseData?.title?.name?.jp} ${this.courseData.lecturers[0]?.name?.jp}`;
       }
       return undefined;
     },
-    title(): string {
-      return this.courseData?.title?.name?.[`${this.curLang}`];
+    category(): Basic | undefined {
+      return this.courseData?.category;
     },
-    postscript(): string {
-      return this.courseData?.title?.postscript?.[`${this.curLang}`];
+    title(): Basic | undefined {
+      return this.courseData?.title?.name;
     },
-    lecturers(): Lecturer[] {
+    postscript(): Basic | undefined {
+      return this.courseData?.title?.postscript;
+    },
+    lecturers(): Lecturer[] | undefined {
       return this.courseData?.lecturers;
     },
-    credit(): number {
+    credit(): number | null | undefined {
       return this.courseData?.credit;
     },
-    semester(): string {
-      return this.courseData?.schedule?.semester?.[`${this.curLang}`];
+    semester(): Basic | undefined {
+      return this.courseData?.schedule?.semester;
     },
-    times(): string {
-      return this.courseData?.schedule?.times?.[`${this.curLang}`];
+    times(): Basic | undefined {
+      return this.courseData?.schedule?.times;
     },
-    summary(): string {
-      return this.courseData?.summary?.[`${this.curLang}`];
+    summary(): Basic | undefined {
+      return this.courseData?.summary;
     },
     genId(): string {
       const id = `${this.title} ${this.lecturers?.[0]?.name?.jp}`;
@@ -162,17 +168,29 @@ export default Vue.extend({
     styleObject(): object {
       return { width: `${this.cardWidth}%` };
     },
-  },
+    cardClass() {
+      const { textTruncate } = this;
+      return (hover: boolean) => {
+        let height;
+        if (textTruncate) {
+          if (hover) {
+            height = 4;
+          } else {
+            height = 1;
+          }
+          return `elevation-${height} transition-swing`;
+        }
 
+        height = 1;
+        return `elevation-${height}`;
+      };
+    },
+  },
 });
 </script>
 
 <style scoped>
-.data-card:hover {
-  background-color: var(--v-cover-base);
-}
-
-.backgroundnone {
-  background-color: var(--v-white-base);
+.title-bg {
+  background-color: var(--v-blue-base);
 }
 </style>

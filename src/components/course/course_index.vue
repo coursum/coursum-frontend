@@ -3,68 +3,15 @@
     <div
       class="d-flex flex-row-reverse pt-3 pr-3"
     >
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            class="text-decoration-none mx-1"
-            v-on="on"
-            @click.prevent="attrs['aria-expanded'] = !attrs['aria-expanded']"
-          >
-            <v-icon
-              color="secondary"
-            >
-              mdi-cog-outline
-            </v-icon>
-          </v-btn>
-        </template>
-
-        <setting-show />
-      </v-menu>
-
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            class="text-decoration-none mx-1"
-            v-on="on"
-            @click.prevent="attrs['aria-expanded'] = !attrs['aria-expanded']"
-          >
-            <v-icon
-              color="secondary"
-            >
-              mdi-account-circle-outline
-            </v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item-group>
-            <v-list-item
-              to="/timetable"
-              link
-            >
-              <v-list-item-title>
-                {{ $t('myTable') }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-menu>
+      <setting-button />
+      <account-button />
     </div>
+
     <div
-      :style="{ width : width + '%' }"
       class="mx-auto text-center"
     >
-      <span
-        class="primary--text"
-        :style="{ 'font-size' : fontSize + 'rem' }"
-        style="cursor: pointer"
-        @click="homePage"
-      >
-        Coursum
-      </span>
-      <search-bar />
+      <coursum-logo />
+      <search-input />
     </div>
 
     <div class="mx-0 my-6">
@@ -82,9 +29,11 @@
       </div>
 
       <div
-        v-else
+        v-else-if="courseDatas !== null"
       >
-        <div class="d-flex flex-wrap justify-space-around px-3">
+        <div
+          class="d-flex flex-wrap justify-space-around px-3"
+        >
           <course-show
             v-for="n in pgPageSize"
             :key="n-1"
@@ -92,8 +41,9 @@
             :has-width="true"
           />
         </div>
+
         <div
-          style="max-width: 500px"
+          style="max-width: 70%"
           class="mx-auto my-6"
         >
           <v-pagination
@@ -109,41 +59,36 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { courseTemplate } from '@/assets/CourseInfo';
+import AccountButton from '@/components/course/account_button.vue';
+import SettingButton from '@/components/setting/setting_button.vue';
+import CoursumLogo from '@/components/course/coursum_logo.vue';
+import SearchInput from '@/components/search/search_input.vue';
 import CourseShow from '@/components/course/course_show.vue';
-import SearchBar from '@/components/search/search_bar.vue';
-import { CourseInfo } from '@/assets/CourseInfo';
-import SettingShow from '@/components/setting/setting_show.vue';
+import request from '../api/request';
 
 export default Vue.extend({
   name: 'CourseIndex',
   components: {
-    SearchBar,
+    AccountButton,
+    SettingButton,
+    CoursumLogo,
+    SearchInput,
     CourseShow,
-    SettingShow,
   },
   data() {
     return {
       pgPage: 1,
       pgPageSize: 12,
       word: '',
+      courseDatas: [courseTemplate],
+      isLoading: true,
     };
   },
   computed: {
-    width(): number {
-      return this.$vuetify.breakpoint.lgAndUp ? 40 : 80;
-    },
-    fontSize(): number {
-      return this.$vuetify.breakpoint.lgAndUp ? 3 : 2;
-    },
-    isLoading() {
-      return this.$store.state.isLoading;
-    },
     pgLength() {
-      const tmp = Math.ceil(this.courseDatas.length / this.pgPageSize);
-      return tmp;
-    },
-    courseDatas(): CourseInfo[] {
-      return this.$store.state.courseDatas;
+      const computed = Math.ceil(this.courseDatas.length / this.pgPageSize);
+      return computed;
     },
   },
   watch: {
@@ -151,38 +96,28 @@ export default Vue.extend({
       this.fetchData();
     },
   },
+  created() {
+    this.fetchData();
+  },
   methods: {
     async fetchData() {
-      const { path } = this.$route;
-      const params = path.split('/').slice(1);
-      let word;
+      const config = {
+        query: '',
+      };
 
-      if (params[0] === 'category') {
-        word = params.slice(1).join(' ');
-        this.word = word;
-      } else if (params[0] === 'search') {
-        word = params.slice(1);
+      if (this.$route.path === '/') {
+        config.query = '';
       } else {
-        word = '';
+        config.query = this.$route.params.query;
       }
-      this.$store.commit('fetchData', `query=${word}`);
-    },
-    homePage() {
-      if (this.$route.path !== '/') {
-        this.$router.push('/');
+
+      try {
+        this.isLoading = true;
+        this.courseDatas = await request.fetchData(config);
+      } finally {
+        this.isLoading = false;
       }
     },
   },
 });
 </script>
-
-<i18n>
-{
-  "en": {
-    "myTable": "My Time Table"
-  },
-  "jp": {
-    "myTable": "マイ時間割"
-  }
-}
-</i18n>

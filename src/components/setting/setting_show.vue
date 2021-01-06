@@ -15,7 +15,9 @@
         />
       </v-col>
     </v-row>
+
     <v-divider />
+
     <v-row>
       <v-col class="d-flex align-center">
         {{ $t("lang") }}
@@ -29,7 +31,7 @@
             v-for="([locale, localeName], idx) in Object.entries(languages)"
             :key="idx"
             outlined
-            @click.stop="setLang(locale)"
+            @click.stop="setLangState(locale)"
           >
             {{ localeName }}
           </v-chip>
@@ -56,7 +58,7 @@ export default Vue.extend({
   watch: {
     themeSwitch() {
       this.$vuetify.theme.dark = this.themeSwitch;
-      this.setDarkModeState();
+      this.setThemeState();
     },
   },
   created() {
@@ -69,12 +71,12 @@ export default Vue.extend({
     this.themeSwitch = this.$vuetify.theme.dark;
   },
   methods: {
-    setLang(locale: string) {
+    setLangState(locale: string) {
       this.$root.$i18n.locale = locale;
-      localStorage.setItem('switchLang', JSON.stringify(locale));
+      localStorage.setItem('langState', JSON.stringify(locale));
     },
-    setDarkModeState() {
-      localStorage.setItem('darkModeState', JSON.stringify(this.$vuetify.theme.dark));
+    setThemeState() {
+      localStorage.setItem('themeState', JSON.stringify(this.$vuetify.theme.dark));
     },
   },
 });

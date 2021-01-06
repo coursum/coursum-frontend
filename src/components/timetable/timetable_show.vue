@@ -36,9 +36,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import axios from 'axios';
-import { CourseInfo } from '@/assets/CourseInfo';
+import { CourseInfo, courseTemplate } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
+import request from '../api/request';
 
 export default Vue.extend({
 
@@ -52,7 +52,7 @@ export default Vue.extend({
     return {
       isLoading: true,
       isSharedPage: false,
-      courseDatas: {} as {[key: string]: CourseInfo},
+      courseDatas: [courseTemplate],
       sortedIDs: [] as [string, number[]][],
     };
   },
@@ -96,8 +96,6 @@ export default Vue.extend({
       this.idsInTimetable.forEach((str: string) => {
         this.fetchData(str);
       });
-    } catch (e) {
-      this.$router.push('/404');
     } finally {
       this.isLoading = false;
     }
@@ -113,16 +111,15 @@ export default Vue.extend({
     idx(d: [string, number[]][]): number {
       return d?.[0]?.[1]?.[0];
     },
-    async fetchData(str: string) {
-      let datas;
-      const url = new URL('http://54.248.214.173:8000/search');
-      url.search = `query=${str}`;
+    async fetchData(query: string) {
+      let datas: CourseInfo[] = [];
+
+      const config = {
+        query,
+      };
 
       try {
-        const response = await axios.get(url.href);
-        datas = JSON.parse(JSON.stringify(response.data)).Hits;
-      } catch (e) {
-        this.$router.push('/404');
+        datas = await request.fetchData(config);
       } finally {
         this.setCourseDatas(datas);
       }
@@ -158,6 +155,7 @@ export default Vue.extend({
           }
         });
       }
+
       this.sortedIDs.push([id, [day, time]]);
     },
   },

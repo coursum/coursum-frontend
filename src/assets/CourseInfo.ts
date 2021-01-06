@@ -51,3 +51,41 @@ export interface CourseInfo {
   curriculumCode: string | null | undefined;
   credit: number | null | undefined;
 }
+
+export const basicTemplate: Basic = { en: undefined, jp: undefined, kana: undefined };
+
+export const courseTemplate: CourseInfo = {
+  category: basicTemplate,
+  language: basicTemplate,
+  lecturers: [{
+    imgUrl: undefined,
+    name: basicTemplate,
+    id: undefined,
+    email: undefined,
+    inCharge: undefined,
+  }],
+  title: {
+    postscript: basicTemplate,
+    name: basicTemplate,
+  },
+  schedule: {
+    year: undefined,
+    span: basicTemplate,
+    semester: basicTemplate,
+    times: basicTemplate,
+  },
+  related: undefined,
+  registration: {
+    number: undefined,
+    suggestion: basicTemplate,
+    requirement: basicTemplate,
+    prerequisite: undefined,
+  },
+  classroom: undefined,
+  summary: basicTemplate,
+  types: undefined,
+  yearClassId: undefined,
+  tag: { giga: undefined },
+  curriculumCode: undefined,
+  credit: undefined,
+};

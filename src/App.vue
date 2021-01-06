@@ -1,5 +1,8 @@
 <template>
   <v-app>
+    <top-bar
+      v-if="showTopBar"
+    />
     <v-main>
       <router-view />
     </v-main>
@@ -8,40 +11,45 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import TopBar from '@/components/bar/top_bar.vue';
 
 export default Vue.extend({
 
   name: 'App',
-  data: () => ({
-  }),
-  async created() {
-    this.$store.commit('fetchData', '');
-    this.$store.commit('getIdsFromLocalStorage');
-    this.getDarkModeState();
-    this.getSwitchLang();
+  components: {
+    TopBar,
   },
+  computed: {
+    showTopBar(): boolean {
+      let bool;
+      const { path } = this.$route;
 
+      if (path === '/' || path.split('/')[1] === 'search') {
+        bool = false;
+      } else {
+        bool = true;
+      }
+      return bool;
+    },
+  },
+  async created() {
+    this.$store.commit('getIdsFromLocalStorage');
+    this.getThemeState();
+    this.getLangState();
+  },
   methods: {
-    getDarkModeState() {
-      const darkModeState = localStorage.getItem('darkModeState');
-      if (typeof darkModeState === 'string') {
-        this.$vuetify.theme.dark = Boolean(JSON.parse(darkModeState));
+    getThemeState() {
+      const themeState = localStorage.getItem('themeState');
+      if (typeof themeState === 'string') {
+        this.$vuetify.theme.dark = Boolean(JSON.parse(themeState));
       }
     },
-    getSwitchLang() {
-      const switchLang = localStorage.getItem('switchLang');
-      if (typeof switchLang === 'string') {
-        this.$root.$i18n.locale = JSON.parse(switchLang);
+    getLangState() {
+      const langState = localStorage.getItem('langState');
+      if (typeof langState === 'string') {
+        this.$root.$i18n.locale = JSON.parse(langState);
       }
     },
   },
 });
 </script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
-
-#app {
-  font-family: 'Noto Sans JP', sans-serif;
-}
-</style>

@@ -1,54 +1,55 @@
-<template>
+<template v-if="summaryData">
   <div
-    v-if="summary"
     :class="{summary: textTruncate}"
-    class="primary--text"
-    style="font-size: 13.5px; line-height: 1.35;"
+    class="px-6 primary--text py-1"
+    :style="summaryStyle"
   >
     <p
-      v-if="showEn"
       class="my-0"
     >
-      {{ en }}
-    </p>
-    <p
-      v-else
-      class="my-0"
-    >
-      {{ summary }}
+      {{ summaryData }}
     </p>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { basicTemplate } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DSummary',
   props: {
     summary: {
-      type: String,
-      default: undefined,
+      type: Object,
+      default: basicTemplate,
+    },
+    title: {
+      type: Object,
+      default: basicTemplate,
     },
     textTruncate: {
       type: Boolean,
       default: true,
     },
-    title: {
-      type: String,
-      default: '',
-    },
-    en: {
-      type: String,
-      default: '',
-    },
+  },
+  data() {
+    return {
+      summaryStyle: { 'font-size': '1rem' },
+    };
   },
   computed: {
-    showEn() {
-      if (this.title === '研究会Ａ' || this.title === '研究会Ｂ') {
-        return true;
+    summaryData(): string | null | undefined {
+      if (this.titleJp === '研究会Ａ' || this.titleJp === '研究会Ｂ') {
+        return this.summary?.en;
       }
-      return false;
+
+      return this.summary?.[this.curLang];
+    },
+    titleJp(): string | null | undefined {
+      return this.title?.jp;
+    },
+    curLang(): string {
+      return this.$i18n.locale;
     },
   },
 });

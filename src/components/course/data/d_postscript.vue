@@ -1,24 +1,31 @@
-<template>
+<template v-if="postscriptData">
   <span
-    v-if="postscript"
     style="color: #929292"
-    class="text-caption text-truncate"
+    class="px-6 text-caption text-truncate"
   >
-    {{ postscript }}
+    {{ postscriptData }}
   </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { basicTemplate } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DPostsctipt',
   props: {
     postscript: {
-      type: String,
-      default: undefined,
+      type: Object,
+      default: basicTemplate,
     },
   },
-
+  computed: {
+    postscriptData(): string | null | undefined {
+      return this.postscript?.[this.curLang];
+    },
+    curLang(): string {
+      return this.$i18n.locale;
+    },
+  },
 });
 </script>

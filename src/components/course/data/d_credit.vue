@@ -1,6 +1,5 @@
-<template>
+<template v-if="credit">
   <v-chip
-    v-if="credit"
     style="color: #929292"
     outlined
     x-small
@@ -20,7 +19,6 @@ export default Vue.extend({
       default: undefined,
     },
   },
-
 });
 </script>
 

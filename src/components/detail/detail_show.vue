@@ -1,143 +1,144 @@
 <template>
-  <div
-    class="my-6 px-5"
-  >
-    <div
-      v-if="!isLoading"
-    >
-      <course-show
-        :course-data="courseData"
-        :text-truncate="false"
-      />
-
-      <d-registration :registration="registration" />
-
-      <d-class
-        :classroom="classroom"
-        :related="related"
-        :types="types"
-        :tag="tag"
-        :curriculum-code="curriculumCode"
-      />
-    </div>
-  </div>
+  <v-card flat>
+    <table>
+      <template v-if="registration">
+        <tr>
+          <th>{{ $t('number') }}</th>
+          <td v-if="number">
+            {{ number }}
+          </td>
+        </tr>
+        <tr>
+          <th>{{ $t('suggestion') }}</th>
+          <td v-if="suggestion">
+            {{ suggestion }}
+          </td>
+        </tr>
+        <tr>
+          <th>{{ $t('requirement') }}</th>
+          <td v-if="requirement">
+            {{ requirement }}
+          </td>
+        </tr>
+        <tr>
+          <th>{{ $t('requirement') }}</th>
+          <td v-if="prerequisite">
+            {{ prerequisite }}
+          </td>
+        </tr>
+        <tr>
+          <th>{{ $t('related') }}</th>
+          <td v-if="related">
+            {{ related }}
+          </td>
+        </tr>
+      </template>
+      <tr>
+        <th>{{ $t('classroom') }}</th>
+        <td v-if="classroom">
+          {{ classroom }}
+        </td>
+      </tr>
+      <tr>
+        <th>{{ $t('types') }}</th>
+        <td v-if="types">
+          {{ types }}
+        </td>
+      </tr>
+      <tr>
+        <th>GIGA</th>
+        <td v-if="tag">
+          {{ tag.giga }}
+        </td>
+      </tr>
+      <tr>
+        <th>{{ $t('curriculumCode') }}</th>
+        <td v-if="curriculumCode">
+          {{ curriculumCode }}
+        </td>
+      </tr>
+    </table>
+  </v-card>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import DRegistration from '@/components/detail/data/d_registration.vue';
-import DClass from '@/components/detail/data/d_class.vue';
-import axios from 'axios';
-import CourseShow from '@/components/course/course_show.vue';
-import { CourseInfo, Tag, Registration } from '@/assets/CourseInfo';
-
-const data: CourseInfo = {
-  category: { en: undefined, jp: undefined, kana: undefined },
-  language: { en: undefined, jp: undefined, kana: undefined },
-  lecturers: [{
-    imgUrl: undefined,
-    name: { en: undefined, jp: undefined, kana: undefined },
-    id: undefined,
-    email: undefined,
-    inCharge: undefined,
-  }],
-  title: {
-    postscript: { en: undefined, jp: undefined, kana: undefined },
-    name: { en: undefined, jp: undefined, kana: undefined },
-  },
-  schedule: {
-    year: undefined,
-    span: { en: undefined, jp: undefined, kana: undefined },
-    semester: { en: undefined, jp: undefined, kana: undefined },
-    times: { en: undefined, jp: undefined, kana: undefined },
-  },
-  related: undefined,
-  registration: {
-    number: undefined,
-    suggestion: { en: undefined, jp: undefined, kana: undefined },
-    requirement: { en: undefined, jp: undefined, kana: undefined },
-    prerequisite: undefined,
-  },
-  classroom: undefined,
-  summary: {
-    en: undefined,
-    jp: undefined,
-    kana: undefined,
-  },
-  types: undefined,
-  yearClassId: undefined,
-  tag: { giga: undefined },
-  curriculumCode: undefined,
-  credit: undefined,
-};
+import { Basic } from '@/assets/CourseInfo';
 
 export default Vue.extend({
-
-  name: 'DetailShow',
-
-  components: {
-    CourseShow,
-    DClass,
-    DRegistration,
+  name: 'DetailIndex',
+  props: {
+    registration: {
+      type: Object,
+      default: undefined,
+    },
+    related: {
+      type: String,
+      default: undefined,
+    },
+    classroom: {
+      type: String,
+      default: undefined,
+    },
+    types: {
+      type: String,
+      default: undefined,
+    },
+    tag: {
+      type: Object,
+      default: undefined,
+    },
+    curriculumCode: {
+      type: String,
+      default: undefined,
+    },
   },
-
-  data() {
-    return {
-      isLoading: true,
-      courseData: data,
-    };
-  },
-
   computed: {
+    number(): null | undefined {
+      return this.registration?.number;
+    },
+    suggestion(): Basic {
+      return this.registration?.suggestion?.[`${this.curLang}`];
+    },
+    requirement(): Basic {
+      return this.registration?.requirement?.[`${this.curLang}`];
+    },
+    prerequisite(): null | undefined {
+      return this.registration?.prerequisite?.[`${this.curLang}`];
+    },
     curLang(): string {
       return this.$i18n.locale;
-    },
-    registration(): Registration {
-      return this.courseData?.registration;
-    },
-    related(): null | undefined {
-      return this.courseData?.related;
-    },
-    classroom(): string | null | undefined {
-      return this.courseData?.classroom;
-    },
-    types(): null | undefined {
-      return this.courseData?.types;
-    },
-    tag(): Tag {
-      return this.courseData?.tag;
-    },
-    curriculumCode(): string | null | undefined {
-      return this.courseData?.curriculumCode;
-    },
-  },
-
-  async created() {
-    this.fetchData();
-  },
-
-  methods: {
-    async fetchData() {
-      const url = new URL('http://54.248.214.173:8000/search');
-      url.search = `query=${this.$route.params.id}`;
-      this.isLoading = true;
-      try {
-        const response = await axios.get(url.href);
-        const datas = JSON.parse(JSON.stringify(response.data)).Hits;
-        [this.courseData] = datas.filter((dataObj: CourseInfo) => {
-          const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers[0]?.name?.jp}`;
-          return this.$route.params.id === id;
-        });
-        if (this.courseData === null) {
-          throw new Error();
-        }
-      } catch (e) {
-        this.$router.push('/404');
-      } finally {
-        this.isLoading = false;
-      }
     },
   },
 
 });
 </script>
+
+<style>
+table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table tr{
+  border-bottom: solid 2px rgb(255, 255, 255);
+}
+
+table th{
+  position: relative;
+  text-align: left;
+  width: 30%;
+  background-color: var(--v-blue-base);
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+table td{
+  text-align: left;
+  width: 70%;
+  text-align: center;
+  background-color: rgb(218, 238, 252);
+  padding: 10px 0;
+}
+</style>
