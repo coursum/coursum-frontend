@@ -24,12 +24,13 @@
     <div class="mx-0 my-6">
       <div
         v-if="isLoading"
-        class="d-flex flex-column px-3"
+        class="d-flex flex-wrap justify-space-around px-3"
       >
         <v-skeleton-loader
           v-for="n in pgPageSize"
           :key="n"
-          height="180"
+          height="300"
+          width="500"
           type="card"
           class="my-1"
         />
