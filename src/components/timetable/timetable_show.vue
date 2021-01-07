@@ -25,6 +25,7 @@
           <course-show
             v-for="(t, n) in d"
             :key="n"
+            :has-width="true"
             :course-data="courseDatas[t[0]]"
             :show-summary="false"
           />
