@@ -4,6 +4,8 @@
   >
     <div
       v-if="!isLoading"
+      :style="width"
+      class="mx-auto"
     >
       <course-show
         :course-data="courseData"
@@ -64,6 +66,32 @@ export default Vue.extend({
     },
     curriculumCode(): string | null | undefined {
       return this.courseData?.curriculumCode;
+    },
+    width(): object {
+      const breakpoint = this.$vuetify.breakpoint.name;
+      let size;
+
+      switch (breakpoint) {
+        case 'xs':
+          size = 100;
+          break;
+        case 'sm':
+          size = 100;
+          break;
+        case 'md':
+          size = 80;
+          break;
+        case 'lg':
+          size = 60;
+          break;
+        case 'xl':
+          size = 60;
+          break;
+        default:
+          size = 30;
+          break;
+      }
+      return { width: `${size}%` };
     },
   },
   async created() {
