@@ -1,92 +1,108 @@
 <template>
-  <v-card
-    width="500"
-    class="px-12 py-6"
+  <v-dialog
+    v-model="dialog"
+    persistent
+    max-width="500"
   >
-    <div :class="setFlex">
-      <div :style="setWidth">
-        GIGA
-      </div>
-      <v-checkbox
-        v-model="giga"
-        class="pa-0 ma-0"
-        hide-details
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        lecturer
-      </div>
-      <v-text-field
-        v-model="lecturer"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        Language
-      </div>
-      <v-select
-        v-model="language"
-        :items="languages"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        Semester
-      </div>
-      <v-select
-        v-model="semester"
-        :items="semesters"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        Day
-      </div>
-      <v-select
-        v-model="day"
-        :items="days"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        Time
-      </div>
-      <v-select
-        v-model="time"
-        :items="times"
-        dense
-        hide-details
-        solo
-      />
-    </div>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        color="primary"
+        dark
+        v-bind="attrs"
+        v-on="on"
+      >
+        Advanced Search
+      </v-btn>
+    </template>
 
-    <v-card-actions>
-      <v-spacer />
-      <v-btn
-        @click="reset"
-      >
-        reset
-      </v-btn>
-      <v-btn
-        @click="goResult"
-      >
-        submit
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+    <v-card
+      class="px-12 py-6"
+    >
+      <div :class="setFlex">
+        <div :style="setWidth">
+          GIGA
+        </div>
+        <v-checkbox
+          v-model="giga"
+          class="pa-0 ma-0"
+          hide-details
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          lecturer
+        </div>
+        <v-text-field
+          v-model="lecturer"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          Language
+        </div>
+        <v-select
+          v-model="language"
+          :items="languages"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          Semester
+        </div>
+        <v-select
+          v-model="semester"
+          :items="semesters"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          Day
+        </div>
+        <v-select
+          v-model="day"
+          :items="days"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          Time
+        </div>
+        <v-select
+          v-model="time"
+          :items="times"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          @click="cleanValues"
+        >
+          reset
+        </v-btn>
+        <v-btn
+          @click="goResult"
+        >
+          submit
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 
   <!-- Query:     c.Query("query"),
        Category:  c.Query("category"), select
@@ -114,6 +130,7 @@ export default Vue.extend({
   name: 'SearchInput',
   data() {
     return {
+      dialog: false,
       giga: '',
       lecturer: '',
       language: '',
@@ -138,8 +155,6 @@ export default Vue.extend({
   },
   methods: {
     setValues() {
-      console.log(this.getAdvancedInputs);
-
       this.giga = this.getAdvancedInputs.giga;
       this.lecturer = this.getAdvancedInputs.lecturer;
       this.language = this.getAdvancedInputs.language;
@@ -213,6 +228,7 @@ export default Vue.extend({
       this.cleanValues();
     },
     goResult() {
+      console.log(0);
       let pushPath;
       const times = `${this.day}${this.time}`;
 
@@ -261,6 +277,7 @@ export default Vue.extend({
       }
 
       this.storeValues();
+      this.dialog = false;
     },
   },
 });
