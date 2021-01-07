@@ -41,7 +41,7 @@ export default Vue.extend({
     getThemeState() {
       const themeState = localStorage.getItem('themeState');
       if (typeof themeState === 'string') {
-        this.$vuetify.theme.dark = Boolean(JSON.parse(themeState));
+        this.$vuetify.theme.dark = JSON.parse(themeState);
       }
     },
     getLangState() {
