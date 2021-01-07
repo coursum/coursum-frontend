@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <top-bar
-      v-if="showTopBar"
-    />
+    <top-bar v-if="showTopBar" />
     <v-main>
       <router-view />
     </v-main>
@@ -14,22 +12,15 @@ import Vue from 'vue';
 import TopBar from '@/components/bar/top_bar.vue';
 
 export default Vue.extend({
-
   name: 'App',
   components: {
     TopBar,
   },
   computed: {
     showTopBar(): boolean {
-      let bool;
       const { path } = this.$route;
 
-      if (path === '/' || path.split('/')[1] === 'search') {
-        bool = false;
-      } else {
-        bool = true;
-      }
-      return bool;
+      return path !== '/' && !path.startsWith('/search');
     },
   },
   async created() {
