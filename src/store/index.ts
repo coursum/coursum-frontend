@@ -9,9 +9,27 @@ const setTimetable = (ids: string[]) => {
 
 const idsType: string[] = [];
 
+interface AdvancedInputs {
+  giga: string;
+  lecturer: string;
+  language: string;
+  semester: string;
+  day: string;
+  time: string;
+}
+
 export default new Vuex.Store({
   state: {
     idsInTimetable: idsType,
+    searchInput: '',
+    advancedInputs: {
+      giga: '',
+      lecturer: '',
+      language: '',
+      semester: '',
+      day: '',
+      time: '',
+    } as AdvancedInputs,
   },
   mutations: {
     getIdsFromLocalStorage(state) {
@@ -33,6 +51,12 @@ export default new Vuex.Store({
         .filter((str: string) => str !== payload);
 
       setTimetable(state.idsInTimetable);
+    },
+    setAdvancedInputs(state, payload: AdvancedInputs) {
+      state.advancedInputs = payload;
+    },
+    setSearchInput(state, payload: string) {
+      state.searchInput = payload;
     },
   },
   actions: {

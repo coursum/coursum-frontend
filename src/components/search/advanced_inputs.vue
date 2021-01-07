@@ -76,9 +76,9 @@
     <v-card-actions>
       <v-spacer />
       <v-btn
-        @click="clear"
+        @click="reset"
       >
-        clear
+        reset
       </v-btn>
       <v-btn
         @click="goResult"
@@ -101,6 +101,15 @@
 <script lang="ts">
 import Vue from 'vue';
 
+interface AdvancedInputs {
+  giga: string;
+  lecturer: string;
+  language: string;
+  semester: string;
+  day: string;
+  time: string;
+}
+
 export default Vue.extend({
   name: 'SearchInput',
   data() {
@@ -119,8 +128,46 @@ export default Vue.extend({
       setFlex: 'd-flex align-center',
     };
   },
+  computed: {
+    getAdvancedInputs(): AdvancedInputs {
+      return this.$store.state.advancedInputs;
+    },
+  },
+  created() {
+    this.setValues();
+  },
   methods: {
-    clear() {
+    setValues() {
+      console.log(this.getAdvancedInputs);
+
+      this.giga = this.getAdvancedInputs.giga;
+      this.lecturer = this.getAdvancedInputs.lecturer;
+      this.language = this.getAdvancedInputs.language;
+      this.semester = this.getAdvancedInputs.semester;
+      this.day = this.getAdvancedInputs.day;
+      this.time = this.getAdvancedInputs.time;
+    },
+    storeValues() {
+      const advancedInputs = {
+        giga: this.giga,
+        lecturer: this.lecturer,
+        language: this.language,
+        semester: this.semester,
+        day: this.day,
+        time: this.time,
+      };
+
+      this.$store.commit('setAdvancedInputs', advancedInputs);
+    },
+    cleanValues() {
+      this.giga = '';
+      this.lecturer = '';
+      this.language = '';
+      this.semester = '';
+      this.day = '';
+      this.time = '';
+    },
+    reset() {
       let pushPath;
 
       const isRootPath = this.$route.path === '/';
@@ -163,31 +210,38 @@ export default Vue.extend({
         this.$router.push(pushPath);
       }
 
-      this.giga = '';
-      this.lecturer = '';
-      this.language = '';
-      this.semester = '';
-      this.day = '';
-      this.time = '';
+      this.cleanValues();
     },
     goResult() {
       let pushPath;
-      const times = this.day + this.time;
+      const times = `${this.day}${this.time}`;
 
-      const options = [['giga', this.giga], ['teacher', this.lecturer], ['language', this.language], ['semester', this.semester], ['times', times]]
-        .filter(([, value]) => value && value !== '' && value !== null && value !== undefined).map(([key, value]) => `${key}=${value}`).join('&');
+      const options = [
+        ['giga', this.giga],
+        ['teacher', this.lecturer],
+        ['language', this.language],
+        ['semester', this.semester],
+        ['times', times],
+      ]
+        .filter(([, value]) => (
+          value
+          && value !== ''
+          && value !== null
+          && value !== undefined
+        ))
+        .map(([key, value]) => `${key}=${value}`).join('&');
 
       const isRootPath = this.$route.path === '/';
       const hasOption = options !== '';
-
       let hasQuery;
       let query = '';
 
       if (isRootPath) {
         hasQuery = false;
       } else {
-        [query] = this.$route.params.query.split('&');
         const pattern = /^query=/;
+
+        [query] = this.$route.params.query.split('&');
 
         hasQuery = pattern.test(query);
       }
@@ -205,6 +259,8 @@ export default Vue.extend({
       if (this.$route.path !== pushPath) {
         this.$router.push(pushPath);
       }
+
+      this.storeValues();
     },
   },
 });

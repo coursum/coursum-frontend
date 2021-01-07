@@ -16,7 +16,7 @@
       hide-details
       :placeholder="$t('placeholder')"
       :search-input.sync="searchWord"
-      :value="model"
+      :value="searchInput"
       @keydown.enter="goResult"
     >
       <template v-slot:no-data>
@@ -38,10 +38,13 @@ export default Vue.extend({
   data() {
     return {
       searchWord: '',
-      model: '',
+      searchInput: '',
     };
   },
   computed: {
+    getSearchInput(): string {
+      return this.$store.state.searchInput;
+    },
     flat(): boolean {
       if (this.$route.path === '/' || this.$route.params.query) {
         return false;
@@ -66,7 +69,16 @@ export default Vue.extend({
       return { width: `${widthRate}%` };
     },
   },
+  created() {
+    this.setValue();
+  },
   methods: {
+    storeValue() {
+      this.$store.commit('setSearchInput', this.searchInput);
+    },
+    setValue() {
+      this.searchInput = this.getSearchInput;
+    },
     goResult() {
       let pushPath;
 
@@ -82,10 +94,9 @@ export default Vue.extend({
         hasQuery = false;
       } else {
         const attrs = this.$route.params.query.split('&');
+        const pattern = /^query=/;
 
         [query] = attrs;
-
-        const pattern = /^query=/;
 
         hasQuery = pattern.test(query);
 
@@ -127,13 +138,15 @@ export default Vue.extend({
         this.$router.push(pushPath);
       }
 
-      this.model = this.searchWord;
+      this.searchInput = this.searchWord;
 
       if (this.$route.path !== pushPath) {
         this.$router.push(pushPath);
       }
 
-      this.model = this.searchWord;
+      this.searchInput = this.searchWord;
+
+      this.storeValue();
     },
   },
 });
