@@ -134,7 +134,7 @@ export default Vue.extend({
       return this.courseData?.summary;
     },
     genId(): string {
-      const id = `${this.title} ${this.lecturers?.[0]?.name?.jp}`;
+      const id = `${this.title?.jp} ${this.lecturers?.[0]?.name?.jp}`;
 
       return id;
     },

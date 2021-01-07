@@ -103,10 +103,8 @@ export default Vue.extend({
       }
 
       if (hasQuery && hasOption) {
-        console.log(0);
         pushPath = `/search/${query}&${options}`;
       } else if (hasOption) {
-        console.log(1);
         pushPath = `/search/${options}`;
       } else if (hasQuery) {
         pushPath = `/search/${query}`;
