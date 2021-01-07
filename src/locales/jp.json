@@ -41,14 +41,5 @@
     "courses-offered-at-research-institutes-on-sfc": "SFC設置の諸研究所科目",
     "courses-offered-at-other-faculties": "単位互換科目",
     "optional-subjects": "自由科目"
-  },
-  "number":"登録番号",
-  "suggestion":"履修条件",
-  "requirement":"前提科目（必須）",
-  "prerequisite":"前提科目（推奨）",
-  "related":"関連科目",
-  "classroom":"開講場所",
-  "types":"授業形態",
-  "giga":"GIGA",
-  "curriculumCode":"カリキュラムコード"
+  }
 }

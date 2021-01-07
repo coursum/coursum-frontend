@@ -20,7 +20,7 @@
     >
       <div :class="setFlex">
         <div :style="setWidth">
-          GIGA
+          {{ $t("giga") }}
         </div>
         <v-checkbox
           v-model="giga"
@@ -30,7 +30,7 @@
       </div>
       <div :class="setFlex">
         <div :style="setWidth">
-          lecturer
+          {{ $t("lecturer") }}
         </div>
         <v-text-field
           v-model="lecturer"
@@ -41,7 +41,7 @@
       </div>
       <div :class="setFlex">
         <div :style="setWidth">
-          Language
+          {{ $t("language") }}
         </div>
         <v-select
           v-model="language"
@@ -53,7 +53,7 @@
       </div>
       <div :class="setFlex">
         <div :style="setWidth">
-          Semester
+          {{ $t("semester") }}
         </div>
         <v-select
           v-model="semester"
@@ -65,7 +65,7 @@
       </div>
       <div :class="setFlex">
         <div :style="setWidth">
-          Day
+          {{ $t("day") }}
         </div>
         <v-select
           v-model="day"
@@ -77,7 +77,7 @@
       </div>
       <div :class="setFlex">
         <div :style="setWidth">
-          Time
+          {{ $t("time") }}
         </div>
         <v-select
           v-model="time"
@@ -91,7 +91,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          @click="cleanValues"
+          @click="resetValues"
         >
           reset
         </v-btn>
@@ -103,15 +103,6 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-
-  <!-- Query:     c.Query("query"),
-       Category:  c.Query("category"), select
-       Classroom: c.Query("classroom"), select
-       Language:  c.Query("language"), select
-       Semester:  c.Query("semester"), select
-       Teacher:   c.Query("teacher"), input
-       Times:     c.Query("times"), select
-       Giga:      c.Query("giga") == "true" checkbox -->
 </template>
 
 <script lang="ts">
@@ -174,7 +165,7 @@ export default Vue.extend({
 
       this.$store.commit('setAdvancedInputs', advancedInputs);
     },
-    cleanValues() {
+    resetValues() {
       this.giga = '';
       this.lecturer = '';
       this.language = '';
@@ -182,58 +173,12 @@ export default Vue.extend({
       this.day = '';
       this.time = '';
     },
-    reset() {
-      let pushPath;
-
-      const isRootPath = this.$route.path === '/';
-      let hasOption;
-      let hasQuery;
-
-      let query = '';
-
-      if (!isRootPath) {
-        const attrs = this.$route.params.query.split('&');
-
-        [query] = attrs;
-
-        const pattern = /^query=/;
-
-        hasQuery = pattern.test(query);
-
-        if (attrs.length === 1) {
-          if (hasQuery) {
-            hasOption = false;
-          } else {
-            hasOption = true;
-          }
-        } else {
-          hasOption = true;
-        }
-      }
-
-      if (hasQuery && hasOption) {
-        pushPath = `/search/${query}`;
-      } else if (hasOption) {
-        pushPath = '/';
-      } else if (hasQuery) {
-        pushPath = `/search/${query}`;
-      } else {
-        pushPath = '/';
-      }
-
-      if (this.$route.path !== pushPath) {
-        this.$router.push(pushPath);
-      }
-
-      this.cleanValues();
-    },
     goResult() {
       let pushPath;
       let hasQuery;
       let query = '';
 
       const times = `${this.day}${this.time}`;
-      const isRootPath = this.$route.path === '/';
 
       const options = [
         ['giga', this.giga],
@@ -252,14 +197,14 @@ export default Vue.extend({
 
       const hasOption = options !== '';
 
-      if (isRootPath) {
-        hasQuery = false;
-      } else {
+      if (this.$route.params.query) {
         const pattern = /^query=/;
 
         [query] = this.$route.params.query.split('&');
 
         hasQuery = pattern.test(query);
+      } else {
+        hasQuery = false;
       }
 
       if (hasQuery && hasOption) {
@@ -272,13 +217,37 @@ export default Vue.extend({
         pushPath = '/';
       }
 
-      if (this.$route.path !== pushPath) {
-        this.$router.push(pushPath);
-      }
+      this.pushPath(pushPath);
 
       this.storeValues();
       this.dialog = false;
     },
+    pushPath(pushPath: string) {
+      if (this.$route.path !== pushPath) {
+        this.$router.push(pushPath);
+      }
+    },
   },
 });
 </script>
+
+<i18n>
+{
+  "en": {
+    "giga": "GIGA",
+    "lecturer": "Lecturer",
+    "language": "Language",
+    "semester": "Semester",
+    "day": "Day",
+    "time": "Time"
+  },
+  "jp": {
+    "giga": "GIGA",
+    "lecturer": "教員",
+    "language": "言語",
+    "semester": "学期",
+    "day": "曜日",
+    "time": "時間"
+  }
+}
+</i18n>
