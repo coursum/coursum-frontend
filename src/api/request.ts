@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CourseInfo } from '@/assets/CourseInfo';
 
-const url = new URL('http://localhost:8000/search');
+const url = new URL(process.env.VUE_APP_API_BASE_URL || '');
 
 export default {
   async fetchData(config: {'query': string}): Promise<CourseInfo[]> {
