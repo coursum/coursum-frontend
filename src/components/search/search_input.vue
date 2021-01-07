@@ -79,50 +79,52 @@ export default Vue.extend({
     setValue() {
       this.searchInput = this.getSearchInput;
     },
-    goResult() {
+    hasNotQueryInRouterParams() {
       let pushPath;
+      const checkSearchWord = this.searchWord !== undefined && this.searchWord !== null && this.searchWord !== '';
 
-      const isRootPath = this.$route.path === '/';
-
-      let hasOption;
-      let hasQuery;
+      if (checkSearchWord) {
+        pushPath = `/search/query=${this.searchWord}`;
+      } else {
+        pushPath = '/';
+      }
+      this.pushPath(pushPath);
+    },
+    hasQueryInRouterParams() {
+      let pushPath;
+      let hasOptions;
       let options;
 
       let query = '';
 
-      if (isRootPath) {
-        hasQuery = false;
-      } else {
-        const attrs = this.$route.params.query.split('&');
-        const pattern = /^query=/;
+      const attrs = this.$route.params.query.split('&');
+      const pattern = /^query=/;
 
-        [query] = attrs;
+      [query] = attrs;
 
-        hasQuery = pattern.test(query);
+      const hasQuery = pattern.test(query);
 
-        if (attrs.length === 1) {
-          if (hasQuery) {
-            hasOption = false;
-          } else {
-            [options] = attrs;
-            hasOption = true;
-          }
+      if (attrs.length > 1) {
+        let opts;
+        hasOptions = true;
+
+        if (hasQuery) {
+          [, ...opts] = attrs;
+          options = opts.join('&');
         } else {
-          hasOption = true;
-
-          if (hasQuery) {
-            const [, ...others] = attrs;
-            options = others.join('&');
-          } else {
-            const [...others] = attrs;
-            options = others.join('&');
-          }
+          [...opts] = attrs;
+          options = opts.join('&');
         }
+      } else if (hasQuery) {
+        hasOptions = false;
+      } else {
+        hasOptions = true;
+        [options] = attrs;
       }
 
       const checkSearchWord = this.searchWord !== undefined && this.searchWord !== null && this.searchWord !== '';
 
-      if (hasOption) {
+      if (hasOptions) {
         if (checkSearchWord) {
           pushPath = `/search/query=${this.searchWord}&${options}`;
         } else {
@@ -134,14 +136,18 @@ export default Vue.extend({
         pushPath = '/';
       }
 
+      this.pushPath(pushPath);
+    },
+    pushPath(pushPath: string) {
       if (this.$route.path !== pushPath) {
         this.$router.push(pushPath);
       }
-
-      this.searchInput = this.searchWord;
-
-      if (this.$route.path !== pushPath) {
-        this.$router.push(pushPath);
+    },
+    goResult() {
+      if (this.$route.params.query) {
+        this.hasQueryInRouterParams();
+      } else {
+        this.hasNotQueryInRouterParams();
       }
 
       this.searchInput = this.searchWord;

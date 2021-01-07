@@ -229,7 +229,11 @@ export default Vue.extend({
     },
     goResult() {
       let pushPath;
+      let hasQuery;
+      let query = '';
+
       const times = `${this.day}${this.time}`;
+      const isRootPath = this.$route.path === '/';
 
       const options = [
         ['giga', this.giga],
@@ -246,10 +250,7 @@ export default Vue.extend({
         ))
         .map(([key, value]) => `${key}=${value}`).join('&');
 
-      const isRootPath = this.$route.path === '/';
       const hasOption = options !== '';
-      let hasQuery;
-      let query = '';
 
       if (isRootPath) {
         hasQuery = false;
