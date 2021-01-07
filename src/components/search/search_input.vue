@@ -97,13 +97,19 @@ export default Vue.extend({
             hasOption = true;
           }
         } else {
-          const [...others] = attrs;
-          options = others.join('&');
           hasOption = true;
+
+          if (hasQuery) {
+            const [, ...others] = attrs;
+            options = others.join('&');
+          } else {
+            const [...others] = attrs;
+            options = others.join('&');
+          }
         }
       }
 
-      const checkSearchWord = this.searchWord !== null && this.searchWord !== '';
+      const checkSearchWord = this.searchWord !== undefined && this.searchWord !== null && this.searchWord !== '';
 
       if (hasOption) {
         if (checkSearchWord) {
