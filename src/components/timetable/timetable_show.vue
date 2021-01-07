@@ -111,11 +111,11 @@ export default Vue.extend({
     idx(d: [string, number[]][]): number {
       return d?.[0]?.[1]?.[0];
     },
-    async fetchData(query: string) {
+    async fetchData(id: string) {
       let datas: CourseInfo[] = [];
 
       const config = {
-        query,
+        query: `query=${id}`,
       };
 
       try {

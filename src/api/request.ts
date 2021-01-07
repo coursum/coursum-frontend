@@ -8,8 +8,6 @@ export default {
     let datas: CourseInfo[] = [];
     url.search = config.query;
 
-    console.log(url.href);
-
     try {
       const response = await axios.get(url.href);
 
