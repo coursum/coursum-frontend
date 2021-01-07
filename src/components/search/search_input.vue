@@ -70,10 +70,48 @@ export default Vue.extend({
     goResult() {
       let pushPath;
 
-      if (this.searchWord === null || this.searchWord === '') {
-        pushPath = '/';
+      const isRootPath = this.$route.path === '/';
+
+      let hasOption;
+      let hasQuery;
+      let options;
+
+      let query = '';
+
+      if (isRootPath) {
+        hasQuery = false;
       } else {
-        pushPath = `/search/${this.searchWord}`;
+        const attrs = this.$route.params.query.split('&');
+
+        [query] = attrs;
+
+        const pattern = /^query=/;
+
+        hasQuery = pattern.test(query);
+
+        if (attrs.length === 1) {
+          if (hasQuery) {
+            hasOption = false;
+          } else {
+            [options] = attrs;
+            hasOption = true;
+          }
+        } else {
+          [, ...options] = attrs;
+          hasOption = true;
+        }
+      }
+
+      if (hasQuery && hasOption) {
+        console.log(0);
+        pushPath = `/search/${query}&${options}`;
+      } else if (hasOption) {
+        console.log(1);
+        pushPath = `/search/${options}`;
+      } else if (hasQuery) {
+        pushPath = `/search/${query}`;
+      } else {
+        pushPath = '/';
       }
 
       if (this.$route.path !== pushPath) {

@@ -12,6 +12,7 @@
     >
       <coursum-logo />
       <search-input />
+      <advanced-inputs />
     </div>
 
     <div class="mx-0 my-6">
@@ -64,6 +65,7 @@ import AccountButton from '@/components/course/account_button.vue';
 import SettingButton from '@/components/setting/setting_button.vue';
 import CoursumLogo from '@/components/course/coursum_logo.vue';
 import SearchInput from '@/components/search/search_input.vue';
+import AdvancedInputs from '@/components/search/advanced_inputs.vue';
 import CourseShow from '@/components/course/course_show.vue';
 import request from '@/api/request';
 
@@ -74,6 +76,7 @@ export default Vue.extend({
     SettingButton,
     CoursumLogo,
     SearchInput,
+    AdvancedInputs,
     CourseShow,
   },
   data() {

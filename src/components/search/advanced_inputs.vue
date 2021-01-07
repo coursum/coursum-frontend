@@ -1,13 +1,101 @@
 <template>
-  <span>
-    <v-checkbox
-      v-model="isGiga"
-      hide-details
-      label="GIGA"
-      value="GIGA: true"
-    />
-    <!-- @click="goResultPage" -->
-  </span>
+  <v-card
+    width="500"
+    class="px-12 py-6"
+  >
+    <div :class="setFlex">
+      <div :style="setWidth">
+        GIGA
+      </div>
+      <v-checkbox
+        v-model="giga"
+        class="pa-0 ma-0"
+        hide-details
+      />
+    </div>
+    <div :class="setFlex">
+      <div :style="setWidth">
+        lecturer
+      </div>
+      <v-text-field
+        v-model="lecturer"
+        dense
+        hide-details
+        solo
+      />
+    </div>
+    <div :class="setFlex">
+      <div :style="setWidth">
+        Language
+      </div>
+      <v-select
+        v-model="language"
+        :items="languages"
+        dense
+        hide-details
+        solo
+      />
+    </div>
+    <div :class="setFlex">
+      <div :style="setWidth">
+        Semester
+      </div>
+      <v-select
+        v-model="semester"
+        :items="semesters"
+        dense
+        hide-details
+        solo
+      />
+    </div>
+    <div :class="setFlex">
+      <div :style="setWidth">
+        Day
+      </div>
+      <v-select
+        v-model="day"
+        :items="days"
+        dense
+        hide-details
+        solo
+      />
+    </div>
+    <div :class="setFlex">
+      <div :style="setWidth">
+        Time
+      </div>
+      <v-select
+        v-model="time"
+        :items="times"
+        dense
+        hide-details
+        solo
+      />
+    </div>
+
+    <v-card-actions>
+      <v-spacer />
+      <v-btn
+        @click="clear"
+      >
+        clear
+      </v-btn>
+      <v-btn
+        @click="goResult"
+      >
+        submit
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+
+  <!-- Query:     c.Query("query"),
+       Category:  c.Query("category"), select
+       Classroom: c.Query("classroom"), select
+       Language:  c.Query("language"), select
+       Semester:  c.Query("semester"), select
+       Teacher:   c.Query("teacher"), input
+       Times:     c.Query("times"), select
+       Giga:      c.Query("giga") == "true" checkbox -->
 </template>
 
 <script lang="ts">
@@ -17,9 +105,108 @@ export default Vue.extend({
   name: 'SearchInput',
   data() {
     return {
-      isGiga: '',
+      giga: '',
+      lecturer: '',
+      language: '',
+      semester: '',
+      day: '',
+      time: '',
+      languages: ['英語', '日本語', '中国語', 'ドイツ語'],
+      semesters: ['春学期', '秋学期'],
+      days: ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'],
+      times: ['１時限', '２時限', '３時限', '４時限', '５時限', '６時限', '７時限'],
+      setWidth: { width: '100px', margin: '15px' },
+      setFlex: 'd-flex align-center',
     };
   },
+  methods: {
+    clear() {
+      let pushPath;
 
+      const isRootPath = this.$route.path === '/';
+      let hasOption;
+      let hasQuery;
+
+      let query = '';
+
+      if (!isRootPath) {
+        const attrs = this.$route.params.query.split('&');
+
+        [query] = attrs;
+
+        const pattern = /^query=/;
+
+        hasQuery = pattern.test(query);
+
+        if (attrs.length === 1) {
+          if (hasQuery) {
+            hasOption = false;
+          } else {
+            hasOption = true;
+          }
+        } else {
+          hasOption = true;
+        }
+      }
+
+      if (hasQuery && hasOption) {
+        pushPath = `/search/${query}`;
+      } else if (hasOption) {
+        console.log(1);
+        pushPath = '/';
+      } else if (hasQuery) {
+        pushPath = `/search/${query}`;
+      } else {
+        pushPath = '/';
+      }
+
+      if (this.$route.path !== pushPath) {
+        this.$router.push(pushPath);
+      }
+
+      this.giga = '';
+      this.lecturer = '';
+      this.language = '';
+      this.semester = '';
+      this.day = '';
+      this.time = '';
+    },
+    goResult() {
+      let pushPath;
+      const times = this.day + this.time;
+
+      const options = [['giga', this.giga], ['teacher', this.lecturer], ['language', this.language], ['semester', this.semester], ['times', times]]
+        .filter(([, value]) => value && value !== '' && value !== null && value !== undefined).map(([key, value]) => `${key}=${value}`).join('&');
+
+      const isRootPath = this.$route.path === '/';
+      const hasOption = options !== '';
+
+      let hasQuery;
+      let query = '';
+
+      if (isRootPath) {
+        hasQuery = false;
+      } else {
+        [query] = this.$route.params.query.split('&');
+        const pattern = /^query=/;
+
+        hasQuery = pattern.test(query);
+      }
+
+      if (hasQuery && hasOption) {
+        pushPath = `/search/${query}&${options}`;
+      } else if (hasOption) {
+        pushPath = `/search/${options}`;
+      } else if (hasQuery) {
+        pushPath = `/search/${query}`;
+      } else {
+        pushPath = '/';
+      }
+
+      if (this.$route.path !== pushPath) {
+        this.$router.push(pushPath);
+      }
+    },
+  },
 });
 </script>
