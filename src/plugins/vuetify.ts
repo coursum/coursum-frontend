@@ -12,7 +12,10 @@ export default new Vuetify({
     dark: false,
     themes: {
       light: {
-        blue: colors.blue.darken1,
+        wordcolor: 'black',
+        lightgrey: colors.grey.lighten4,
+        darkgrey: colors.grey.lighten3,
+        blue: colors.blue.lighten2,
         subtitle: '#757575',
         white: colors.shades.white,
         black: '#757575',
@@ -21,7 +24,10 @@ export default new Vuetify({
         accent: colors.shades.white,
       },
       dark: {
-        blue: colors.blue.darken4,
+        wordcolor: 'white',
+        lightgrey: colors.grey.darken4,
+        darkgrey: colors.grey.darken3,
+        blue: colors.blue.darken2,
         subtitle: '#2a2a2a',
         white: '#121212',
         black: '#b2b2b2',

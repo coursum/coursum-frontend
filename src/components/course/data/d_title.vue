@@ -1,8 +1,7 @@
 <template>
   <div
     v-if="titleData"
-    class="px-6 font-weight-black text-truncate"
-    :style="styleObj"
+    class="px-6 text-truncate"
   >
     {{ titleData }}
   </div>
@@ -17,9 +16,6 @@ export default Vue.extend({
   props: {
     title: { type: Object, default: basicTemplate },
   },
-  data() {
-    return { styleObj: { 'font-size': '1.1rem', color: 'white' } };
-  },
   computed: {
     titleData(): string | null | undefined {
       return this.title?.[this.curLang];
@@ -30,3 +26,10 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+div{
+  font-size: 1.1rem;
+  color: var(--v-wordcolor-base);
+}
+</style>

@@ -1,7 +1,6 @@
 <template>
   <div
     class="px-6 text-truncate"
-    :style="categoryStyle"
   >
     {{ categoryData ? categoryData : $t("others") }}
   </div>
@@ -16,9 +15,6 @@ export default Vue.extend({
   props: {
     category: { type: Object, default: basicTemplate },
   },
-  data() {
-    return { categoryStyle: { 'font-size': '0.7rem', color: 'white' } };
-  },
   computed: {
     categoryData(): string | null | undefined {
       return this.category?.[this.curLang];
@@ -29,6 +25,13 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+div{
+  font-size: 0.7rem;
+  color: var(--v-wordcolor-base);
+}
+</style>
 
 <i18n>
 {
