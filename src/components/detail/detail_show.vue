@@ -4,57 +4,75 @@
       <template v-if="registration">
         <tr>
           <th>{{ $t('number') }}</th>
-          <td v-if="number">
-            {{ number }}
+          <td>
+            <span v-if="number">
+              {{ number }}
+            </span>
           </td>
         </tr>
         <tr>
           <th>{{ $t('suggestion') }}</th>
-          <td v-if="suggestion">
-            {{ suggestion }}
+          <td>
+            <span v-if="suggestion">
+              {{ suggestion }}
+            </span>
           </td>
         </tr>
         <tr>
           <th>{{ $t('requirement') }}</th>
-          <td v-if="requirement">
-            {{ requirement }}
+          <td>
+            <span v-if="requirement">
+              {{ requirement }}
+            </span>
           </td>
         </tr>
         <tr>
           <th>{{ $t('requirement') }}</th>
-          <td v-if="prerequisite">
-            {{ prerequisite }}
+          <td>
+            <span v-if="prerequisite">
+              {{ prerequisite }}
+            </span>
           </td>
         </tr>
         <tr>
           <th>{{ $t('related') }}</th>
-          <td v-if="related">
-            {{ related }}
+          <td>
+            <span v-if="related">
+              {{ related }}
+            </span>
           </td>
         </tr>
       </template>
       <tr>
         <th>{{ $t('classroom') }}</th>
-        <td v-if="classroom">
-          {{ classroom }}
+        <td>
+          <span v-if="classroom">
+            {{ classroom }}
+          </span>
         </td>
       </tr>
       <tr>
         <th>{{ $t('types') }}</th>
-        <td v-if="types">
-          {{ types }}
+        <td>
+          <span v-if="types">
+            {{ types }}
+          </span>
         </td>
       </tr>
       <tr>
         <th>GIGA</th>
-        <td v-if="tag">
-          {{ tag.giga }}
+        <td>
+          <span v-if="tag">
+            {{ tag.giga }}
+          </span>
         </td>
       </tr>
       <tr>
         <th>{{ $t('curriculumCode') }}</th>
-        <td v-if="curriculumCode">
-          {{ curriculumCode }}
+        <td>
+          <span v-if="curriculumCode">
+            {{ curriculumCode }}
+          </span>
         </td>
       </tr>
     </table>
@@ -67,6 +85,7 @@ import { Basic } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'DetailIndex',
+
   props: {
     registration: {
       type: Object,
@@ -118,18 +137,22 @@ export default Vue.extend({
 table{
   width: 100%;
   border-collapse: collapse;
+  empty-cells: show;
 }
 
-table tr{
-  border-bottom: solid 2px rgb(255, 255, 255);
+table tr:nth-child(2n){
+  background-color: var(--v-lightgrey-base);
+}
+
+table tr:nth-child(2n+1){
+  background-color: var(--v-darkgrey-base);
 }
 
 table th{
   position: relative;
   text-align: left;
   width: 30%;
-  background-color: var(--v-blue-base);
-  color: white;
+  color: var(--v-wordcolor-base);
   text-align: center;
   padding: 10px 0;
 }
@@ -138,7 +161,6 @@ table td{
   text-align: left;
   width: 70%;
   text-align: center;
-  background-color: rgb(218, 238, 252);
   padding: 10px 0;
 }
 </style>

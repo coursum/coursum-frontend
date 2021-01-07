@@ -11,7 +11,6 @@
         v-if="lecturer.name && lecturer.name[`${curLang}`]"
         :key="i"
         style="display:inline-block;"
-        :style="lecturesStyle"
         class="mr-2"
       >
         {{ lecturer.name[`${curLang}`] }}
@@ -37,9 +36,6 @@ export default Vue.extend({
       default: true,
     },
   },
-  data() {
-    return { lecturesStyle: { 'font-size': '0.98rem', color: 'white' } };
-  },
   computed: {
     curLang(): string {
       return this.$i18n.locale;
@@ -47,3 +43,10 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+span{
+  font-size: 0.9rem;
+  color: var(--v-wordcolor-base);
+}
+</style>
