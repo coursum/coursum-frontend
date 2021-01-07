@@ -228,7 +228,6 @@ export default Vue.extend({
       this.cleanValues();
     },
     goResult() {
-      console.log(0);
       let pushPath;
       const times = `${this.day}${this.time}`;
 
