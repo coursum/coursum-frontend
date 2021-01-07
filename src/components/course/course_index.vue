@@ -11,8 +11,14 @@
       class="mx-auto text-center"
     >
       <coursum-logo />
-      <search-input />
-      <advanced-inputs />
+
+      <keep-alive>
+        <search-input />
+      </keep-alive>
+
+      <keep-alive>
+        <advanced-inputs />
+      </keep-alive>
     </div>
 
     <div class="mx-0 my-6">

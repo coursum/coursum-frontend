@@ -97,20 +97,31 @@ export default Vue.extend({
             hasOption = true;
           }
         } else {
-          [, ...options] = attrs;
+          const [...others] = attrs;
+          options = others.join('&');
           hasOption = true;
         }
       }
 
-      if (hasQuery && hasOption) {
-        pushPath = `/search/${query}&${options}`;
-      } else if (hasOption) {
-        pushPath = `/search/${options}`;
-      } else if (hasQuery) {
-        pushPath = `/search/${query}`;
+      const checkSearchWord = this.searchWord !== null && this.searchWord !== '';
+
+      if (hasOption) {
+        if (checkSearchWord) {
+          pushPath = `/search/query=${this.searchWord}&${options}`;
+        } else {
+          pushPath = `/search/${options}`;
+        }
+      } else if (checkSearchWord) {
+        pushPath = `/search/query=${this.searchWord}`;
       } else {
         pushPath = '/';
       }
+
+      if (this.$route.path !== pushPath) {
+        this.$router.push(pushPath);
+      }
+
+      this.model = this.searchWord;
 
       if (this.$route.path !== pushPath) {
         this.$router.push(pushPath);
