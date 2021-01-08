@@ -4,26 +4,18 @@
       v-if="isInclude"
       icon
       color="#ffc91a"
-      @click.prevent="
-        $store.commit('removeFromTimetable', id)
-      "
+      @click.prevent="$store.commit('timetable/removeFromTimetable', id)"
     >
-      <v-icon>
-        mdi-star
-      </v-icon>
+      <v-icon> mdi-star </v-icon>
     </v-btn>
 
     <v-btn
       v-else
       icon
       color="#ffc91a"
-      @click.prevent="
-        $store.commit('addToTimetable', id)
-      "
+      @click.prevent="$store.commit('timetable/addToTimetable', id)"
     >
-      <v-icon>
-        mdi-star-outline
-      </v-icon>
+      <v-icon> mdi-star-outline </v-icon>
     </v-btn>
   </span>
 </template>
@@ -40,12 +32,10 @@ export default Vue.extend({
     },
   },
   computed: {
-    idsInTimetable(): string[] {
-      return this.$store.state.idsInTimetable;
-    },
     isInclude(): boolean {
-      const b = this.idsInTimetable.some((str) => str === this.id);
-      return b;
+      const courseIds = this.$store.state.timetable.ids;
+
+      return courseIds.includes(this.id);
     },
   },
 

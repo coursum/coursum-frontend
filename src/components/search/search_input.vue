@@ -14,46 +14,33 @@
       prepend-inner-icon="mdi-magnify"
       type="text"
       hide-details
-      :placeholder="$t('placeholder')"
-      :search-input.sync="searchWord"
-      :value="searchInput"
+      :search-input.sync="input"
+      :value="input"
       @keydown.enter="goResult"
     >
-      <template v-slot:no-data>
+      <!-- <template v-slot:no-data>
         <category-list />
-      </template>
+      </template> -->
     </v-combobox>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import CategoryList from '@/components/search/category_list.vue';
+// TODO: implement CategoryList
+// import CategoryList from '@/components/search/category_list.vue';
 
 export default Vue.extend({
   name: 'SearchInput',
   components: {
-    CategoryList,
+    // CategoryList,
   },
   data() {
     return {
-      searchWord: '',
-      searchInput: '',
+      input: null,
     };
   },
   computed: {
-    getSearchInput(): string {
-      return this.$store.state.searchInput;
-    },
-    flat(): boolean {
-      if (this.$route.path === '/' || this.$route.params.query) {
-        return false;
-      }
-      return true;
-    },
-    langOpts() {
-      return [this.$i18n.t('en'), this.$i18n.t('jp')];
-    },
     searchBarWidth(): object {
       let widthRate;
       const { breakpoint }: any = this.$vuetify;
@@ -68,91 +55,39 @@ export default Vue.extend({
 
       return { width: `${widthRate}%` };
     },
+    flat(): boolean {
+      return this.$route.path !== '/' && !this.$route.params.query;
+    },
   },
   created() {
-    this.setValue();
+    this.input = this.$store.state.searchInput;
   },
   methods: {
-    storeValue() {
-      this.$store.commit('setSearchInput', this.searchInput);
-    },
-    setValue() {
-      this.searchInput = this.getSearchInput;
-    },
-    hasNotQueryInRouterParams() {
-      let pushPath;
-      const checkSearchWord = this.searchWord !== undefined && this.searchWord !== null && this.searchWord !== '';
-
-      if (checkSearchWord) {
-        pushPath = `/search/query=${this.searchWord}`;
-      } else {
-        pushPath = '/';
-      }
-      this.pushPath(pushPath);
-    },
-    hasQueryInRouterParams() {
-      let pushPath;
-      let hasOptions;
-      let options;
-
-      let query = '';
-
-      const attrs = this.$route.params.query.split('&');
-      const pattern = /^query=/;
-
-      [query] = attrs;
-
-      const hasQuery = pattern.test(query);
-
-      if (attrs.length > 1) {
-        let opts;
-        hasOptions = true;
-
-        if (hasQuery) {
-          [, ...opts] = attrs;
-          options = opts.join('&');
-        } else {
-          [...opts] = attrs;
-          options = opts.join('&');
-        }
-      } else if (hasQuery) {
-        hasOptions = false;
-      } else {
-        hasOptions = true;
-        [options] = attrs;
-      }
-
-      const checkSearchWord = this.searchWord !== undefined && this.searchWord !== null && this.searchWord !== '';
-
-      if (hasOptions) {
-        if (checkSearchWord) {
-          pushPath = `/search/query=${this.searchWord}&${options}`;
-        } else {
-          pushPath = `/search/${options}`;
-        }
-      } else if (checkSearchWord) {
-        pushPath = `/search/query=${this.searchWord}`;
-      } else {
-        pushPath = '/';
-      }
-
-      this.pushPath(pushPath);
-    },
-    pushPath(pushPath: string) {
-      if (this.$route.path !== pushPath) {
-        this.$router.push(pushPath);
-      }
-    },
     goResult() {
-      if (this.$route.params.query) {
-        this.hasQueryInRouterParams();
-      } else {
-        this.hasNotQueryInRouterParams();
+      this.input = this.input ?? '';
+      if (this.input === '') return;
+
+      let search = this.$route.params.query;
+
+      if (search) {
+        const queryParamCount = search.split('&').length;
+
+        if (queryParamCount === 1) {
+          search = `query=${this.input ?? ''}`;
+        } else {
+          search = search.replace(/^query=(.*?)&/, `query=${this.input ?? ''}&`);
+        }
+
+        const pushPath = `/search/${search}`;
+        console.log(pushPath);
+
+        if (pushPath !== this.$route.path) {
+          console.log('???');
+          this.$router.push(pushPath);
+        }
       }
 
-      this.searchInput = this.searchWord;
-
-      this.storeValue();
+      this.$store.commit('setSearchInput', this.input);
     },
   },
 });
@@ -168,20 +103,3 @@ export default Vue.extend({
   color: #bdbdbd;
 }
 </style>
-
-<i18n>
-{
-  "en": {
-    "placeholder": "what do you learn?",
-    "lang": "language",
-    "en": "english",
-    "jp": "japanese"
-  },
-  "jp": {
-    "placeholder": "何を学びますか？",
-    "lang": "言語",
-    "en": "英語",
-    "jp": "日本語"
-  }
-}
-</i18n>

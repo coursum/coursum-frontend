@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="ma-5"
-  >
+  <div class="ma-5">
     <div
       v-if="!isLoading"
       :style="width"
@@ -95,17 +93,17 @@ export default Vue.extend({
     },
   },
   async created() {
-    this.fetchData();
+    this.fetchCourses();
   },
   methods: {
-    async fetchData() {
+    async fetchCourses() {
       const config = {
         query: this.$route.params.id,
       };
 
       try {
         this.isLoading = true;
-        const datas = await request.fetchData(config);
+        const datas = await request.fetchCourses(config);
         [this.courseData] = datas.filter((dataObj: CourseInfo) => {
           const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers[0]?.name?.jp}`;
           return this.$route.params.id === id;

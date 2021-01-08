@@ -24,7 +24,7 @@ export default Vue.extend({
     },
   },
   async created() {
-    this.$store.commit('getIdsFromLocalStorage');
+    this.$store.commit('timetable/getIdsFromLocalStorage');
     this.getThemeState();
     this.getLangState();
   },
