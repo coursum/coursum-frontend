@@ -67,24 +67,25 @@ export default Vue.extend({
       this.input = this.input ?? '';
       if (this.input === '') return;
 
-      let search = this.$route.params.query;
+      let search = this.$route.params.query ?? '';
+      this.input = this.input ?? '';
 
-      if (search) {
+      if (!search) {
         const queryParamCount = search.split('&').length;
 
         if (queryParamCount === 1) {
-          search = `query=${this.input ?? ''}`;
+          search = `query=${this.input}`;
         } else {
           search = search.replace(/^query=(.*?)&/, `query=${this.input ?? ''}&`);
         }
+      } else {
+        search = `query=${this.input}`;
+      }
 
-        const pushPath = `/search/${search}`;
-        console.log(pushPath);
+      const pushPath = `/search/${search}`;
 
-        if (pushPath !== this.$route.path) {
-          console.log('???');
-          this.$router.push(pushPath);
-        }
+      if (pushPath !== this.$route.path) {
+        this.$router.push(pushPath);
       }
 
       this.$store.commit('setSearchInput', this.input);
