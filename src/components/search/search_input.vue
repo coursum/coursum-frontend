@@ -37,7 +37,10 @@ export default Vue.extend({
   },
   data() {
     return {
-      input: null,
+      input: (() => {
+        const query = this.$route.params.query ?? '';
+        return query.split('&').find((queryParam) => queryParam.startsWith('query=')).split('=')[1];
+      })(),
     };
   },
   computed: {
