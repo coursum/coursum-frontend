@@ -4,7 +4,7 @@
       v-if="isInclude"
       icon
       color="#ffc91a"
-      @click.prevent="$store.commit('timetable/removeFromTimetable', id)"
+      @click.prevent="removeCourse()"
     >
       <v-icon> mdi-star </v-icon>
     </v-btn>
@@ -13,7 +13,7 @@
       v-else
       icon
       color="#ffc91a"
-      @click.prevent="$store.commit('timetable/addToTimetable', id)"
+      @click.prevent="addCourse()"
     >
       <v-icon> mdi-star-outline </v-icon>
     </v-btn>
@@ -36,6 +36,19 @@ export default Vue.extend({
       const courseIds = this.$store.state.timetable.ids;
 
       return courseIds.includes(this.id);
+    },
+  },
+  methods: {
+    removeCourse() {
+      this.$store.commit('timetable/removeFromTimetable', this.id);
+      setTimeout(() => {
+        if (this.$route.path.startsWith('/timetable')) {
+          this.$router.go(this.$router.currentRoute);
+        }
+      }, 1000);
+    },
+    addCourse() {
+      this.$store.commit('timetable/addToTimetable', this.id);
     },
   },
 
