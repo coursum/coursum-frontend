@@ -128,10 +128,6 @@ export default Vue.extend({
       semester: '',
       day: '',
       time: '',
-      languages: ['英語', '日本語', '中国語', 'ドイツ語'],
-      semesters: ['春学期', '秋学期'],
-      days: ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'],
-      times: ['１時限', '２時限', '３時限', '４時限', '５時限', '６時限', '７時限'],
       setWidth: { width: '100px', margin: '15px' },
       setFlex: 'd-flex align-center',
     };
@@ -139,6 +135,32 @@ export default Vue.extend({
   computed: {
     getAdvancedInputs(): AdvancedInputs {
       return this.$store.state.advancedInputs;
+    },
+    languages() {
+      return [this.$i18n.t('english'), this.$i18n.t('japanese')];
+    },
+    semesters() {
+      return [this.$i18n.t('spring'), this.$i18n.t('autumn')];
+    },
+    days() {
+      return [
+        this.$i18n.t('sunday'),
+        this.$i18n.t('monday'),
+        this.$i18n.t('tuesday'),
+        this.$i18n.t('wednesday'),
+        this.$i18n.t('thursday'),
+        this.$i18n.t('friday'),
+        this.$i18n.t('saturday')];
+    },
+    times() {
+      return [
+        `1${this.$i18n.t('period')}`,
+        `2${this.$i18n.t('period')}`,
+        `3${this.$i18n.t('period')}`,
+        `4${this.$i18n.t('period')}`,
+        `5${this.$i18n.t('period')}`,
+        `6${this.$i18n.t('period')}`,
+        `7${this.$i18n.t('period')}`];
     },
   },
   created() {
@@ -239,7 +261,19 @@ export default Vue.extend({
     "language": "Language",
     "semester": "Semester",
     "day": "Day",
-    "time": "Time"
+    "time": "Time",
+    "english": "English",
+    "japanese": "Japanese",
+    "spring": "Spring",
+    "autumn": "Autumn",
+    "sunday": "Sunday" ,
+    "monday": "Monday",
+    "tuesday":  "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday":"Saturday",
+    "period": "period"
   },
   "jp": {
     "giga": "GIGA",
@@ -247,7 +281,19 @@ export default Vue.extend({
     "language": "言語",
     "semester": "学期",
     "day": "曜日",
-    "time": "時間"
+    "time": "時間",
+    "english": "英語",
+    "japanese": "日本語",
+    "spring": "春学期",
+    "autumn": "秋学期",
+    "sunday": "日曜日" ,
+    "monday": "月曜日",
+    "tuesday":  "火曜日",
+    "wednesday": "水曜日",
+    "thursday": "木曜日",
+    "friday": "金曜日",
+    "saturday":"土曜日",
+    "period": "時限目"
   }
 }
 </i18n>
