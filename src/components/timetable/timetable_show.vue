@@ -25,6 +25,7 @@
           <course-show
             v-for="(t, n) in d"
             :key="n"
+            :has-width="true"
             :course-data="courseDatas[t[0]]"
             :show-summary="false"
           />
@@ -57,8 +58,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    idsInTimetable(): string[] {
-      return this.$store.state.idsInTimetable;
+    ids(): string[] {
+      return this.$store.state.timetable.ids;
     },
     sorted(): [string, number[]][][] {
       const daySort = this.sortedIDs;
@@ -92,10 +93,9 @@ export default Vue.extend({
 
   async created() {
     this.isLoading = true;
+
     try {
-      this.idsInTimetable.forEach((str: string) => {
-        this.fetchData(str);
-      });
+      this.ids.forEach(this.fetchCourses);
     } finally {
       this.isLoading = false;
     }
@@ -111,7 +111,7 @@ export default Vue.extend({
     idx(d: [string, number[]][]): number {
       return d?.[0]?.[1]?.[0];
     },
-    async fetchData(id: string) {
+    async fetchCourses(id: string) {
       let datas: CourseInfo[] = [];
 
       const config = {
@@ -119,7 +119,7 @@ export default Vue.extend({
       };
 
       try {
-        datas = await request.fetchData(config);
+        datas = await request.fetchCourses(config);
       } finally {
         this.setCourseDatas(datas);
       }
@@ -129,7 +129,7 @@ export default Vue.extend({
         .some((dataObj: CourseInfo) => {
           const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers?.[0]?.name?.jp}`;
 
-          if (this.idsInTimetable.includes(id)) {
+          if (this.ids.includes(id)) {
             this.setInitialData(dataObj);
             this.$set(this.courseDatas, id, dataObj);
             return true;

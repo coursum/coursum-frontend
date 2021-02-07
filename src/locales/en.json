@@ -41,14 +41,5 @@
     "courses-offered-at-research-institutes-on-sfc": "Courses offered at Research Institutes on SFC",
     "courses-offered-at-other-faculties": "Courses Offered at Other Faculties",
     "optional-subjects": "Optional Subjects"
-  },
-  "number": "Number",
-  "suggestion": "Suggestion",
-  "requirement": "Requirement",
-  "prerequisite": "Prerequisite",
-  "related": "Related",
-  "classroom": "Classroom",
-  "types": "Types",
-  "giga": "GIGA",
-  "curriculumCode": "Curriculum Code"
+  }
 }

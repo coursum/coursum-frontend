@@ -5,7 +5,7 @@
         :class="cardClass(hover)"
         class="my-2 rounded-lg d-flex flex-column justify-space-between"
         :to="genRoute"
-        :style="hasWidth ? styleObject: ''"
+        :style="hasWidth ? cardWidth: ''"
       >
         <timetable-mutation-button
           :id="genId"
@@ -138,7 +138,7 @@ export default Vue.extend({
 
       return id;
     },
-    cardWidth(): number {
+    cardWidth(): object {
       const breakpoint = this.$vuetify.breakpoint.name;
       let size;
 
@@ -162,10 +162,7 @@ export default Vue.extend({
           size = 30;
           break;
       }
-      return size;
-    },
-    styleObject(): object {
-      return { width: `${this.cardWidth}%` };
+      return { width: `${size}%` };
     },
     cardClass() {
       const { textTruncate } = this;

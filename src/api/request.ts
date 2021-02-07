@@ -1,21 +1,18 @@
 import axios from 'axios';
 import { CourseInfo } from '@/assets/CourseInfo';
 
-const url = new URL('http://localhost:8000/search');
+axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL || undefined;
 
 export default {
-  async fetchData(config: {'query': string}): Promise<CourseInfo[]> {
-    let datas: CourseInfo[] = [];
-    url.search = config.query;
+  async fetchCourses(config: { query: string }): Promise<CourseInfo[]> {
+    let courses: CourseInfo[] = [];
 
     try {
-      const response = await axios.get(url.href);
-
-      datas = JSON.parse(JSON.stringify(response.data)).Hits;
+      ({ data: { Hits: courses } } = await axios.get(`search?${config.query}`));
     } catch (e) {
       console.error(e.message);
     }
 
-    return datas;
+    return courses ?? [];
   },
 };

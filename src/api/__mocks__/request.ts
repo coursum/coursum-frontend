@@ -1,11 +1,11 @@
 import { courseDatasMock } from '../../../tests/data';
 
-const request: {'fetchData': Function} = jest.genMockFromModule('request');
+const request: { 'fetchCourses': Function } = jest.genMockFromModule('request');
 
-async function fetchData(config: {'query': string}) {
+async function fetchCourses(config: { 'query': string }) {
   return courseDatasMock;
 }
 
-request.fetchData = fetchData;
+request.fetchCourses = fetchCourses;
 
 module.exports = request;

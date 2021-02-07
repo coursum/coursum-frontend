@@ -164,3 +164,30 @@ table td{
   padding: 10px 0;
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "number": "Number",
+    "suggestion": "Suggestion",
+    "requirement": "Requirement",
+    "prerequisite": "Prerequisite",
+    "related": "Related",
+    "classroom": "Classroom",
+    "types": "Types",
+    "giga": "GIGA",
+    "curriculumCode": "Curriculum Code"
+  },
+  "jp": {
+    "number":"登録番号",
+    "suggestion":"履修条件",
+    "requirement":"前提科目（必須）",
+    "prerequisite":"前提科目（推奨）",
+    "related":"関連科目",
+    "classroom":"開講場所",
+    "types":"授業形態",
+    "giga":"GIGA",
+    "curriculumCode":"カリキュラムコード"
+  }
+}
+</i18n>

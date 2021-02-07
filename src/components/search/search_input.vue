@@ -14,43 +14,40 @@
       prepend-inner-icon="mdi-magnify"
       type="text"
       hide-details
-      :placeholder="$t('placeholder')"
-      :search-input.sync="searchWord"
-      :value="model"
+      :search-input.sync="input"
+      :value="input"
       @keydown.enter="goResult"
     >
-      <template v-slot:no-data>
+      <!-- <template v-slot:no-data>
         <category-list />
-      </template>
+      </template> -->
     </v-combobox>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import CategoryList from '@/components/search/category_list.vue';
+// TODO: implement CategoryList
+// import CategoryList from '@/components/search/category_list.vue';
 
 export default Vue.extend({
   name: 'SearchInput',
   components: {
-    CategoryList,
+    // CategoryList,
   },
   data() {
     return {
-      searchWord: '',
-      model: '',
+      input: (() => {
+        const { query } = this.$route.params;
+        if (!query) {
+          return null;
+        }
+
+        return query?.split('&')?.find((queryParam) => queryParam.startsWith('query='))?.split('=')[1];
+      })(),
     };
   },
   computed: {
-    flat(): boolean {
-      if (this.$route.path === '/' || this.$route.params.query) {
-        return false;
-      }
-      return true;
-    },
-    langOpts() {
-      return [this.$i18n.t('en'), this.$i18n.t('jp')];
-    },
     searchBarWidth(): object {
       let widthRate;
       const { breakpoint }: any = this.$vuetify;
@@ -65,69 +62,40 @@ export default Vue.extend({
 
       return { width: `${widthRate}%` };
     },
+    flat(): boolean {
+      return this.$route.path !== '/' && !this.$route.params.query;
+    },
+  },
+  created() {
+    this.input = this.$store.state.searchInput;
   },
   methods: {
     goResult() {
-      let pushPath;
+      this.input = this.input ?? '';
+      if (this.input === '') return;
 
-      const isRootPath = this.$route.path === '/';
+      let search = this.$route.params.query ?? '';
+      this.input = this.input ?? '';
 
-      let hasOption;
-      let hasQuery;
-      let options;
+      if (!search) {
+        const queryParamCount = search.split('&').length;
 
-      let query = '';
-
-      if (isRootPath) {
-        hasQuery = false;
-      } else {
-        const attrs = this.$route.params.query.split('&');
-
-        [query] = attrs;
-
-        const pattern = /^query=/;
-
-        hasQuery = pattern.test(query);
-
-        if (attrs.length === 1) {
-          if (hasQuery) {
-            hasOption = false;
-          } else {
-            [options] = attrs;
-            hasOption = true;
-          }
+        if (queryParamCount === 1) {
+          search = `query=${this.input}`;
         } else {
-          const [...others] = attrs;
-          options = others.join('&');
-          hasOption = true;
+          search = search.replace(/^query=(.*?)&/, `query=${this.input ?? ''}&`);
         }
+      } else {
+        search = `query=${this.input}`;
       }
 
-      const checkSearchWord = this.searchWord !== null && this.searchWord !== '';
+      const pushPath = `/search/${search}`;
 
-      if (hasOption) {
-        if (checkSearchWord) {
-          pushPath = `/search/query=${this.searchWord}&${options}`;
-        } else {
-          pushPath = `/search/${options}`;
-        }
-      } else if (checkSearchWord) {
-        pushPath = `/search/query=${this.searchWord}`;
-      } else {
-        pushPath = '/';
-      }
-
-      if (this.$route.path !== pushPath) {
+      if (pushPath !== this.$route.path) {
         this.$router.push(pushPath);
       }
 
-      this.model = this.searchWord;
-
-      if (this.$route.path !== pushPath) {
-        this.$router.push(pushPath);
-      }
-
-      this.model = this.searchWord;
+      this.$store.commit('setSearchInput', this.input);
     },
   },
 });
@@ -143,20 +111,3 @@ export default Vue.extend({
   color: #bdbdbd;
 }
 </style>
-
-<i18n>
-{
-  "en": {
-    "placeholder": "what do you learn?",
-    "lang": "language",
-    "en": "english",
-    "jp": "japanese"
-  },
-  "jp": {
-    "placeholder": "何を学びますか？",
-    "lang": "言語",
-    "en": "英語",
-    "jp": "日本語"
-  }
-}
-</i18n>

@@ -1,15 +1,11 @@
 <template>
   <div>
-    <div
-      class="d-flex flex-row-reverse pt-3 pr-3"
-    >
+    <div class="d-flex flex-row-reverse pt-3 pr-3">
       <setting-button />
       <account-button />
     </div>
 
-    <div
-      class="mx-auto text-center"
-    >
+    <div class="mx-auto text-center">
       <coursum-logo />
 
       <keep-alive>
@@ -24,27 +20,24 @@
     <div class="mx-0 my-6">
       <div
         v-if="isLoading"
-        class="d-flex flex-column px-3"
+        class="d-flex flex-wrap justify-space-around px-3"
       >
         <v-skeleton-loader
           v-for="n in pgPageSize"
           :key="n"
-          height="180"
+          height="300"
+          width="500"
           type="card"
           class="my-1"
         />
       </div>
 
-      <template
-        v-else-if="courseDatas !== null"
-      >
-        <div
-          class="d-flex flex-wrap justify-space-around px-3"
-        >
+      <template v-else-if="courseDatas !== null">
+        <div class="d-flex flex-wrap justify-space-around px-3">
           <course-show
             v-for="n in pgPageSize"
-            :key="n-1"
-            :course-data="courseDatas[(pgPageSize * pgPage + n-1) - pgPageSize]"
+            :key="n - 1"
+            :course-data="courseDatas[pgPageSize * pgPage + n - 1 - pgPageSize]"
             :has-width="true"
           />
         </div>
@@ -102,17 +95,19 @@ export default Vue.extend({
   },
   watch: {
     async $route() {
-      this.fetchData();
+      this.fetchCourses();
     },
   },
   created() {
-    this.fetchData();
+    this.fetchCourses();
   },
   methods: {
-    async fetchData() {
+    async fetchCourses() {
       const config = {
         query: '',
       };
+
+      Object.assign(window, { route: this.$route });
 
       if (this.$route.path === '/') {
         config.query = '';
@@ -122,7 +117,7 @@ export default Vue.extend({
 
       try {
         this.isLoading = true;
-        this.courseDatas = await request.fetchData(config);
+        this.courseDatas = await request.fetchCourses(config);
       } finally {
         this.isLoading = false;
       }

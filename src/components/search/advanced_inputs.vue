@@ -1,110 +1,127 @@
 <template>
-  <v-card
-    width="500"
-    class="px-12 py-6"
+  <v-dialog
+    v-model="dialog"
+    max-width="500"
   >
-    <div :class="setFlex">
-      <div :style="setWidth">
-        GIGA
-      </div>
-      <v-checkbox
-        v-model="giga"
-        class="pa-0 ma-0"
-        hide-details
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        lecturer
-      </div>
-      <v-text-field
-        v-model="lecturer"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        Language
-      </div>
-      <v-select
-        v-model="language"
-        :items="languages"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        Semester
-      </div>
-      <v-select
-        v-model="semester"
-        :items="semesters"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        Day
-      </div>
-      <v-select
-        v-model="day"
-        :items="days"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-    <div :class="setFlex">
-      <div :style="setWidth">
-        Time
-      </div>
-      <v-select
-        v-model="time"
-        :items="times"
-        dense
-        hide-details
-        solo
-      />
-    </div>
-
-    <v-card-actions>
-      <v-spacer />
+    <template v-slot:activator="{ on, attrs }">
       <v-btn
-        @click="clear"
+        color="blue"
+        dark
+        class="mt-6"
+        v-bind="attrs"
+        v-on="on"
       >
-        clear
+        Advanced Search
       </v-btn>
-      <v-btn
-        @click="goResult"
-      >
-        submit
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+    </template>
 
-  <!-- Query:     c.Query("query"),
-       Category:  c.Query("category"), select
-       Classroom: c.Query("classroom"), select
-       Language:  c.Query("language"), select
-       Semester:  c.Query("semester"), select
-       Teacher:   c.Query("teacher"), input
-       Times:     c.Query("times"), select
-       Giga:      c.Query("giga") == "true" checkbox -->
+    <v-card
+      class="px-12 py-6"
+    >
+      <div :class="setFlex">
+        <div :style="setWidth">
+          {{ $t("giga") }}
+        </div>
+        <v-checkbox
+          v-model="giga"
+          class="pa-0 ma-0"
+          hide-details
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          {{ $t("lecturer") }}
+        </div>
+        <v-text-field
+          v-model="lecturer"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          {{ $t("language") }}
+        </div>
+        <v-select
+          v-model="language"
+          :items="languages"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          {{ $t("semester") }}
+        </div>
+        <v-select
+          v-model="semester"
+          :items="semesters"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          {{ $t("day") }}
+        </div>
+        <v-select
+          v-model="day"
+          :items="days"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+      <div :class="setFlex">
+        <div :style="setWidth">
+          {{ $t("time") }}
+        </div>
+        <v-select
+          v-model="time"
+          :items="times"
+          dense
+          hide-details
+          solo
+        />
+      </div>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          @click="resetValues"
+        >
+          reset
+        </v-btn>
+        <v-btn
+          @click="goResult"
+        >
+          submit
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 
+interface AdvancedInputs {
+  giga: string;
+  lecturer: string;
+  language: string;
+  semester: string;
+  day: string;
+  time: string;
+}
+
 export default Vue.extend({
   name: 'SearchInput',
   data() {
     return {
+      dialog: false,
       giga: '',
       lecturer: '',
       language: '',
@@ -119,50 +136,36 @@ export default Vue.extend({
       setFlex: 'd-flex align-center',
     };
   },
+  computed: {
+    getAdvancedInputs(): AdvancedInputs {
+      return this.$store.state.advancedInputs;
+    },
+  },
+  created() {
+    this.setValues();
+  },
   methods: {
-    clear() {
-      let pushPath;
+    setValues() {
+      this.giga = this.getAdvancedInputs.giga;
+      this.lecturer = this.getAdvancedInputs.lecturer;
+      this.language = this.getAdvancedInputs.language;
+      this.semester = this.getAdvancedInputs.semester;
+      this.day = this.getAdvancedInputs.day;
+      this.time = this.getAdvancedInputs.time;
+    },
+    storeValues() {
+      const advancedInputs = {
+        giga: this.giga,
+        lecturer: this.lecturer,
+        language: this.language,
+        semester: this.semester,
+        day: this.day,
+        time: this.time,
+      };
 
-      const isRootPath = this.$route.path === '/';
-      let hasOption;
-      let hasQuery;
-
-      let query = '';
-
-      if (!isRootPath) {
-        const attrs = this.$route.params.query.split('&');
-
-        [query] = attrs;
-
-        const pattern = /^query=/;
-
-        hasQuery = pattern.test(query);
-
-        if (attrs.length === 1) {
-          if (hasQuery) {
-            hasOption = false;
-          } else {
-            hasOption = true;
-          }
-        } else {
-          hasOption = true;
-        }
-      }
-
-      if (hasQuery && hasOption) {
-        pushPath = `/search/${query}`;
-      } else if (hasOption) {
-        pushPath = '/';
-      } else if (hasQuery) {
-        pushPath = `/search/${query}`;
-      } else {
-        pushPath = '/';
-      }
-
-      if (this.$route.path !== pushPath) {
-        this.$router.push(pushPath);
-      }
-
+      this.$store.commit('setAdvancedInputs', advancedInputs);
+    },
+    resetValues() {
       this.giga = '';
       this.lecturer = '';
       this.language = '';
@@ -172,24 +175,36 @@ export default Vue.extend({
     },
     goResult() {
       let pushPath;
-      const times = this.day + this.time;
-
-      const options = [['giga', this.giga], ['teacher', this.lecturer], ['language', this.language], ['semester', this.semester], ['times', times]]
-        .filter(([, value]) => value && value !== '' && value !== null && value !== undefined).map(([key, value]) => `${key}=${value}`).join('&');
-
-      const isRootPath = this.$route.path === '/';
-      const hasOption = options !== '';
-
       let hasQuery;
       let query = '';
 
-      if (isRootPath) {
-        hasQuery = false;
-      } else {
-        [query] = this.$route.params.query.split('&');
+      const times = `${this.day}${this.time}`;
+
+      const options = [
+        ['giga', this.giga],
+        ['teacher', this.lecturer],
+        ['language', this.language],
+        ['semester', this.semester],
+        ['times', times],
+      ]
+        .filter(([, value]) => (
+          value
+          && value !== ''
+          && value !== null
+          && value !== undefined
+        ))
+        .map(([key, value]) => `${key}=${value}`).join('&');
+
+      const hasOption = options !== '';
+
+      if (this.$route.params.query) {
         const pattern = /^query=/;
 
+        [query] = this.$route.params.query.split('&');
+
         hasQuery = pattern.test(query);
+      } else {
+        hasQuery = false;
       }
 
       if (hasQuery && hasOption) {
@@ -202,6 +217,12 @@ export default Vue.extend({
         pushPath = '/';
       }
 
+      this.pushPath(pushPath);
+
+      this.storeValues();
+      this.dialog = false;
+    },
+    pushPath(pushPath: string) {
       if (this.$route.path !== pushPath) {
         this.$router.push(pushPath);
       }
@@ -209,3 +230,24 @@ export default Vue.extend({
   },
 });
 </script>
+
+<i18n>
+{
+  "en": {
+    "giga": "GIGA",
+    "lecturer": "Lecturer",
+    "language": "Language",
+    "semester": "Semester",
+    "day": "Day",
+    "time": "Time"
+  },
+  "jp": {
+    "giga": "GIGA",
+    "lecturer": "教員",
+    "language": "言語",
+    "semester": "学期",
+    "day": "曜日",
+    "time": "時間"
+  }
+}
+</i18n>

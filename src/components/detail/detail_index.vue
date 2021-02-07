@@ -1,9 +1,9 @@
 <template>
-  <div
-    class="ma-5"
-  >
+  <div class="ma-5">
     <div
       v-if="!isLoading"
+      :style="width"
+      class="mx-auto"
     >
       <course-show
         :course-data="courseData"
@@ -65,19 +65,45 @@ export default Vue.extend({
     curriculumCode(): string | null | undefined {
       return this.courseData?.curriculumCode;
     },
+    width(): object {
+      const breakpoint = this.$vuetify.breakpoint.name;
+      let size;
+
+      switch (breakpoint) {
+        case 'xs':
+          size = 100;
+          break;
+        case 'sm':
+          size = 100;
+          break;
+        case 'md':
+          size = 80;
+          break;
+        case 'lg':
+          size = 60;
+          break;
+        case 'xl':
+          size = 60;
+          break;
+        default:
+          size = 30;
+          break;
+      }
+      return { width: `${size}%` };
+    },
   },
   async created() {
-    this.fetchData();
+    this.fetchCourses();
   },
   methods: {
-    async fetchData() {
+    async fetchCourses() {
       const config = {
         query: this.$route.params.id,
       };
 
       try {
         this.isLoading = true;
-        const datas = await request.fetchData(config);
+        const datas = await request.fetchCourses(config);
         [this.courseData] = datas.filter((dataObj: CourseInfo) => {
           const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers[0]?.name?.jp}`;
           return this.$route.params.id === id;

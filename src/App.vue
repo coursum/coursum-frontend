@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <top-bar
-      v-if="showTopBar"
-    />
+    <top-bar v-if="showTopBar" />
     <v-main>
       <router-view />
     </v-main>
@@ -14,26 +12,19 @@ import Vue from 'vue';
 import TopBar from '@/components/bar/top_bar.vue';
 
 export default Vue.extend({
-
   name: 'App',
   components: {
     TopBar,
   },
   computed: {
     showTopBar(): boolean {
-      let bool;
       const { path } = this.$route;
 
-      if (path === '/' || path.split('/')[1] === 'search') {
-        bool = false;
-      } else {
-        bool = true;
-      }
-      return bool;
+      return path !== '/' && !path.startsWith('/search');
     },
   },
   async created() {
-    this.$store.commit('getIdsFromLocalStorage');
+    this.$store.commit('timetable/getIdsFromLocalStorage');
     this.getThemeState();
     this.getLangState();
   },
@@ -41,7 +32,7 @@ export default Vue.extend({
     getThemeState() {
       const themeState = localStorage.getItem('themeState');
       if (typeof themeState === 'string') {
-        this.$vuetify.theme.dark = Boolean(JSON.parse(themeState));
+        this.$vuetify.theme.dark = JSON.parse(themeState);
       }
     },
     getLangState() {
