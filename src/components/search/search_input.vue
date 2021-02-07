@@ -18,9 +18,9 @@
       :value="input"
       @keydown.enter="goResult"
     >
-      <!-- <template v-slot:no-data>
+      <template v-slot:no-data>
         <category-list />
-      </template> -->
+      </template>
     </v-combobox>
   </div>
 </template>
@@ -28,12 +28,12 @@
 <script lang="ts">
 import Vue from 'vue';
 // TODO: implement CategoryList
-// import CategoryList from '@/components/search/category_list.vue';
+import CategoryList from '@/components/search/category_list.vue';
 
 export default Vue.extend({
   name: 'SearchInput',
   components: {
-    // CategoryList,
+    CategoryList,
   },
   data() {
     return {
