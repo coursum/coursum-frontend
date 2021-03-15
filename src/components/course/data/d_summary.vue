@@ -35,7 +35,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      summaryStyle: { 'font-size': '1rem' },
+      summaryStyle: { 'font-size': '0.85rem' },
     };
   },
   computed: {

@@ -1,12 +1,11 @@
 <template>
-  <span
-    class="primary--text"
+  <div
+    class="primary--text text-center"
     :style="headerStyle"
-    style="font-family: 'Press Start 2P', cursive;"
     @click="goHome"
   >
     Coursum
-  </span>
+  </div>
 </template>
 
 <script lang="ts">
@@ -28,7 +27,3 @@ export default Vue.extend({
   },
 });
 </script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-</style>

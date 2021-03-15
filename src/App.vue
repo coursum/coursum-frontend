@@ -10,6 +10,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import TopBar from '@/components/bar/top_bar.vue';
+import request from '@/api/request';
 
 export default Vue.extend({
   name: 'App',
@@ -20,13 +21,19 @@ export default Vue.extend({
     showTopBar(): boolean {
       const { path } = this.$route;
 
-      return path !== '/' && !path.startsWith('/search');
+      return path !== '/' && !path.startsWith('/course');
     },
   },
   async created() {
     this.$store.commit('timetable/getIdsFromLocalStorage');
     this.getThemeState();
     this.getLangState();
+
+    if (window.location.pathname === '/') {
+      await request.fetchAndStoreCourses('search?');
+    } else {
+      await request.fetchAndStoreCourses(`search${window.location.search}`);
+    }
   },
   methods: {
     getThemeState() {

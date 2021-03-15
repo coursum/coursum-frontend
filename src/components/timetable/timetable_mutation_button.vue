@@ -3,7 +3,8 @@
     <v-btn
       v-if="isInclude"
       icon
-      color="#ffc91a"
+      x-small
+      color="#FFE082"
       @click.prevent="removeCourse()"
     >
       <v-icon> mdi-star </v-icon>
@@ -12,7 +13,8 @@
     <v-btn
       v-else
       icon
-      color="#ffc91a"
+      x-small
+      color="#CFD8DC"
       @click.prevent="addCourse()"
     >
       <v-icon> mdi-star-outline </v-icon>

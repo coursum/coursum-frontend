@@ -95,7 +95,7 @@ export default Vue.extend({
     this.isLoading = true;
 
     try {
-      this.ids.forEach(this.fetchCourses);
+      this.ids.forEach(this.fetchAndStoreCourses);
     } finally {
       this.isLoading = false;
     }
@@ -111,7 +111,7 @@ export default Vue.extend({
     idx(d: [string, number[]][]): number {
       return d?.[0]?.[1]?.[0];
     },
-    async fetchCourses(id: string) {
+    async fetchAndStoreCourses(id: string) {
       let datas: CourseInfo[] = [];
 
       const config = {
@@ -119,7 +119,7 @@ export default Vue.extend({
       };
 
       try {
-        datas = await request.fetchCourses(config);
+        datas = await request.fetchAndStoreCourses(config);
       } finally {
         this.setCourseDatas(datas);
       }

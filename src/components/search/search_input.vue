@@ -17,24 +17,16 @@
       :search-input.sync="input"
       :value="input"
       @keydown.enter="goResult"
-    >
-      <template v-slot:no-data>
-        <category-list />
-      </template>
-    </v-combobox>
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-// TODO: implement CategoryList
-import CategoryList from '@/components/search/category_list.vue';
+import tool from '@/api/build_query';
 
 export default Vue.extend({
   name: 'SearchInput',
-  components: {
-    CategoryList,
-  },
   data() {
     return {
       input: (() => {
@@ -50,7 +42,7 @@ export default Vue.extend({
   computed: {
     searchBarWidth(): object {
       let widthRate;
-      const { breakpoint }: any = this.$vuetify;
+      const { breakpoint } = this.$vuetify;
 
       if (breakpoint.xs) {
         widthRate = 80;
@@ -71,31 +63,13 @@ export default Vue.extend({
   },
   methods: {
     goResult() {
-      this.input = this.input ?? '';
-      if (this.input === '') return;
-
-      let search = this.$route.params.query ?? '';
-      this.input = this.input ?? '';
-
-      if (!search) {
-        const queryParamCount = search.split('&').length;
-
-        if (queryParamCount === 1) {
-          search = `query=${this.input}`;
-        } else {
-          search = search.replace(/^query=(.*?)&/, `query=${this.input ?? ''}&`);
-        }
-      } else {
-        search = `query=${this.input}`;
-      }
-
-      const pushPath = `/search/${search}`;
-
-      if (pushPath !== this.$route.path) {
-        this.$router.push(pushPath);
-      }
+      const searchQuery = tool.buildQuery({
+        builder: this.input,
+      });
 
       this.$store.commit('setSearchInput', this.input);
+
+      tool.goToResultPage(searchQuery);
     },
   },
 });

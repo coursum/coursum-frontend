@@ -1,27 +1,21 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { AdvancedInputs } from '@/assets/SearchInfo';
+import course from './modules/course';
 import timetable from './modules/timetable';
 
 Vue.use(Vuex);
-interface AdvancedInputs {
-  giga: string;
-  lecturer: string;
-  language: string;
-  semester: string;
-  day: string;
-  time: string;
-}
 
 export default new Vuex.Store({
   state: {
+    isLoading: false,
     searchInput: '',
     advancedInputs: {
       giga: '',
-      lecturer: '',
+      teacher: '',
       language: '',
       semester: '',
-      day: '',
-      time: '',
+      times: '',
     } as AdvancedInputs,
   },
   mutations: {
@@ -31,10 +25,14 @@ export default new Vuex.Store({
     setSearchInput(state, payload: string) {
       state.searchInput = payload;
     },
+    setIsLoading(state, isLoading: boolean) {
+      state.isLoading = isLoading;
+    },
   },
   actions: {
   },
   modules: {
+    course,
     timetable,
   },
   strict: process.env.NODE_ENV !== 'production',

@@ -1,33 +1,36 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import CourseIndex from '@/components/course/course_index.vue';
+import Main from '@/components/main/main.vue';
+import DetailIndex from '@/components/detail/detail_index.vue';
+import TimetableShow from '@/components/timetable/timetable_show.vue';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'CourseIndex',
-    component: () => import('@/components/course/course_index.vue'),
+    component: Main,
     children: [
       {
-        path: 'search/:query',
+        path: '',
+        component: CourseIndex,
+      },
+      {
+        path: 'course/:query',
+        component: CourseIndex,
       },
     ],
   },
   {
-    path: '/course/:id',
+    path: '/course-detail/:id',
     name: 'DetailIndex',
-    component: () => import('@/components/detail/detail_index.vue'),
+    component: DetailIndex,
   },
   {
     path: '/timetable',
     name: 'TimetableShow',
-    component: () => import('@/components/timetable/timetable_show.vue'),
-    children: [
-      {
-        path: 'shared/:id',
-      },
-    ],
+    component: TimetableShow,
   },
 ];
 
