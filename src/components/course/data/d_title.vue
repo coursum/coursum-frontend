@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="titleData"
-    class="px-6 text-truncate"
+    class="px-6 text-truncate font-weight-bold"
   >
     {{ titleData }}
   </div>
@@ -29,7 +29,7 @@ export default Vue.extend({
 
 <style scoped>
 div{
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: var(--v-wordcolor-base);
 }
 </style>

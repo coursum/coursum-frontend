@@ -5,13 +5,12 @@
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
+        outlined
         color="blue"
-        dark
-        class="mt-6"
         v-bind="attrs"
         v-on="on"
       >
-        Advanced Search
+        Search Filter
       </v-btn>
     </template>
 
@@ -33,7 +32,7 @@
           {{ $t("lecturer") }}
         </div>
         <v-text-field
-          v-model="lecturer"
+          v-model="teacher"
           dense
           hide-details
           solo
@@ -107,10 +106,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import tool from '@/api/build_query';
 
 interface AdvancedInputs {
   giga: string;
-  lecturer: string;
+  teacher: string;
   language: string;
   semester: string;
   day: string;
@@ -123,7 +123,7 @@ export default Vue.extend({
     return {
       dialog: false,
       giga: '',
-      lecturer: '',
+      teacher: '',
       language: '',
       semester: '',
       day: '',
@@ -141,6 +141,9 @@ export default Vue.extend({
     },
     semesters() {
       return [this.$i18n.t('spring'), this.$i18n.t('autumn')];
+    },
+    timesStr(): string {
+      return `${typeof this.day === 'string' ? this.day : ''}${typeof this.time === 'string' ? this.time : ''}`;
     },
     days() {
       return [
@@ -169,7 +172,7 @@ export default Vue.extend({
   methods: {
     setValues() {
       this.giga = this.getAdvancedInputs.giga;
-      this.lecturer = this.getAdvancedInputs.lecturer;
+      this.teacher = this.getAdvancedInputs.teacher;
       this.language = this.getAdvancedInputs.language;
       this.semester = this.getAdvancedInputs.semester;
       this.day = this.getAdvancedInputs.day;
@@ -178,75 +181,42 @@ export default Vue.extend({
     storeValues() {
       const advancedInputs = {
         giga: this.giga,
-        lecturer: this.lecturer,
+        teacher: this.teacher,
         language: this.language,
         semester: this.semester,
-        day: this.day,
-        time: this.time,
+        times: this.timesStr,
       };
 
       this.$store.commit('setAdvancedInputs', advancedInputs);
     },
     resetValues() {
       this.giga = '';
-      this.lecturer = '';
+      this.teacher = '';
       this.language = '';
       this.semester = '';
       this.day = '';
       this.time = '';
     },
     goResult() {
-      let pushPath;
-      let hasQuery;
-      let query = '';
+      const searchQuery = tool.buildQuery({
+        builder: {
+          giga: this.giga,
+          teacher: this.teacher,
+          language: this.language,
+          semester: this.semester,
+          times: this.timesStr,
+        },
+      });
 
-      const times = `${this.day}${this.time}`;
+      console.log(searchQuery);
 
-      const options = [
-        ['giga', this.giga],
-        ['teacher', this.lecturer],
-        ['language', this.language],
-        ['semester', this.semester],
-        ['times', times],
-      ]
-        .filter(([, value]) => (
-          value
-          && value !== ''
-          && value !== null
-          && value !== undefined
-        ))
-        .map(([key, value]) => `${key}=${value}`).join('&');
-
-      const hasOption = options !== '';
-
-      if (this.$route.params.query) {
-        const pattern = /^query=/;
-
-        [query] = this.$route.params.query.split('&');
-
-        hasQuery = pattern.test(query);
-      } else {
-        hasQuery = false;
-      }
-
-      if (hasQuery && hasOption) {
-        pushPath = `/search/${query}&${options}`;
-      } else if (hasOption) {
-        pushPath = `/search/${options}`;
-      } else if (hasQuery) {
-        pushPath = `/search/${query}`;
-      } else {
-        pushPath = '/';
-      }
-
-      this.pushPath(pushPath);
-
+      this.pushPath(searchQuery);
       this.storeValues();
       this.dialog = false;
     },
-    pushPath(pushPath: string) {
-      if (this.$route.path !== pushPath) {
-        this.$router.push(pushPath);
+    pushPath(searchQuery: string) {
+      if (this.$route.path !== searchQuery) {
+        this.$router.push(`/course/${searchQuery}`);
       }
     },
   },

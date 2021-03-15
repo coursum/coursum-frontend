@@ -29,7 +29,7 @@ export default Vue.extend({
 <style scoped>
 div{
   font-size: 0.7rem;
-  color: var(--v-wordcolor-base);
+  color: gray;
 }
 </style>
 

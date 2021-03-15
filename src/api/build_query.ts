@@ -1,0 +1,64 @@
+import store from '@/store';
+import { AdvancedInputs } from '@/assets/SearchInfo';
+
+interface Params {
+  builder: string | null | undefined | AdvancedInputs;
+}
+
+function keywordsToString(keywords: AdvancedInputs): string {
+  return [
+    ['giga', keywords.giga],
+    ['teacher', keywords.teacher],
+    ['language', keywords.language],
+    ['semester', keywords.semester],
+    ['times', keywords.times],
+  ]
+    .filter(([, value]) => (
+      value
+        && value !== ''
+        && value !== null
+        && value !== undefined
+    ))
+    .map(([key, value]) => `${key}=${value}`).join('&');
+}
+
+export default {
+  buildQuery(params: Params): string {
+    let query = '';
+    let keywords = '';
+
+    if (typeof params.builder === 'string') {
+      // query検索なのでkeywordsは変えない
+      query = params.builder;
+      keywords = keywordsToString(store.state.advancedInputs);
+    } else if (params.builder !== undefined
+      && params.builder !== null) {
+      // keywords検索なのでqueryは変えない
+      query = store.state.searchInput;
+      keywords = keywordsToString(params.builder);
+    } else {
+      // query検索なのでkeywordsは変えない
+      query = '';
+      keywords = keywordsToString(store.state.advancedInputs);
+    }
+
+    if (query === '' && keywords === '') {
+      return '';
+    }
+
+    if (query === '') {
+      return `search?${keywords}`;
+    }
+
+    if (keywords === '') {
+      return `search?query=${query}`;
+    }
+
+    return `search?query=${query}&${keywords}`;
+  },
+  goToResultPage(searchQuery: string) {
+    if (searchQuery !== window.location.pathname) {
+      window.location.href = `/course/${searchQuery}`;
+    }
+  },
+};

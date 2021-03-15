@@ -93,17 +93,17 @@ export default Vue.extend({
     },
   },
   async created() {
-    this.fetchCourses();
+    this.fetchAndStoreCourses();
   },
   methods: {
-    async fetchCourses() {
+    async fetchAndStoreCourses() {
       const config = {
         query: this.$route.params.id,
       };
 
       try {
         this.isLoading = true;
-        const datas = await request.fetchCourses(config);
+        const datas = await request.fetchAndStoreCourses(config);
         [this.courseData] = datas.filter((dataObj: CourseInfo) => {
           const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers[0]?.name?.jp}`;
           return this.$route.params.id === id;

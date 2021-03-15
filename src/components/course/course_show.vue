@@ -3,7 +3,7 @@
     <template v-slot:default="{ hover }">
       <v-card
         :class="cardClass(hover)"
-        class="my-2 rounded-lg d-flex flex-column justify-space-between"
+        class="my-2 d-flex flex-column justify-space-between"
         :to="genRoute"
         :style="hasWidth ? cardWidth: ''"
       >
@@ -12,14 +12,8 @@
           style="position: absolute; bottom: 5px; right: 5px"
         />
 
-        <div
-          class="rounded-t-lg py-2 title-bg"
-        >
+        <div class="pt-5">
           <d-category :category="category" />
-          <d-lectures
-            :text-truncate="textTruncate"
-            :lecturers="lecturers"
-          />
           <d-title
             :title="title"
           />
@@ -28,10 +22,16 @@
         <d-postscript :postscript="postscript" />
         <d-summary
           v-if="showSummary"
-          class="py-2"
+          class="py-1"
           :title="title"
           :summary="summary"
           :text-truncate="textTruncate"
+        />
+
+        <d-lectures
+          style="text-align: right;"
+          :text-truncate="textTruncate"
+          :lecturers="lecturers"
         />
 
         <div
@@ -105,7 +105,7 @@ export default Vue.extend({
     },
     genRoute(): string | undefined {
       if (this.textTruncate) {
-        return `/course/${this.courseData?.title?.name?.jp} ${this.courseData.lecturers[0]?.name?.jp}`;
+        return `/course-detail/${this.courseData?.title?.name?.jp} ${this.courseData.lecturers[0]?.name?.jp}`;
       }
       return undefined;
     },
@@ -184,9 +184,3 @@ export default Vue.extend({
   },
 });
 </script>
-
-<style scoped>
-.title-bg {
-  background-color: var(--v-blue-base);
-}
-</style>

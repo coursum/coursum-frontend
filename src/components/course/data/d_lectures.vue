@@ -46,7 +46,7 @@ export default Vue.extend({
 
 <style scoped>
 span{
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--v-wordcolor-base);
 }
 </style>
