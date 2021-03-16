@@ -3,42 +3,49 @@
     <template v-slot:default="{ hover }">
       <v-card
         :class="cardClass(hover)"
-        class="my-2 px-5 py-3 d-flex flex-column justify-space-between"
+        class="my-2 px-5 pb-2 pt-4 d-flex flex-column justify-space-between"
         :style="hasWidth ? cardWidth: ''"
         @click.prevent="goResult"
       >
-        <d-category :category="category" />
-
-        <d-title
-          :title="title"
-        />
-
-        <d-postscript :postscript="postscript" />
-
-        <d-summary
-          v-if="showSummary"
-          :title="title"
-          :summary="summary"
-          :text-truncate="textTruncate"
-        />
-
         <div>
-          <d-credit :credit="credit" />
-          <d-schedule-semester :semester="semester" />
-          <d-schedule-times :times="times" />
+          <d-category :category="category" />
+
+          <d-title
+            :title="title"
+          />
+
+          <d-postscript :postscript="postscript" />
+
+          <d-summary
+            v-if="showSummary"
+            :title="title"
+            :summary="summary"
+            :text-truncate="textTruncate"
+          />
         </div>
 
-        <v-divider class="my-1" />
+        <div>
+          <div class="d-flex d-column justify-space-between">
+            <div>
+              <d-credit :credit="credit" />
+              <d-schedule-semester :semester="semester" />
+            </div>
+            <d-schedule-times :times="times" />
+          </div>
 
-        <d-lectures
-          :text-truncate="textTruncate"
-          :lecturers="lecturers"
-        />
+          <v-divider class="my-1" />
 
-        <timetable-mutation-button
-          :id="genId"
-          style="position: absolute; top: 5px; right: 5px"
-        />
+          <div class="d-flex justify-space-between align-center">
+            <d-lectures
+              :text-truncate="textTruncate"
+              :lecturers="lecturers"
+            />
+
+            <timetable-mutation-button
+              :id="genId"
+            />
+          </div>
+        </div>
       </v-card>
     </template>
   </v-hover>

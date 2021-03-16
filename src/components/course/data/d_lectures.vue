@@ -9,7 +9,7 @@
       <span
         v-if="lecturer.name && lecturer.name[`${curLang}`]"
         :key="i"
-        class="mr-2 font-weight-bold"
+        class="mr-2"
       >
         {{ lecturer.name[`${curLang}`] }}
       </span>
@@ -46,7 +46,5 @@ export default Vue.extend({
 span {
   display: inline-block;
   font-size: 0.85rem;
-  color: #546E7A;
-  text-align: right;
 }
 </style>

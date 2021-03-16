@@ -3,7 +3,6 @@
     <v-chip
       v-for="(display, i) in displays"
       :key="i"
-      color="primary"
       outlined
       x-small
     >
