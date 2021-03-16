@@ -11,6 +11,13 @@
       <v-list-item-content>
         <v-list-item-title>
           {{ $t('my-table') }}
+          <v-chip
+            class="mx-2"
+            label
+            x-small
+          >
+            {{ timetableLength }}
+          </v-chip>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -23,11 +30,17 @@ import tool from '@/api/build_query';
 
 export default Vue.extend({
   name: 'TimetableLink',
+  computed: {
+    timetableLength(): number {
+      return this.$store.state.timetable.courses.length;
+    },
+  },
   methods: {
     async goResult() {
       tool.goToResultPage('/timetable');
     },
   },
+
 });
 </script>
 
