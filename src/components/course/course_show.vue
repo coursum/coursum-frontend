@@ -42,7 +42,8 @@
             />
 
             <timetable-mutation-button
-              :id="genId"
+              :title="titleForId"
+              :teacher="teacherForId"
             />
           </div>
         </div>
@@ -134,10 +135,11 @@ export default Vue.extend({
     summary(): Basic | undefined {
       return this.courseData?.summary;
     },
-    genId(): string {
-      const id = `${this.title?.jp} ${this.lecturers?.[0]?.name?.jp}`;
-
-      return id;
+    titleForId(): string {
+      return `${this.courseData?.title?.name?.jp}`;
+    },
+    teacherForId(): string {
+      return `${this.courseData?.lecturers?.[0]?.name?.jp}`;
     },
     cardWidth(): object {
       const breakpoint = this.$vuetify.breakpoint.name;

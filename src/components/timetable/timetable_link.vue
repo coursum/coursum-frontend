@@ -3,7 +3,7 @@
     nav
     dense
   >
-    <v-list-item to="/timetable">
+    <v-list-item @click.prevent="goResult">
       <v-list-item-icon>
         <v-icon>mdi-folder-heart</v-icon>
       </v-list-item-icon>
@@ -19,9 +19,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import tool from '@/api/build_query';
 
 export default Vue.extend({
   name: 'TimetableLink',
+  methods: {
+    async goResult() {
+      tool.goToResultPage('/timetable');
+    },
+  },
 });
 </script>
 

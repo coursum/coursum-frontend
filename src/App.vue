@@ -13,6 +13,7 @@ import Vue from 'vue';
 import TopBar from '@/components/bar/top_bar.vue';
 import SideBar from '@/components/bar/side_bar.vue';
 import request from '@/api/request';
+import { ValidIdParams } from '@/assets/CourseInfo';
 
 export default Vue.extend({
   name: 'App',
@@ -28,7 +29,13 @@ export default Vue.extend({
     },
   },
   async created() {
-    this.$store.commit('timetable/getIdsFromLocalStorage');
+    const ids = localStorage.getItem('timetable/ids');
+
+    if (ids !== null) {
+      const idObjs: ValidIdParams[] = JSON.parse(ids);
+      await request.fetchAndStoreCoursesForTimetable(idObjs);
+    }
+
     this.getThemeState();
     this.getLangState();
 

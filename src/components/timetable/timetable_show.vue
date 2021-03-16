@@ -4,7 +4,15 @@
       now loading...
     </div>
     <div v-else>
-      <div
+      <course-show
+        v-for="(course, n) in courses"
+        :key="n"
+        :has-width="true"
+        :course-data="course"
+        :show-summary="false"
+      />
+
+      <!-- <div
         v-for="(d, i) in sorted"
         :key="i"
       >
@@ -30,16 +38,15 @@
             :show-summary="false"
           />
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { CourseInfo, courseTemplate } from '@/assets/CourseInfo';
+import { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
-import request from '@/api/request';
 
 export default Vue.extend({
 
@@ -51,15 +58,19 @@ export default Vue.extend({
 
   data() {
     return {
-      isLoading: true,
       isSharedPage: false,
-      courseDatas: [courseTemplate],
       sortedIDs: [] as [string, number[]][],
     };
   },
   computed: {
+    courses(): CourseInfo[] {
+      return this.$store.state.timetable.courses;
+    },
     ids(): string[] {
       return this.$store.state.timetable.ids;
+    },
+    isLoading(): boolean {
+      return this.$store.state.isLoading;
     },
     sorted(): [string, number[]][][] {
       const daySort = this.sortedIDs;
@@ -90,16 +101,6 @@ export default Vue.extend({
       return result;
     },
   },
-
-  async created() {
-    this.isLoading = true;
-
-    try {
-      this.ids.forEach(this.fetchAndStoreCourses);
-    } finally {
-      this.isLoading = false;
-    }
-  },
   mounted() {
     if (this.$route.path.split('/')[2] === 'shared') {
       this.isSharedPage = true;
@@ -111,19 +112,6 @@ export default Vue.extend({
     idx(d: [string, number[]][]): number {
       return d?.[0]?.[1]?.[0];
     },
-    async fetchAndStoreCourses(id: string) {
-      const datas: CourseInfo[] = [];
-
-      const config = {
-        query: `query=${id}`,
-      };
-
-      try {
-        // datas = await request.fetchAndStoreCourses(config);
-      } finally {
-        this.setCourseDatas(datas);
-      }
-    },
     setCourseDatas(datas: CourseInfo[]) {
       datas
         .some((dataObj: CourseInfo) => {
@@ -131,7 +119,7 @@ export default Vue.extend({
 
           if (this.ids.includes(id)) {
             this.setInitialData(dataObj);
-            this.$set(this.courseDatas, id, dataObj);
+            this.$set(this.courses, id, dataObj);
             return true;
           }
           return false;

@@ -2,7 +2,7 @@ import store from '@/store';
 import router from '@/router';
 import { AdvancedInputs } from '@/assets/SearchInfo';
 
-interface Params {
+interface QueryParams {
   builder: string | null | undefined | AdvancedInputs;
 }
 
@@ -24,7 +24,7 @@ function keywordsToString(keywords: AdvancedInputs): string {
 }
 
 export default {
-  buildQuery(params: Params): string {
+  buildQuery(params: QueryParams): string {
     let query = '';
     let keywords = '';
 

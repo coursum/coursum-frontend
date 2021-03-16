@@ -1,39 +1,22 @@
-const idsType: string[] = [];
+import { ValidIdParams, CourseInfo } from '@/assets/CourseInfo';
 
-const setTimetable = (ids: string[]) => {
-  localStorage.setItem('timetable/ids', JSON.stringify(ids));
-};
-
-const getIdsFromLocalStorage = (state: State) => {
-  const ids = localStorage.getItem('timetable/ids');
-
-  if (ids !== null) {
-    state.ids = JSON.parse(ids);
-  }
-};
+const coursesType: CourseInfo[] = [];
 
 interface State {
-  ids: string[];
+  courses: CourseInfo[];
 }
 
 export default {
   namespaced: true,
   state: {
-    ids: idsType,
+    courses: coursesType,
   },
   mutations: {
-    getIdsFromLocalStorage,
-    addToTimetable(state: State, id: string) {
-      state.ids = [...state.ids, id];
-
-      setTimetable(state.ids);
-      getIdsFromLocalStorage(state);
+    addCourse(state: State, addCourse: CourseInfo) {
+      state.courses.push(addCourse);
     },
-    removeFromTimetable(state: State, removeId: string) {
-      state.ids = state.ids.filter((courseId: string) => courseId !== removeId);
-
-      setTimetable(state.ids);
-      getIdsFromLocalStorage(state);
+    removeCourse(state: State, removeCourse: ValidIdParams) {
+      state.courses = state.courses.filter((course: CourseInfo) => `{"title":"${course.title?.name?.jp}","teacher":"${course.lecturers?.[0]?.name?.jp}"}` !== `{"title":"${removeCourse.title}","teacher":"${removeCourse.teacher}"}`);
     },
   },
 };

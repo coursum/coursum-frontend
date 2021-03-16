@@ -24,33 +24,39 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { CourseInfo } from '@/assets/CourseInfo';
+import localStorage from '@/api/local_storage';
+import request from '@/api/request';
 
 export default Vue.extend({
   name: 'TimetableMutationButton',
   props: {
-    id: {
+    title: {
+      type: String,
+      default: '',
+    },
+    teacher: {
       type: String,
       default: '',
     },
   },
   computed: {
     isInclude(): boolean {
-      const courseIds = this.$store.state.timetable.ids;
+      const { courses } = this.$store.state.timetable;
 
-      return courseIds.includes(this.id);
+      return courses.some((course: CourseInfo) => `{"title":"${course.title?.name?.jp}","teacher":"${course.lecturers?.[0]?.name?.jp}"}` === `{"title":"${this.title}","teacher":"${this.teacher}"}`);
     },
   },
   methods: {
     removeCourse() {
-      // this.$store.commit('timetable/removeFromTimetable', this.id);
-      // setTimeout(() => {
-      //   if (this.$route.path.startsWith('/timetable')) {
-      //     this.$router.go(this.$router.currentRoute);
-      //   }
-      // }, 1000);
+      this.$store.commit('timetable/removeCourse', { title: this.title, teacher: this.teacher });
+
+      localStorage.removeFromLocalStrage({ title: this.title, teacher: this.teacher });
     },
     addCourse() {
-      this.$store.commit('timetable/addToTimetable', this.id);
+      request.fetchAndStoreCourseForTimetable(`search?query=${this.title}&teacher=${this.teacher}`);
+
+      localStorage.addToLocalStrage({ title: this.title, teacher: this.teacher });
     },
   },
 

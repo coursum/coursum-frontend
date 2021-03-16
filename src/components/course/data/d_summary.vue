@@ -47,7 +47,7 @@ export default Vue.extend({
       return this.summary?.[this.curLang];
     },
     titleJp(): string | null | undefined {
-      return this.title?.jp;
+      return this.title?.name?.jp;
     },
     curLang(): string {
       return this.$i18n.locale;

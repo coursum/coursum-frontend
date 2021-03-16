@@ -89,3 +89,8 @@ export const courseTemplate: CourseInfo = {
   curriculumCode: undefined,
   credit: undefined,
 };
+
+export interface ValidIdParams {
+  title: string;
+  teacher: string;
+}
