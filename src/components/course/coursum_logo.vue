@@ -1,8 +1,9 @@
 <template>
   <div
+    v-if="isMdAndUp"
     class="primary--text text-center"
-    :style="headerStyle"
-    @click="goHome"
+    :style="logoStyle"
+    @click="goResult"
   >
     Coursum
   </div>
@@ -10,19 +11,24 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import request from '@/api/request';
+import tool from '@/api/build_query';
 
 export default Vue.extend({
   name: 'CoursumLogo',
   computed: {
-    headerStyle(): object {
-      return { 'font-size': `${this.$vuetify.breakpoint.mdAndUp ? 2.5 : 2}rem`, cursor: 'pointer' };
+    logoStyle(): object {
+      return { 'font-size': '1.1rem', cursor: 'pointer' };
+    },
+    isMdAndUp() {
+      return this.$vuetify.breakpoint.mdAndUp;
     },
   },
   methods: {
-    goHome() {
-      if (this.$route.path !== '/') {
-        this.$router.push('/');
-      }
+    async goResult() {
+      await request.fetchAndStoreCourses('search?');
+
+      tool.goToResultPage('/');
     },
   },
 });

@@ -1,7 +1,10 @@
 <template>
   <div class="ma-5">
+    <div v-if="isLoading">
+      loding
+    </div>
     <div
-      v-if="!isLoading"
+      v-else
       :style="width"
       class="mx-auto"
     >
@@ -25,11 +28,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import CourseShow from '@/components/course/course_show.vue';
-import {
-  CourseInfo, Tag, Registration, courseTemplate,
-} from '@/assets/CourseInfo';
+import { CourseInfo, Tag, Registration } from '@/assets/CourseInfo';
 import DetailShow from '@/components/detail/detail_show.vue';
-import request from '@/api/request';
 
 export default Vue.extend({
   name: 'DetailIndex',
@@ -37,13 +37,10 @@ export default Vue.extend({
     DetailShow,
     CourseShow,
   },
-  data() {
-    return {
-      isLoading: true,
-      courseData: courseTemplate,
-    };
-  },
   computed: {
+    isLoading(): boolean {
+      return this.$store.state.isLoading;
+    },
     curLang(): string {
       return this.$i18n.locale;
     },
@@ -64,6 +61,9 @@ export default Vue.extend({
     },
     curriculumCode(): string | null | undefined {
       return this.courseData?.curriculumCode;
+    },
+    courseData(): CourseInfo {
+      return this.$store.state.course.course;
     },
     width(): object {
       const breakpoint = this.$vuetify.breakpoint.name;
@@ -92,32 +92,5 @@ export default Vue.extend({
       return { width: `${size}%` };
     },
   },
-  async created() {
-    this.fetchAndStoreCourses();
-  },
-  methods: {
-    async fetchAndStoreCourses() {
-      const config = {
-        query: this.$route.params.id,
-      };
-
-      try {
-        this.isLoading = true;
-        const datas = await request.fetchAndStoreCourses(config);
-        [this.courseData] = datas.filter((dataObj: CourseInfo) => {
-          const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers[0]?.name?.jp}`;
-          return this.$route.params.id === id;
-        });
-        if (this.courseData === null) {
-          throw new Error();
-        }
-      } catch (e) {
-        console.error(e.message);
-      } finally {
-        this.isLoading = false;
-      }
-    },
-  },
-
 });
 </script>

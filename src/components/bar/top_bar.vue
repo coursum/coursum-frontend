@@ -3,36 +3,42 @@
     app
     color="white"
   >
-    <v-btn
+    <v-app-bar-nav-icon @click.stop="changeSideBarState" />
+
+    <!-- <v-btn
       icon
       @click="goBack"
     >
       <v-icon>mdi-arrow-left</v-icon>
-    </v-btn>
+    </v-btn> -->
+
+    <coursum-logo />
 
     <v-spacer />
 
     <search-input />
 
+    <span class="mx-1">
+      <keep-alive>
+        <advanced-inputs />
+      </keep-alive>
+    </span>
     <v-spacer />
-
-    <account-button />
-    <setting-button />
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import SearchInput from '@/components/search/search_input.vue';
-import AccountButton from '@/components/course/account_button.vue';
-import SettingButton from '@/components/setting/setting_button.vue';
+import CoursumLogo from '@/components/course/coursum_logo.vue';
+import AdvancedInputs from '@/components/search/advanced_inputs.vue';
 
 export default Vue.extend({
   name: 'TopBar',
   components: {
     SearchInput,
-    AccountButton,
-    SettingButton,
+    AdvancedInputs,
+    CoursumLogo,
   },
 
   methods: {
@@ -42,6 +48,10 @@ export default Vue.extend({
       } else {
         this.$router.push('/');
       }
+    },
+    changeSideBarState() {
+      const state = this.$store.state.sideBarState;
+      this.$store.commit('setSideBarState', !state);
     },
   },
 });

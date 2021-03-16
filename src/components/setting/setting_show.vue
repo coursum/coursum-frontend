@@ -1,53 +1,39 @@
 <template>
-  <v-card
-    width="350px"
-    class="pa-6"
-    color="white"
-  >
-    <v-row>
-      <v-col class="d-flex align-center">
-        {{ $t("darkMode") }}
-      </v-col>
-      <v-col>
-        <v-switch
-          v-model="themeSwitch"
-          @click.stop
-        />
-      </v-col>
-    </v-row>
-
+  <div class="pa-5">
     <v-divider />
 
-    <v-row>
-      <v-col class="d-flex align-center">
-        {{ $t("lang") }}
-      </v-col>
-      <v-col>
-        <v-chip-group
-          v-model="language"
-          mandatory
+    <div class="d-flex justify-space-between">
+      <v-icon>mdi-theme-light-dark</v-icon>
+      <v-switch
+        v-model="themeSwitch"
+        @click.stop
+      />
+    </div>
+
+    <div class="d-flex justify-space-between">
+      <v-icon>mdi-translate</v-icon>
+      <v-chip-group
+        v-model="language"
+        mandatory
+      >
+        <v-chip
+          v-for="([locale, localeName], idx) in Object.entries(languages)"
+          :key="idx"
+          outlined
+          @click.stop="setLangState(locale)"
         >
-          <v-chip
-            v-for="([locale, localeName], idx) in Object.entries(languages)"
-            :key="idx"
-            outlined
-            @click.stop="setLangState(locale)"
-          >
-            {{ localeName }}
-          </v-chip>
-        </v-chip-group>
-      </v-col>
-    </v-row>
-  </v-card>
+          {{ localeName }}
+        </v-chip>
+      </v-chip-group>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 
 export default Vue.extend({
-
   name: 'SettingShow',
-
   data() {
     return {
       languages: { jp: '日本語', en: 'English' },

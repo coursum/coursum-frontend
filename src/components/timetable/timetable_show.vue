@@ -112,14 +112,14 @@ export default Vue.extend({
       return d?.[0]?.[1]?.[0];
     },
     async fetchAndStoreCourses(id: string) {
-      let datas: CourseInfo[] = [];
+      const datas: CourseInfo[] = [];
 
       const config = {
         query: `query=${id}`,
       };
 
       try {
-        datas = await request.fetchAndStoreCourses(config);
+        // datas = await request.fetchAndStoreCourses(config);
       } finally {
         this.setCourseDatas(datas);
       }

@@ -4,8 +4,8 @@
       <v-card
         :class="cardClass(hover)"
         class="my-2 d-flex flex-column justify-space-between"
-        :to="genRoute"
         :style="hasWidth ? cardWidth: ''"
+        @click.prevent="goResult"
       >
         <timetable-mutation-button
           :id="genId"
@@ -58,6 +58,8 @@ import DLectures from '@/components/course/data/d_lectures.vue';
 import DTitle from '@/components/course/data/d_title.vue';
 import { Lecturer, Basic } from '@/assets/CourseInfo';
 import DCategory from '@/components/course/data/d_category.vue';
+import request from '@/api/request';
+import tool from '@/api/build_query';
 
 export default Vue.extend({
 
@@ -102,12 +104,6 @@ export default Vue.extend({
   computed: {
     curLang(): string {
       return this.$i18n.locale;
-    },
-    genRoute(): string | undefined {
-      if (this.textTruncate) {
-        return `/course-detail/${this.courseData?.title?.name?.jp} ${this.courseData.lecturers[0]?.name?.jp}`;
-      }
-      return undefined;
     },
     category(): Basic | undefined {
       return this.courseData?.category;
@@ -180,6 +176,15 @@ export default Vue.extend({
         height = 1;
         return `elevation-${height}`;
       };
+    },
+  },
+  methods: {
+    async goResult() {
+      const searchQuery = `?title=${this.title?.jp}&teacher=${this.lecturers?.[0]?.name?.jp}`;
+
+      await request.fetchAndStoreCourse(`search${searchQuery}`);
+
+      tool.goToResultPage(`/course-detail/search${searchQuery}`);
     },
   },
 });

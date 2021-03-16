@@ -9,6 +9,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLoading: false,
+    sideBarState: false,
     searchInput: '',
     advancedInputs: {
       giga: '',
@@ -25,8 +26,11 @@ export default new Vuex.Store({
     setSearchInput(state, payload: string) {
       state.searchInput = payload;
     },
-    setIsLoading(state, isLoading: boolean) {
+    setLoadingState(state, isLoading: boolean) {
       state.isLoading = isLoading;
+    },
+    setSideBarState(state, sideBarState: boolean) {
+      state.sideBarState = sideBarState;
     },
   },
   actions: {

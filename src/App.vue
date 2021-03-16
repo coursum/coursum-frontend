@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <top-bar v-if="showTopBar" />
+    <top-bar />
+    <side-bar />
     <v-main>
       <router-view />
     </v-main>
@@ -10,18 +11,20 @@
 <script lang="ts">
 import Vue from 'vue';
 import TopBar from '@/components/bar/top_bar.vue';
+import SideBar from '@/components/bar/side_bar.vue';
 import request from '@/api/request';
 
 export default Vue.extend({
   name: 'App',
   components: {
     TopBar,
+    SideBar,
   },
   computed: {
     showTopBar(): boolean {
       const { path } = this.$route;
 
-      return path !== '/' && !path.startsWith('/course');
+      return path !== '/' && !path.startsWith('/course/');
     },
   },
   async created() {

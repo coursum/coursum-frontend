@@ -84,7 +84,7 @@ import Vue from 'vue';
 import { Basic } from '@/assets/CourseInfo';
 
 export default Vue.extend({
-  name: 'DetailIndex',
+  name: 'DetailShow',
 
   props: {
     registration: {
@@ -129,7 +129,6 @@ export default Vue.extend({
       return this.$i18n.locale;
     },
   },
-
 });
 </script>
 

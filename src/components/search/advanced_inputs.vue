@@ -5,12 +5,15 @@
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
-        outlined
-        color="blue"
+        icon
         v-bind="attrs"
         v-on="on"
       >
-        Search Filter
+        <v-icon
+          class="mx-2"
+        >
+          mdi-tune
+        </v-icon>
       </v-btn>
     </template>
 
@@ -107,6 +110,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import tool from '@/api/build_query';
+import request from '@/api/request';
 
 interface AdvancedInputs {
   giga: string;
@@ -118,7 +122,7 @@ interface AdvancedInputs {
 }
 
 export default Vue.extend({
-  name: 'SearchInput',
+  name: 'AdvancedInputs',
   data() {
     return {
       dialog: false,
@@ -197,7 +201,7 @@ export default Vue.extend({
       this.day = '';
       this.time = '';
     },
-    goResult() {
+    async goResult() {
       const searchQuery = tool.buildQuery({
         builder: {
           giga: this.giga,
@@ -208,16 +212,11 @@ export default Vue.extend({
         },
       });
 
-      console.log(searchQuery);
+      await request.fetchAndStoreCourses(searchQuery);
 
-      this.pushPath(searchQuery);
       this.storeValues();
       this.dialog = false;
-    },
-    pushPath(searchQuery: string) {
-      if (this.$route.path !== searchQuery) {
-        this.$router.push(`/course/${searchQuery}`);
-      }
+      tool.goToResultPage(`/course/${searchQuery}`);
     },
   },
 });
