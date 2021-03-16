@@ -5,7 +5,7 @@
   >
     <v-list-item to="/timetable">
       <v-list-item-icon>
-        <v-icon>mdi-folder</v-icon>
+        <v-icon>mdi-folder-heart</v-icon>
       </v-list-item-icon>
 
       <v-list-item-content>

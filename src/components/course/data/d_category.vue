@@ -1,6 +1,6 @@
 <template>
   <div
-    class="px-6 text-truncate"
+    class="text-truncate"
   >
     {{ categoryData ? categoryData : $t("others") }}
   </div>

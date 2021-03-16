@@ -3,44 +3,42 @@
     <template v-slot:default="{ hover }">
       <v-card
         :class="cardClass(hover)"
-        class="my-2 d-flex flex-column justify-space-between"
+        class="my-2 px-5 py-3 d-flex flex-column justify-space-between"
         :style="hasWidth ? cardWidth: ''"
         @click.prevent="goResult"
       >
-        <timetable-mutation-button
-          :id="genId"
-          style="position: absolute; bottom: 5px; right: 5px"
+        <d-category :category="category" />
+
+        <d-title
+          :title="title"
         />
 
-        <div class="pt-5">
-          <d-category :category="category" />
-          <d-title
-            :title="title"
-          />
-        </div>
-
         <d-postscript :postscript="postscript" />
+
         <d-summary
           v-if="showSummary"
-          class="py-1"
           :title="title"
           :summary="summary"
           :text-truncate="textTruncate"
         />
 
-        <d-lectures
-          style="text-align: right;"
-          :text-truncate="textTruncate"
-          :lecturers="lecturers"
-        />
-
-        <div
-          class="px-4 py-2"
-        >
+        <div>
           <d-credit :credit="credit" />
           <d-schedule-semester :semester="semester" />
           <d-schedule-times :times="times" />
         </div>
+
+        <v-divider class="my-1" />
+
+        <d-lectures
+          :text-truncate="textTruncate"
+          :lecturers="lecturers"
+        />
+
+        <timetable-mutation-button
+          :id="genId"
+          style="position: absolute; top: 5px; right: 5px"
+        />
       </v-card>
     </template>
   </v-hover>

@@ -1,8 +1,7 @@
 <template>
-  <div
+  <span
     v-if="lecturers && 0 < lecturers.length"
     :class="{'text-truncate': textTruncate}"
-    class="px-6"
   >
     <template
       v-for="(lecturer, i) in lecturers"
@@ -10,13 +9,12 @@
       <span
         v-if="lecturer.name && lecturer.name[`${curLang}`]"
         :key="i"
-        style="display:inline-block;"
-        class="mr-2"
+        class="mr-2 font-weight-bold"
       >
         {{ lecturer.name[`${curLang}`] }}
       </span>
     </template>
-  </div>
+  </span>
 </template>
 
 <script lang="ts">
@@ -45,8 +43,10 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-span{
+span {
+  display: inline-block;
   font-size: 0.85rem;
-  color: var(--v-wordcolor-base);
+  color: #546E7A;
+  text-align: right;
 }
 </style>

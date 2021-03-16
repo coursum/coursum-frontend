@@ -3,21 +3,21 @@
     <v-btn
       v-if="isInclude"
       icon
-      x-small
-      color="#FFE082"
-      @click.prevent="removeCourse()"
+      small
+      color="#CFD8DC"
+      @click.stop="removeCourse"
     >
-      <v-icon> mdi-star </v-icon>
+      <v-icon> mdi-folder-heart </v-icon>
     </v-btn>
 
     <v-btn
       v-else
       icon
-      x-small
+      small
       color="#CFD8DC"
-      @click.prevent="addCourse()"
+      @click.stop="addCourse"
     >
-      <v-icon> mdi-star-outline </v-icon>
+      <v-icon> mdi-folder-heart-outline</v-icon>
     </v-btn>
   </span>
 </template>

@@ -2,7 +2,7 @@
   <div
     v-if="summaryData"
     :class="{summary: textTruncate}"
-    class="px-6 primary--text py-1"
+    class="primary--text"
     :style="summaryStyle"
   >
     <p
