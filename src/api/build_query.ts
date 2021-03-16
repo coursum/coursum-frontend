@@ -1,4 +1,5 @@
 import store from '@/store';
+import router from '@/router';
 import { AdvancedInputs } from '@/assets/SearchInfo';
 
 interface Params {
@@ -43,7 +44,7 @@ export default {
     }
 
     if (query === '' && keywords === '') {
-      return '';
+      return 'search?';
     }
 
     if (query === '') {
@@ -56,9 +57,9 @@ export default {
 
     return `search?query=${query}&${keywords}`;
   },
-  goToResultPage(searchQuery: string) {
-    if (searchQuery !== window.location.pathname) {
-      window.location.href = `/course/${searchQuery}`;
+  goToResultPage(path: string) {
+    if (path !== window.location.pathname) {
+      router.push({ path });
     }
   },
 };

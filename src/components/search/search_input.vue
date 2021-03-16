@@ -5,10 +5,8 @@
     class="mx-auto"
   >
     <v-combobox
-      :flat="flat"
-      :solo="!flat"
-      :filled="flat"
-      :dense="flat"
+      :filled="true"
+      :dense="true"
       rounded
       class="rounded-lg"
       prepend-inner-icon="mdi-magnify"
@@ -24,19 +22,15 @@
 <script lang="ts">
 import Vue from 'vue';
 import tool from '@/api/build_query';
+import request from '@/api/request';
 
 export default Vue.extend({
+
   name: 'SearchInput',
+
   data() {
     return {
-      input: (() => {
-        const { query } = this.$route.params;
-        if (!query) {
-          return null;
-        }
-
-        return query?.split('&')?.find((queryParam) => queryParam.startsWith('query='))?.split('=')[1];
-      })(),
+      input: '',
     };
   },
   computed: {
@@ -58,18 +52,17 @@ export default Vue.extend({
       return this.$route.path !== '/' && !this.$route.params.query;
     },
   },
-  created() {
-    this.input = this.$store.state.searchInput;
-  },
   methods: {
-    goResult() {
+    async goResult() {
       const searchQuery = tool.buildQuery({
         builder: this.input,
       });
 
+      await request.fetchAndStoreCourses(searchQuery);
+
       this.$store.commit('setSearchInput', this.input);
 
-      tool.goToResultPage(searchQuery);
+      tool.goToResultPage(`/course/${searchQuery}`);
     },
   },
 });

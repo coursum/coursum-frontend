@@ -42,12 +42,12 @@ export default Vue.extend({
   },
   methods: {
     removeCourse() {
-      this.$store.commit('timetable/removeFromTimetable', this.id);
-      setTimeout(() => {
-        if (this.$route.path.startsWith('/timetable')) {
-          this.$router.go(this.$router.currentRoute);
-        }
-      }, 1000);
+      // this.$store.commit('timetable/removeFromTimetable', this.id);
+      // setTimeout(() => {
+      //   if (this.$route.path.startsWith('/timetable')) {
+      //     this.$router.go(this.$router.currentRoute);
+      //   }
+      // }, 1000);
     },
     addCourse() {
       this.$store.commit('timetable/addToTimetable', this.id);

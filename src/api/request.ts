@@ -9,7 +9,7 @@ export default {
     let courses: CourseInfo[] = [];
 
     try {
-      store.commit('setIsLoading', true);
+      store.commit('setLoadingState', true);
 
       ({ data: { Hits: courses } } = await axios.get(query));
 
@@ -17,7 +17,22 @@ export default {
     } catch (e) {
       console.error(e.message);
     } finally {
-      store.commit('setIsLoading', false);
+      store.commit('setLoadingState', false);
+    }
+  },
+  async fetchAndStoreCourse(query: string) {
+    let course: CourseInfo | {} = {};
+
+    try {
+      store.commit('setLoadingState', true);
+
+      ({ data: { Hits: [course] } } = await axios.get(query));
+
+      store.commit('course/setCourse', course);
+    } catch (e) {
+      console.error(e.message);
+    } finally {
+      store.commit('setLoadingState', false);
     }
   },
 };
