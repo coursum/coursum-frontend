@@ -5,6 +5,7 @@
         :class="cardClass(hover)"
         class="my-2 px-5 pb-2 pt-4 d-flex flex-column justify-space-between"
         :style="hasWidth ? cardWidth: ''"
+        style="height: 230px"
         @click.prevent="goResult"
       >
         <div>

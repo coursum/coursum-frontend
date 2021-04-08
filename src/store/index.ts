@@ -11,6 +11,7 @@ export default new Vuex.Store({
     isLoading: false,
     sideBarState: false,
     searchInput: '',
+    currentSelectedPage: 1,
     advancedInputs: {
       giga: '',
       teacher: '',
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     },
     setSideBarState(state, sideBarState: boolean) {
       state.sideBarState = sideBarState;
+    },
+    updateCurrentSelectedPage(state, updatedValue: number) {
+      state.currentSelectedPage = updatedValue;
     },
   },
   actions: {

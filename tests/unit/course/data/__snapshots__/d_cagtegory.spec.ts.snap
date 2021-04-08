@@ -2,8 +2,7 @@
 
 exports[`DCategory should render correct markup when prop is correct 1`] = `
 <div
-  class="px-6 text-truncate"
-  style="font-size: 0.7rem; color: white;"
+  class="text-truncate"
 >
   
   category en
@@ -13,8 +12,7 @@ exports[`DCategory should render correct markup when prop is correct 1`] = `
 
 exports[`DCategory should render correct markup when prop is falsy 1`] = `
 <div
-  class="px-6 text-truncate"
-  style="font-size: 0.7rem; color: white;"
+  class="text-truncate"
 >
   
   others
@@ -24,8 +22,7 @@ exports[`DCategory should render correct markup when prop is falsy 1`] = `
 
 exports[`DCategory should render correct markup when prop is falsy 2`] = `
 <div
-  class="px-6 text-truncate"
-  style="font-size: 0.7rem; color: white;"
+  class="text-truncate"
 >
   
   others
@@ -35,8 +32,7 @@ exports[`DCategory should render correct markup when prop is falsy 2`] = `
 
 exports[`DCategory should render correct markup when prop is falsy 3`] = `
 <div
-  class="px-6 text-truncate"
-  style="font-size: 0.7rem; color: white;"
+  class="text-truncate"
 >
   
   others

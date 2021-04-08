@@ -12,7 +12,6 @@ exports[`DScheduleTimes should render correct markup when prop is correct 1`] = 
     active="true"
     activeclass=""
     closeicon="$delete"
-    color="primary"
     filtericon="$complete"
     outlined="true"
     tag="span"
