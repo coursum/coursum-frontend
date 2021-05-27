@@ -4,8 +4,7 @@
       <v-card
         :class="cardClass(hover)"
         class="my-2 px-5 pb-2 pt-4 d-flex flex-column justify-space-between"
-        :style="hasWidth ? cardWidth: ''"
-        style="height: 230px"
+        :style="cardStyle"
         @click.prevent="goResult"
       >
         <div>
@@ -100,6 +99,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    hasHeight: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup: (props: any, context: any) => {
     const state = reactive({
@@ -128,31 +131,21 @@ export default defineComponent({
 
     const teacherForId = computed((): string => `${props.courseData?.lecturers?.[0]?.name?.jp}`);
 
-    const cardWidth = computed((): object => {
-      const breakpoint = context.root.$vuetify.breakpoint.name;
-      let size;
-
-      switch (breakpoint) {
+    const cardWidth = computed((): number => {
+      switch (context.root.$vuetify.breakpoint.name) {
         case 'xs':
-          size = 100;
-          break;
+          return 100;
         case 'sm':
-          size = 80;
-          break;
+          return 80;
         case 'md':
-          size = 48;
-          break;
+          return 48;
         case 'lg':
-          size = 32;
-          break;
+          return 32;
         case 'xl':
-          size = 30;
-          break;
+          return 30;
         default:
-          size = 30;
-          break;
+          return 30;
       }
-      return { width: `${size}%` };
     });
 
     const cardClass = computed(() => (hover: boolean) => {
@@ -169,6 +162,21 @@ export default defineComponent({
 
       height = 1;
       return `elevation-${height}`;
+    });
+
+    const cardStyle = computed(() => {
+      if (!props.hasWidth) {
+        return {};
+      }
+
+      if (props.hasHeight) {
+        return {
+          width: `${cardWidth.value}%`,
+          height: '230px',
+        };
+      }
+
+      return { width: `${cardWidth.value}%` };
     });
 
     const goResult = async () => {
@@ -192,9 +200,9 @@ export default defineComponent({
       summary,
       titleForId,
       teacherForId,
-      cardWidth,
       lecturers,
       title,
+      cardStyle,
     };
   },
 });

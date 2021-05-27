@@ -23,6 +23,7 @@
           :key="i"
           :course-data="course"
           :has-width="true"
+          :has-height="true"
         />
       </div>
 

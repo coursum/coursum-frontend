@@ -81,7 +81,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from '@vue/composition-api';
-import { Basic, Registration, Tag } from '@/assets/CourseInfo';
+import { Registration, Tag } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DetailShow',
