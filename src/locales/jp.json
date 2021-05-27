@@ -41,5 +41,23 @@
     "courses-offered-at-research-institutes-on-sfc": "SFC設置の諸研究所科目",
     "courses-offered-at-other-faculties": "単位互換科目",
     "optional-subjects": "自由科目"
-  }
+  },
+  "giga": "GIGA",
+  "lecturer": "教員",
+  "language": "言語",
+  "semester": "学期",
+  "day": "曜日",
+  "time": "時間",
+  "english": "英語",
+  "japanese": "日本語",
+  "spring": "春学期",
+  "autumn": "秋学期",
+  "sunday": "日曜日" ,
+  "monday": "月曜日",
+  "tuesday":  "火曜日",
+  "wednesday": "水曜日",
+  "thursday": "木曜日",
+  "friday": "金曜日",
+  "saturday":"土曜日",
+  "period": "時限目"
 }

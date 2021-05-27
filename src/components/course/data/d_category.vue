@@ -7,16 +7,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api';
-import { basicTemplate } from '@/assets/CourseInfo';
+import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { Basic } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DCategory',
   props: {
-    category: { type: Object, default: basicTemplate },
+    category: { type: Object as PropType<Basic>, required: true },
   },
   setup: (props, context) => {
-    const curLang = computed((): string => context.root.$i18n.locale);
+    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
 
     const categoryData = computed((): string | null | undefined => props.category?.[curLang.value]);
 

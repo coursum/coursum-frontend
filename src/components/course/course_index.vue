@@ -44,12 +44,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {
+  computed, defineComponent, reactive, toRefs,
+} from '@vue/composition-api';
 import CourseShow from '@/components/course/course_show.vue';
 import { CourseInfo } from '@/assets/CourseInfo';
-import { computed, reactive } from '@vue/composition-api';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'CourseIndex',
   components: {
     CourseShow,
@@ -103,6 +104,9 @@ export default Vue.extend({
       goNextPage,
       goPreviousPage,
       goTargetPage,
+      currentSelectedPage,
+      courseDatas,
+      ...toRefs(state),
     };
   },
 });

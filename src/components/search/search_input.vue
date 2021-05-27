@@ -20,7 +20,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive } from '@vue/composition-api';
+import {
+  computed, defineComponent, reactive, toRefs,
+} from '@vue/composition-api';
 import tool from '@/api/build_query';
 import request from '@/api/request';
 
@@ -64,6 +66,7 @@ export default defineComponent({
       searchBarWidth,
       flat,
       goResult,
+      ...toRefs(state),
     };
   },
 });

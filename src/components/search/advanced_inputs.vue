@@ -109,7 +109,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, onMounted, reactive,
+  computed, defineComponent, onMounted, reactive, toRefs,
 } from '@vue/composition-api';
 import tool from '@/api/build_query';
 import request from '@/api/request';
@@ -224,52 +224,8 @@ export default defineComponent({
       days,
       resetValues,
       goResult,
+      ...toRefs(state),
     };
   },
 });
 </script>
-
-<i18n>
-{
-  "en": {
-    "giga": "GIGA",
-    "lecturer": "Lecturer",
-    "language": "Language",
-    "semester": "Semester",
-    "day": "Day",
-    "time": "Time",
-    "english": "English",
-    "japanese": "Japanese",
-    "spring": "Spring",
-    "autumn": "Autumn",
-    "sunday": "Sunday" ,
-    "monday": "Monday",
-    "tuesday":  "Tuesday",
-    "wednesday": "Wednesday",
-    "thursday": "Thursday",
-    "friday": "Friday",
-    "saturday":"Saturday",
-    "period": "period"
-  },
-  "jp": {
-    "giga": "GIGA",
-    "lecturer": "教員",
-    "language": "言語",
-    "semester": "学期",
-    "day": "曜日",
-    "time": "時間",
-    "english": "英語",
-    "japanese": "日本語",
-    "spring": "春学期",
-    "autumn": "秋学期",
-    "sunday": "日曜日" ,
-    "monday": "月曜日",
-    "tuesday":  "火曜日",
-    "wednesday": "水曜日",
-    "thursday": "木曜日",
-    "friday": "金曜日",
-    "saturday":"土曜日",
-    "period": "時限目"
-  }
-}
-</i18n>

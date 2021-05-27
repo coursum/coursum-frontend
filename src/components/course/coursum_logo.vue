@@ -17,7 +17,7 @@ import tool from '@/api/build_query';
 export default defineComponent({
   name: 'CoursumLogo',
   setup: (_, context) => {
-    const logoStyle = computed((): object => ({ 'font-size': '1.1rem', cursor: 'pointer' }));
+    const logoStyle = computed(() => ({ 'font-size': '1.1rem', cursor: 'pointer' }));
 
     const isMdAndUp = computed(() => context.root.$vuetify.breakpoint.mdAndUp);
 

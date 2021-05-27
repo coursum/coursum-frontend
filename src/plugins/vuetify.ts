@@ -2,9 +2,7 @@ import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 import colors from 'vuetify/lib/util/colors';
 
-Vue.use(Vuetify);
-
-export default new Vuetify({
+const options = {
   theme: {
     options: {
       customProperties: true,
@@ -19,9 +17,14 @@ export default new Vuetify({
         subtitle: '#757575',
         white: colors.shades.white,
         black: '#757575',
+
         primary: '#222222',
         secondary: '#BDBDBD',
         accent: colors.shades.white,
+        info: colors.shades.white,
+        warning: colors.shades.white,
+        error: colors.shades.white,
+        success: colors.shades.white,
       },
       dark: {
         wordcolor: 'white',
@@ -31,10 +34,19 @@ export default new Vuetify({
         subtitle: '#2a2a2a',
         white: '#121212',
         black: '#b2b2b2',
+
         primary: '#E0E0E0',
         secondary: '#757575',
         accent: '#b2b2b2',
+        info: colors.shades.white,
+        warning: colors.shades.white,
+        error: colors.shades.white,
+        success: colors.shades.white,
       },
     },
   },
-});
+};
+
+Vue.use(Vuetify);
+
+export default new Vuetify(options);

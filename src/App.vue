@@ -22,23 +22,18 @@ export default defineComponent({
     SideBar,
   },
   setup: (_, context) => {
-    const showTopBar = computed((): boolean => {
-      const { path } = context.root.$route;
-
-      return path !== '/' && !path.startsWith('/course/');
-    });
-
     const getThemeState = () => {
       const themeState = localStorage.getItem('themeState');
       if (typeof themeState === 'string') {
-        // context.root.$vuetify.theme.dark = JSON.parse(themeState);
+        //
       }
     };
 
     const getLangState = () => {
       const langState = localStorage.getItem('langState');
       if (typeof langState === 'string') {
-        // context.root.$i18n.locale = JSON.parse(langState);
+        // eslint-disable-next-line no-param-reassign
+        context.root.$i18n.locale = JSON.parse(langState);
       }
     };
 

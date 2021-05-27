@@ -94,6 +94,7 @@ export default defineComponent({
       curriculumCode,
       tag,
       width,
+      courseData,
     };
   },
 });

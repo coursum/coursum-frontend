@@ -14,19 +14,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive } from '@vue/composition-api';
-import { basicTemplate } from '@/assets/CourseInfo';
+import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { basicTemplate, Basic, Title } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DSummary',
   props: {
     summary: {
-      type: Object,
+      type: Object as PropType<Basic>,
       default: basicTemplate,
     },
     title: {
-      type: Object,
-      default: basicTemplate,
+      type: Object as PropType<Title>,
+      required: true,
     },
     textTruncate: {
       type: Boolean,
@@ -38,7 +38,7 @@ export default defineComponent({
 
     const titleJp = computed((): string | null | undefined => props.title?.name?.jp);
 
-    const curLang = computed((): string => context.root.$i18n.locale);
+    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
 
     const summaryData = computed((): string | null | undefined => {
       if (titleJp.value === '研究会Ａ' || titleJp.value === '研究会Ｂ') {

@@ -9,19 +9,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api';
-import { basicTemplate } from '@/assets/CourseInfo';
+import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { basicTemplate, Basic } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DPostsctipt',
   props: {
     postscript: {
-      type: Object,
+      type: Object as PropType<Basic>,
       default: basicTemplate,
     },
   },
   setup: (props, context) => {
-    const curLang = computed((): string => context.root.$i18n.locale);
+    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
 
     const postscriptData = computed((): string | null | undefined => props
       .postscript?.[curLang.value]);

@@ -30,7 +30,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from '@vue/composition-api';
+import {
+  defineComponent, onMounted, reactive, toRefs, watch, ref,
+} from '@vue/composition-api';
 
 export default defineComponent({
   name: 'SettingShow',
@@ -38,15 +40,20 @@ export default defineComponent({
     const state = reactive({
       languages: { jp: '日本語', en: 'English' },
       language: 0,
-      themeSwitch: false,
     });
 
-    // watch: {
-    //   themeSwitch() {
-    //     this.$vuetify.theme.dark = this.themeSwitch;
-    //     this.setThemeState();
-    //   },
-    // },
+    const themeSwitch = ref(false);
+
+    const setThemeState = () => {
+      localStorage.setItem('themeState', JSON.stringify(context.root.$vuetify.theme.dark));
+    };
+
+    watch(themeSwitch, () => {
+      // eslint-disable-next-line no-param-reassign
+      context.root.$vuetify.theme.dark = themeSwitch.value;
+      setThemeState();
+    });
+
     onMounted(() => {
       if (context.root.$root.$i18n.locale === 'jp') {
         state.language = 0;
@@ -54,16 +61,20 @@ export default defineComponent({
         state.language = 1;
       }
 
-      state.themeSwitch = context.root.$vuetify.theme.dark;
+      themeSwitch.value = context.root.$vuetify.theme.dark;
     });
 
     const setLangState = (locale: string) => {
-      // context.root.$root.$i18n.locale = locale;
+      // eslint-disable-next-line no-param-reassign
+      context.root.$root.$i18n.locale = locale;
       localStorage.setItem('langState', JSON.stringify(locale));
     };
 
-    const setThemeState = () => {
-      localStorage.setItem('themeState', JSON.stringify(context.root.$vuetify.theme.dark));
+    return {
+      ...toRefs(state),
+      setLangState,
+      setThemeState,
+      themeSwitch,
     };
   },
 });

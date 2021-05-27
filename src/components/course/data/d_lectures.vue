@@ -18,13 +18,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api';
+import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { Lecturer } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DLectures',
   props: {
     lecturers: {
-      type: Array,
+      type: Array as PropType<Lecturer[]>,
       default() {
         return undefined;
       },
@@ -35,7 +36,7 @@ export default defineComponent({
     },
   },
   setup: (_: any, context: any) => {
-    const curLang = computed((): string => context.root.$i18n.locale);
+    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
 
     return {
       curLang,

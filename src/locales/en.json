@@ -41,5 +41,23 @@
     "courses-offered-at-research-institutes-on-sfc": "Courses offered at Research Institutes on SFC",
     "courses-offered-at-other-faculties": "Courses Offered at Other Faculties",
     "optional-subjects": "Optional Subjects"
-  }
+  },
+  "giga": "GIGA",
+  "lecturer": "Lecturer",
+  "language": "Language",
+  "semester": "Semester",
+  "day": "Day",
+  "time": "Time",
+  "english": "English",
+  "japanese": "Japanese",
+  "spring": "Spring",
+  "autumn": "Autumn",
+  "sunday": "Sunday" ,
+  "monday": "Monday",
+  "tuesday":  "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday":"Saturday",
+  "period": "period"
 }

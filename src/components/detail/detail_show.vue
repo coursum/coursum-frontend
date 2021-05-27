@@ -80,14 +80,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api';
-import { Basic } from '@/assets/CourseInfo';
+import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { Basic, Registration, Tag } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DetailShow',
   props: {
     registration: {
-      type: Object,
+      type: Object as PropType<Registration>,
       default: undefined,
     },
     related: {
@@ -103,7 +103,7 @@ export default defineComponent({
       default: undefined,
     },
     tag: {
-      type: Object,
+      type: Object as PropType<Tag>,
       default: undefined,
     },
     curriculumCode: {
@@ -112,15 +112,16 @@ export default defineComponent({
     },
   },
   setup: (props, context) => {
-    const curLang = computed((): string => context.root.$i18n.locale);
+    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
 
     const number = computed((): null | undefined => props.registration?.number);
 
-    const suggestion = computed((): Basic => props.registration?.suggestion?.[`${curLang}`]);
+    const suggestion = computed(() => props.registration?.suggestion?.[curLang.value]);
 
-    const requirement = computed((): Basic => props.registration?.requirement?.[`${curLang}`]);
+    const requirement = computed(() => props.registration?.requirement?.[curLang.value]);
 
-    const prerequisite = computed((): null | undefined => props.registration?.prerequisite?.[`${curLang}`]);
+    const prerequisite = computed((): null | undefined => props
+      .registration?.prerequisite?.[curLang.value]);
 
     return {
       number,

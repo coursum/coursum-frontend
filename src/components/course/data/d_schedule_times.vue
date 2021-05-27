@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api';
-import { basicTemplate } from '@/assets/CourseInfo';
+import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { basicTemplate, Basic } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DScheduleTimes',
   props: {
     times: {
-      type: Object,
+      type: Object as PropType<Basic>,
       default: basicTemplate,
     },
   },

@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, reactive, toRefs,
+  computed, defineComponent, reactive, toRefs, PropType,
 } from '@vue/composition-api';
 import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
 import DPostscript from '@/components/course/data/d_postscript.vue';
@@ -65,7 +65,7 @@ import DCredit from '@/components/course/data/d_credit.vue';
 import DSummary from '@/components/course/data/d_summary.vue';
 import DLectures from '@/components/course/data/d_lectures.vue';
 import DTitle from '@/components/course/data/d_title.vue';
-import { Lecturer, Basic } from '@/assets/CourseInfo';
+import { Lecturer, Basic, CourseInfo } from '@/assets/CourseInfo';
 import DCategory from '@/components/course/data/d_category.vue';
 import request from '@/api/request';
 import tool from '@/api/build_query';
@@ -85,10 +85,8 @@ export default defineComponent({
   },
   props: {
     courseData: {
-      type: Object,
-      default() {
-        return undefined;
-      },
+      type: Object as PropType<CourseInfo>,
+      required: true,
     },
     textTruncate: {
       type: Boolean,
@@ -195,6 +193,8 @@ export default defineComponent({
       titleForId,
       teacherForId,
       cardWidth,
+      lecturers,
+      title,
     };
   },
 });
