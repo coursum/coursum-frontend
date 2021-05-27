@@ -5,7 +5,7 @@
   >
     <v-list-item @click.prevent="goResult">
       <v-list-item-icon>
-        <v-icon>mdi-folder-heart</v-icon>
+        <v-icon>mdi-folder</v-icon>
       </v-list-item-icon>
 
       <v-list-item-content>

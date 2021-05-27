@@ -31,6 +31,7 @@
         class="mx-auto my-6"
       >
         <v-pagination
+          color="pg"
           :value="currentSelectedPage"
           class="mb-12"
           :length="pgTotalLength"

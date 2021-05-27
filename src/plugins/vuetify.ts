@@ -10,15 +10,15 @@ const options = {
     dark: false,
     themes: {
       light: {
-        wordcolor: 'black',
+        word: colors.grey.darken4,
+        caption: colors.grey.darken3,
+
         lightgrey: colors.grey.lighten4,
         darkgrey: colors.grey.lighten3,
-        blue: colors.blue.lighten2,
-        subtitle: '#757575',
-        white: colors.shades.white,
-        black: '#757575',
 
-        primary: '#222222',
+        pg: colors.grey.darken1,
+
+        primary: colors.grey.lighten5,
         secondary: '#BDBDBD',
         accent: colors.shades.white,
         info: colors.shades.white,
@@ -27,15 +27,15 @@ const options = {
         success: colors.shades.white,
       },
       dark: {
-        wordcolor: 'white',
+        word: colors.grey.lighten5,
+        caption: colors.grey.lighten4,
+
         lightgrey: colors.grey.darken4,
         darkgrey: colors.grey.darken3,
-        blue: colors.blue.darken2,
-        subtitle: '#2a2a2a',
-        white: '#121212',
-        black: '#b2b2b2',
 
-        primary: '#E0E0E0',
+        pg: colors.grey.darken1,
+
+        primary: colors.grey.darken4,
         secondary: '#757575',
         accent: '#b2b2b2',
         info: colors.shades.white,

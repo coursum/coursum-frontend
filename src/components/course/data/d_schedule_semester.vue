@@ -1,7 +1,7 @@
 <template>
   <v-chip
     v-if="semesterData"
-    style="color: #929292"
+    color="caption"
     outlined
     x-small
   >

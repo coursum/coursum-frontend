@@ -3,9 +3,12 @@
     <v-divider />
 
     <div class="d-flex justify-space-between">
-      <v-icon>mdi-theme-light-dark</v-icon>
+      <v-icon>
+        mdi-theme-light-dark
+      </v-icon>
       <v-switch
         v-model="themeSwitch"
+        color="secondary"
         @click.stop
       />
     </div>

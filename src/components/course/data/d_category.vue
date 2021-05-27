@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-truncate"
+    class="text-truncate caption--text"
   >
     {{ categoryData ? categoryData : $t("others") }}
   </div>
@@ -30,7 +30,6 @@ export default defineComponent({
 <style scoped>
 div{
   font-size: 0.7rem;
-  color: gray;
 }
 </style>
 

@@ -7,7 +7,7 @@
       color="#CFD8DC"
       @click.stop="removeCourse"
     >
-      <v-icon> mdi-folder-heart </v-icon>
+      <v-icon> mdi-folder </v-icon>
     </v-btn>
 
     <v-btn
@@ -17,7 +17,7 @@
       color="#CFD8DC"
       @click.stop="addCourse"
     >
-      <v-icon> mdi-folder-heart-outline</v-icon>
+      <v-icon> mdi-folder-outline</v-icon>
     </v-btn>
   </span>
 </template>

@@ -2,7 +2,7 @@
   <div
     v-if="summaryData"
     :class="{summary: textTruncate}"
-    class="primary--text"
+    class="caption--text"
     :style="summaryStyle"
   >
     <p

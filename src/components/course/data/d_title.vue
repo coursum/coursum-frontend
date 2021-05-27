@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="titleData"
-    class="text-truncate font-weight-bold"
+    class="text-truncate font-weight-bold word--text"
   >
     {{ titleData }}
   </div>
@@ -34,6 +34,5 @@ export default defineComponent({
 <style scoped>
 div{
   font-size: 0.9rem;
-  color: #37474F;
 }
 </style>

@@ -152,7 +152,7 @@ table th{
   position: relative;
   text-align: left;
   width: 30%;
-  color: var(--v-wordcolor-base);
+  color: var(--v-word-base);
   text-align: center;
   padding: 10px 0;
 }

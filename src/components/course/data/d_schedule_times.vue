@@ -5,6 +5,7 @@
       :key="i"
       outlined
       x-small
+      color="caption"
     >
       {{ display }}
     </v-chip>

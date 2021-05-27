@@ -40,7 +40,6 @@
               v-if="copiedURL"
               class="ma-2"
               color="teal"
-              text-color="white"
             >
               <v-avatar left>
                 <v-icon>mdi-checkbox-marked-circle</v-icon>

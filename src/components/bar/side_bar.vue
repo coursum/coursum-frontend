@@ -2,6 +2,7 @@
   <v-navigation-drawer
     :value="sideBarState"
     app
+    color="primary"
     @input="changeSideBarState"
   >
     <div

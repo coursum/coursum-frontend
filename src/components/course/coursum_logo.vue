@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isMdAndUp"
-    class="primary--text text-center"
+    class="word--text text-center"
     :style="logoStyle"
     @click="goResult"
   >

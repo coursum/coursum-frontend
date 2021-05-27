@@ -1,7 +1,7 @@
 <template>
   <v-app-bar
     app
-    color="white"
+    color="primary"
   >
     <v-app-bar-nav-icon @click.stop="changeSideBarState" />
 
