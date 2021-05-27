@@ -1,6 +1,6 @@
 import './registerServiceWorker';
-import Element from 'element-ui';
-import lang from 'element-ui/lib/locale/lang/en';
+import ElementUI from 'element-ui';
+import lang from 'element-ui/lib/locale/lang/ja';
 import locale from 'element-ui/lib/locale';
 import Vue from 'vue';
 import VueCompositionApi from '@vue/composition-api';
@@ -16,7 +16,7 @@ Vue.use(VueCompositionApi);
 // configure language
 // https://element.eleme.io/#/en-US/component/i18n#internationalization
 locale.use(lang);
-Vue.use(Element);
+Vue.use(ElementUI);
 
 new Vue({
   router,
