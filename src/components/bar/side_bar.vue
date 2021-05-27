@@ -19,25 +19,27 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import SettingShow from '@/components/setting/setting_show.vue';
 import TimetableLink from '@/components/timetable/timetable_link.vue';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'SideBar',
   components: {
     SettingShow,
     TimetableLink,
   },
-  computed: {
-    sideBarState() {
-      return this.$store.state.sideBarState;
-    },
-  },
-  methods: {
-    changeSideBarState(sideBarState: boolean) {
-      this.$store.commit('setSideBarState', sideBarState);
-    },
+  setup: (_, context) => {
+    const sideBarState = computed(() => context.root.$store.state.sideBarState);
+
+    const changeSideBarState = (state: boolean) => {
+      context.root.$store.commit('setSideBarState', state);
+    };
+
+    return {
+      sideBarState,
+      changeSideBarState,
+    };
   },
 });
 </script>

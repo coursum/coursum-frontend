@@ -20,23 +20,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent, reactive } from '@vue/composition-api';
 import tool from '@/api/build_query';
 import request from '@/api/request';
 
-export default Vue.extend({
-
+export default defineComponent({
   name: 'SearchInput',
-
-  data() {
-    return {
+  setup: (_, context) => {
+    const state = reactive({
       input: '',
-    };
-  },
-  computed: {
-    searchBarWidth(): object {
+    });
+
+    const searchBarWidth = computed((): object => {
       let widthRate;
-      const { breakpoint } = this.$vuetify;
+      const { breakpoint } = context.root.$vuetify;
 
       if (breakpoint.xs) {
         widthRate = 80;
@@ -47,23 +44,27 @@ export default Vue.extend({
       }
 
       return { width: `${widthRate}%` };
-    },
-    flat(): boolean {
-      return this.$route.path !== '/' && !this.$route.params.query;
-    },
-  },
-  methods: {
-    async goResult() {
+    });
+
+    const flat = computed((): boolean => context.root.$route.path !== '/' && !context.root.$route.params.query);
+
+    const goResult = async () => {
       const searchQuery = tool.buildQuery({
-        builder: this.input,
+        builder: state.input,
       });
 
       await request.fetchAndStoreCourses(searchQuery);
 
-      this.$store.commit('setSearchInput', this.input);
+      context.root.$store.commit('setSearchInput', state.input);
 
       tool.goToResultPage(`/course/${searchQuery}`);
-    },
+    };
+
+    return {
+      searchBarWidth,
+      flat,
+      goResult,
+    };
   },
 });
 </script>

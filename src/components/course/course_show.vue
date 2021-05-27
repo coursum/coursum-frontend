@@ -54,7 +54,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {
+  computed, defineComponent, reactive, toRefs,
+} from '@vue/composition-api';
 import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
 import DPostscript from '@/components/course/data/d_postscript.vue';
 import DScheduleSemester from '@/components/course/data/d_schedule_semester.vue';
@@ -68,10 +70,8 @@ import DCategory from '@/components/course/data/d_category.vue';
 import request from '@/api/request';
 import tool from '@/api/build_query';
 
-export default Vue.extend({
-
+export default defineComponent({
   name: 'CourseShow',
-
   components: {
     TimetableMutationButton,
     DPostscript,
@@ -103,47 +103,35 @@ export default Vue.extend({
       default: false,
     },
   },
-  data() {
-    return {
+  setup: (props: any, context: any) => {
+    const state = reactive({
       dialog: false,
-    };
-  },
-  computed: {
-    curLang(): string {
-      return this.$i18n.locale;
-    },
-    category(): Basic | undefined {
-      return this.courseData?.category;
-    },
-    title(): Basic | undefined {
-      return this.courseData?.title?.name;
-    },
-    postscript(): Basic | undefined {
-      return this.courseData?.title?.postscript;
-    },
-    lecturers(): Lecturer[] | undefined {
-      return this.courseData?.lecturers;
-    },
-    credit(): number | null | undefined {
-      return this.courseData?.credit;
-    },
-    semester(): Basic | undefined {
-      return this.courseData?.schedule?.semester;
-    },
-    times(): Basic | undefined {
-      return this.courseData?.schedule?.times;
-    },
-    summary(): Basic | undefined {
-      return this.courseData?.summary;
-    },
-    titleForId(): string {
-      return `${this.courseData?.title?.name?.jp}`;
-    },
-    teacherForId(): string {
-      return `${this.courseData?.lecturers?.[0]?.name?.jp}`;
-    },
-    cardWidth(): object {
-      const breakpoint = this.$vuetify.breakpoint.name;
+    });
+
+    const title = computed((): Basic | undefined => props.courseData?.title?.name);
+
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    const category = computed((): Basic | undefined => props.courseData?.category);
+
+    const postscript = computed((): Basic | undefined => props.courseData?.title?.postscript);
+
+    const lecturers = computed((): Lecturer[] | undefined => props.courseData?.lecturers);
+
+    const credit = computed((): number | null | undefined => props.courseData?.credit);
+
+    const semester = computed((): Basic | undefined => props.courseData?.schedule?.semester);
+
+    const times = computed((): Basic | undefined => props.courseData?.schedule?.times);
+
+    const summary = computed((): Basic | undefined => props.courseData?.summary);
+
+    const titleForId = computed((): string => `${props.courseData?.title?.name?.jp}`);
+
+    const teacherForId = computed((): string => `${props.courseData?.lecturers?.[0]?.name?.jp}`);
+
+    const cardWidth = computed((): object => {
+      const breakpoint = context.root.$vuetify.breakpoint.name;
       let size;
 
       switch (breakpoint) {
@@ -167,33 +155,47 @@ export default Vue.extend({
           break;
       }
       return { width: `${size}%` };
-    },
-    cardClass() {
-      const { textTruncate } = this;
-      return (hover: boolean) => {
-        let height;
-        if (textTruncate) {
-          if (hover) {
-            height = 4;
-          } else {
-            height = 1;
-          }
-          return `elevation-${height} transition-swing`;
-        }
+    });
 
-        height = 1;
-        return `elevation-${height}`;
-      };
-    },
-  },
-  methods: {
-    async goResult() {
-      const searchQuery = `?title=${this.title?.jp}&teacher=${this.lecturers?.[0]?.name?.jp}`;
+    const cardClass = computed(() => (hover: boolean) => {
+      let height;
+
+      if (props.textTruncate) {
+        if (hover) {
+          height = 4;
+        } else {
+          height = 1;
+        }
+        return `elevation-${height} transition-swing`;
+      }
+
+      height = 1;
+      return `elevation-${height}`;
+    });
+
+    const goResult = async () => {
+      const searchQuery = `?title=${title.value?.jp}&teacher=${lecturers.value?.[0]?.name?.jp}`;
 
       await request.fetchAndStoreCourse(`search${searchQuery}`);
 
       tool.goToResultPage(`/course-detail/search${searchQuery}`);
-    },
+    };
+
+    return {
+      goResult,
+      cardClass,
+      ...toRefs(state),
+      curLang,
+      category,
+      postscript,
+      credit,
+      semester,
+      times,
+      summary,
+      titleForId,
+      teacherForId,
+      cardWidth,
+    };
   },
 });
 </script>

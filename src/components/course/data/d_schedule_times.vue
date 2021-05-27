@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import { basicTemplate } from '@/assets/CourseInfo';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DScheduleTimes',
   props: {
     times: {
@@ -23,10 +23,9 @@ export default Vue.extend({
       default: basicTemplate,
     },
   },
-
-  computed: {
-    displays(): string[] | undefined {
-      const times = this.times.jp;
+  setup: (props) => {
+    const displays = computed((): string[] | undefined => {
+      const times = props.times.jp;
       if (times) {
         const pattern = /([月火水木金土日])曜日([１２３４５６７1234567])時限/;
         const schedule: string[] = times.split(',').map((str: string) => {
@@ -45,7 +44,11 @@ export default Vue.extend({
         return schedule;
       }
       return undefined;
-    },
+    });
+
+    return {
+      displays,
+    };
   },
 });
 </script>

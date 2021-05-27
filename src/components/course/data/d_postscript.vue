@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import { basicTemplate } from '@/assets/CourseInfo';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DPostsctipt',
   props: {
     postscript: {
@@ -20,13 +20,15 @@ export default Vue.extend({
       default: basicTemplate,
     },
   },
-  computed: {
-    postscriptData(): string | null | undefined {
-      return this.postscript?.[this.curLang];
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
+  setup: (props, context) => {
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    const postscriptData = computed((): string | null | undefined => props
+      .postscript?.[curLang.value]);
+
+    return {
+      postscriptData,
+    };
   },
 });
 </script>

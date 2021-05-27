@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import { basicTemplate } from '@/assets/CourseInfo';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DScheduleSemester',
   props: {
     semester: {
@@ -21,19 +21,22 @@ export default Vue.extend({
       default: basicTemplate,
     },
   },
-  computed: {
-    semesterData(): string | null | undefined {
-      return this.semester?.[this.curLang];
-    },
-    isSpring() {
-      if (this.semester === 'Spring' || this.semester.includes('春')) {
+  setup: (props, context) => {
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    const semesterData = computed((): string | null | undefined => props.semester?.[curLang.value]);
+
+    const isSpring = computed(() => {
+      if (semesterData.value === 'Spring' || semesterData.value?.includes('春')) {
         return true;
       }
       return false;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
+    });
+
+    return {
+      semesterData,
+      isSpring,
+    };
   },
 });
 </script>

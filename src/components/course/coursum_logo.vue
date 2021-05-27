@@ -10,26 +10,28 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import request from '@/api/request';
 import tool from '@/api/build_query';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'CoursumLogo',
-  computed: {
-    logoStyle(): object {
-      return { 'font-size': '1.1rem', cursor: 'pointer' };
-    },
-    isMdAndUp() {
-      return this.$vuetify.breakpoint.mdAndUp;
-    },
-  },
-  methods: {
-    async goResult() {
+  setup: (_, context) => {
+    const logoStyle = computed((): object => ({ 'font-size': '1.1rem', cursor: 'pointer' }));
+
+    const isMdAndUp = computed(() => context.root.$vuetify.breakpoint.mdAndUp);
+
+    const goResult = async () => {
       await request.fetchAndStoreCourses('search?');
 
       tool.goToResultPage('/');
-    },
+    };
+
+    return {
+      logoStyle,
+      isMdAndUp,
+      goResult,
+    };
   },
 });
 </script>

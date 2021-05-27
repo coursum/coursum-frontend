@@ -47,53 +47,63 @@
 import Vue from 'vue';
 import CourseShow from '@/components/course/course_show.vue';
 import { CourseInfo } from '@/assets/CourseInfo';
+import { computed, reactive } from '@vue/composition-api';
 
 export default Vue.extend({
   name: 'CourseIndex',
   components: {
     CourseShow,
   },
-  data: () => ({
-    pgPageSize: 12,
-    word: '',
-  }),
-  computed: {
-    courseDatas(): CourseInfo[] {
-      return this.$store.state.course.courses;
-    },
-    isLoading(): boolean {
-      return this.$store.state.isLoading;
-    },
-    calcStartAndEndIndex(): number[] {
+  setup: (_, context) => {
+    const state = reactive({
+      pgPageSize: 12,
+      word: '',
+    });
+
+    const courseDatas = computed((): CourseInfo[] => context.root.$store.state.course.courses);
+
+    const isLoading = computed((): boolean => context.root.$store.state.isLoading);
+
+    const currentSelectedPage = computed((): number => context.root.$store
+      .state.currentSelectedPage);
+
+    const calcStartAndEndIndex = computed((): number[] => {
       // currentSelectedPageは1から始まる
-      const start = (this.currentSelectedPage - 1) * this.pgPageSize;
-      const end = start + this.pgPageSize;
+      const start = (currentSelectedPage.value - 1) * state.pgPageSize;
+      const end = start + state.pgPageSize;
 
       return [start, end];
-    },
-    currentShowingCourses(): CourseInfo[] {
-      const [start, end] = this.calcStartAndEndIndex;
+    });
 
-      return this.courseDatas.slice(start, end);
-    },
-    pgTotalLength(): number {
-      // 全てのコースを表示させないといけないので切り上げる
-      return Math.ceil(this.courseDatas.length / this.pgPageSize);
-    },
-    currentSelectedPage(): number {
-      return this.$store.state.currentSelectedPage;
-    },
-  },
-  methods: {
-    goNextPage(): void {
-      this.$store.commit('updateCurrentSelectedPage', this.currentSelectedPage + 1);
-    },
-    goPreviousPage(): void {
-      this.$store.commit('updateCurrentSelectedPage', this.currentSelectedPage - 1);
-    },
-    goTargetPage(updatedValue: number): void {
-      this.$store.commit('updateCurrentSelectedPage', updatedValue);
-    },
+    const currentShowingCourses = computed((): CourseInfo[] => {
+      const [start, end] = calcStartAndEndIndex.value;
+
+      return courseDatas.value.slice(start, end);
+    });
+
+    const pgTotalLength = computed((): number => Math
+      .ceil(courseDatas.value.length / state.pgPageSize));
+
+    const goNextPage = (): void => {
+      context.root.$store.commit('updateCurrentSelectedPage', currentSelectedPage.value + 1);
+    };
+
+    const goPreviousPage = (): void => {
+      context.root.$store.commit('updateCurrentSelectedPage', currentSelectedPage.value - 1);
+    };
+
+    const goTargetPage = (updatedValue: number): void => {
+      context.root.$store.commit('updateCurrentSelectedPage', updatedValue);
+    };
+
+    return {
+      isLoading,
+      currentShowingCourses,
+      pgTotalLength,
+      goNextPage,
+      goPreviousPage,
+      goTargetPage,
+    };
   },
 });
 </script>

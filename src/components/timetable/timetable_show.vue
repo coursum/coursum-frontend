@@ -44,36 +44,38 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {
+  defineComponent, onMounted, computed, reactive,
+} from '@vue/composition-api';
 import { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
 
-export default Vue.extend({
+interface State {
+  isSharedPage: boolean;
+  sortedIDs: [string, number[]][];
+}
 
+export default defineComponent({
   name: 'TimetableShow',
-
   components: {
     CourseShow,
   },
+  setup: (_, context) => {
+    const state = reactive<State>(
+      {
+        isSharedPage: false,
+        sortedIDs: [['', [0]]],
+      },
+    );
 
-  data() {
-    return {
-      isSharedPage: false,
-      sortedIDs: [] as [string, number[]][],
-    };
-  },
-  computed: {
-    courses(): CourseInfo[] {
-      return this.$store.state.timetable.courses;
-    },
-    ids(): string[] {
-      return this.$store.state.timetable.ids;
-    },
-    isLoading(): boolean {
-      return this.$store.state.isLoading;
-    },
-    sorted(): [string, number[]][][] {
-      const daySort = this.sortedIDs;
+    const courses = computed((): CourseInfo[] => context.root.$store.state.timetable.courses);
+
+    const ids = computed((): string[] => context.root.$store.state.timetable.ids);
+
+    const isLoading = computed((): boolean => context.root.$store.state.isLoading);
+
+    const sorted = computed((): [string, number[]][][] => {
+      const daySort = state.sortedIDs;
       const result: [string, number[]][][] = [];
       let temp: [string, number[]][] = [];
 
@@ -99,33 +101,19 @@ export default Vue.extend({
       //   arr.sort(([, [, time1]], [, [, time2]]) => time1 - time2);
       // });
       return result;
-    },
-  },
-  mounted() {
-    if (this.$route.path.split('/')[2] === 'shared') {
-      this.isSharedPage = true;
-    } else {
-      this.isSharedPage = false;
-    }
-  },
-  methods: {
-    idx(d: [string, number[]][]): number {
-      return d?.[0]?.[1]?.[0];
-    },
-    setCourseDatas(datas: CourseInfo[]) {
-      datas
-        .some((dataObj: CourseInfo) => {
-          const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers?.[0]?.name?.jp}`;
+    });
 
-          if (this.ids.includes(id)) {
-            this.setInitialData(dataObj);
-            this.$set(this.courses, id, dataObj);
-            return true;
-          }
-          return false;
-        });
-    },
-    setInitialData(dataObj: CourseInfo) {
+    onMounted(() => {
+      if (context.root.$route.path.split('/')[2] === 'shared') {
+        state.isSharedPage = true;
+      } else {
+        state.isSharedPage = false;
+      }
+    });
+
+    const idx = (d: [string, number[]][]): number => d?.[0]?.[1]?.[0];
+
+    const setInitialData = (dataObj: CourseInfo) => {
       const times = dataObj?.schedule?.times?.jp;
       const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers?.[0]?.name?.jp}`;
       const pattern = /([月火水木金土日])曜日([１２３４５６７1234567])時限/;
@@ -144,9 +132,29 @@ export default Vue.extend({
         });
       }
 
-      this.sortedIDs.push([id, [day, time]]);
-    },
+      state.sortedIDs.push([id, [day, time]]);
+    };
+
+    const setCourseDatas = (datas: CourseInfo[]) => {
+      datas
+        .some((dataObj: CourseInfo) => {
+          const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers?.[0]?.name?.jp}`;
+
+          if (ids.value.includes(id)) {
+            setInitialData(dataObj);
+            context.root.$set(courses, id, dataObj);
+            return true;
+          }
+          return false;
+        });
+    };
+
+    return {
+      isLoading,
+      courses,
+    };
   },
+
 });
 </script>
 

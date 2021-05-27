@@ -14,10 +14,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent, reactive } from '@vue/composition-api';
 import { basicTemplate } from '@/assets/CourseInfo';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DSummary',
   props: {
     summary: {
@@ -33,25 +33,25 @@ export default Vue.extend({
       default: true,
     },
   },
-  data() {
-    return {
-      summaryStyle: { 'font-size': '0.85rem' },
-    };
-  },
-  computed: {
-    summaryData(): string | null | undefined {
-      if (this.titleJp === '研究会Ａ' || this.titleJp === '研究会Ｂ') {
-        return this.summary?.en;
+  setup: (props, context) => {
+    const summaryStyle = { 'font-size': '0.85rem' };
+
+    const titleJp = computed((): string | null | undefined => props.title?.name?.jp);
+
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    const summaryData = computed((): string | null | undefined => {
+      if (titleJp.value === '研究会Ａ' || titleJp.value === '研究会Ｂ') {
+        return props.summary?.en;
       }
 
-      return this.summary?.[this.curLang];
-    },
-    titleJp(): string | null | undefined {
-      return this.title?.name?.jp;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
+      return props.summary?.[curLang.value];
+    });
+
+    return {
+      summaryStyle,
+      summaryData,
+    };
   },
 });
 </script>

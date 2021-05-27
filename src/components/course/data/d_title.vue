@@ -8,21 +8,22 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import { basicTemplate } from '@/assets/CourseInfo';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DTitle',
   props: {
     title: { type: Object, default: basicTemplate },
   },
-  computed: {
-    titleData(): string | null | undefined {
-      return this.title?.[this.curLang];
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
+  setup: (props, context) => {
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    const titleData = computed((): string | null | undefined => props.title?.[curLang.value]);
+
+    return {
+      titleData,
+    };
   },
 });
 </script>

@@ -80,12 +80,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import { Basic } from '@/assets/CourseInfo';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DetailShow',
-
   props: {
     registration: {
       type: Object,
@@ -112,22 +111,23 @@ export default Vue.extend({
       default: undefined,
     },
   },
-  computed: {
-    number(): null | undefined {
-      return this.registration?.number;
-    },
-    suggestion(): Basic {
-      return this.registration?.suggestion?.[`${this.curLang}`];
-    },
-    requirement(): Basic {
-      return this.registration?.requirement?.[`${this.curLang}`];
-    },
-    prerequisite(): null | undefined {
-      return this.registration?.prerequisite?.[`${this.curLang}`];
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
+  setup: (props, context) => {
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    const number = computed((): null | undefined => props.registration?.number);
+
+    const suggestion = computed((): Basic => props.registration?.suggestion?.[`${curLang}`]);
+
+    const requirement = computed((): Basic => props.registration?.requirement?.[`${curLang}`]);
+
+    const prerequisite = computed((): null | undefined => props.registration?.prerequisite?.[`${curLang}`]);
+
+    return {
+      number,
+      suggestion,
+      requirement,
+      prerequisite,
+    };
   },
 });
 </script>

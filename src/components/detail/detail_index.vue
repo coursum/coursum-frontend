@@ -26,47 +26,39 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import CourseShow from '@/components/course/course_show.vue';
 import { CourseInfo, Tag, Registration } from '@/assets/CourseInfo';
 import DetailShow from '@/components/detail/detail_show.vue';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DetailIndex',
   components: {
     DetailShow,
     CourseShow,
   },
-  computed: {
-    isLoading(): boolean {
-      return this.$store.state.isLoading;
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
-    registration(): Registration {
-      return this.courseData?.registration;
-    },
-    related(): null | undefined {
-      return this.courseData?.related;
-    },
-    classroom(): string | null | undefined {
-      return this.courseData?.classroom;
-    },
-    types(): null | undefined {
-      return this.courseData?.types;
-    },
-    tag(): Tag {
-      return this.courseData?.tag;
-    },
-    curriculumCode(): string | null | undefined {
-      return this.courseData?.curriculumCode;
-    },
-    courseData(): CourseInfo {
-      return this.$store.state.course.course;
-    },
-    width(): object {
-      const breakpoint = this.$vuetify.breakpoint.name;
+  setup: (_, context) => {
+    const courseData = computed((): CourseInfo => context.root.$store.state.course.course);
+
+    const isLoading = computed((): boolean => context.root.$store.state.isLoading);
+
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    const registration = computed((): Registration => courseData?.value.registration);
+
+    const related = computed((): null | undefined => courseData?.value.related);
+
+    const classroom = computed((): string | null | undefined => courseData?.value.classroom);
+
+    const types = computed((): null | undefined => courseData?.value.types);
+
+    const tag = computed((): Tag => courseData?.value.tag);
+
+    const curriculumCode = computed((): string | null
+    | undefined => courseData?.value.curriculumCode);
+
+    const width = computed((): object => {
+      const breakpoint = context.root.$vuetify.breakpoint.name;
       let size;
 
       switch (breakpoint) {
@@ -90,7 +82,19 @@ export default Vue.extend({
           break;
       }
       return { width: `${size}%` };
-    },
+    });
+
+    return {
+      isLoading,
+      curLang,
+      registration,
+      related,
+      classroom,
+      types,
+      curriculumCode,
+      tag,
+      width,
+    };
   },
 });
 </script>

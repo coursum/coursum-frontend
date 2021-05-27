@@ -7,21 +7,22 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 import { basicTemplate } from '@/assets/CourseInfo';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DCategory',
   props: {
     category: { type: Object, default: basicTemplate },
   },
-  computed: {
-    categoryData(): string | null | undefined {
-      return this.category?.[this.curLang];
-    },
-    curLang(): string {
-      return this.$i18n.locale;
-    },
+  setup: (props, context) => {
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    const categoryData = computed((): string | null | undefined => props.category?.[curLang.value]);
+
+    return {
+      categoryData,
+    };
   },
 });
 </script>

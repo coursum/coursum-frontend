@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { computed, defineComponent } from '@vue/composition-api';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'DLectures',
   props: {
     lecturers: {
@@ -34,10 +34,12 @@ export default Vue.extend({
       default: true,
     },
   },
-  computed: {
-    curLang(): string {
-      return this.$i18n.locale;
-    },
+  setup: (_: any, context: any) => {
+    const curLang = computed((): string => context.root.$i18n.locale);
+
+    return {
+      curLang,
+    };
   },
 });
 </script>

@@ -25,22 +25,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent, computed } from '@vue/composition-api';
 import tool from '@/api/build_query';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'TimetableLink',
-  computed: {
-    timetableLength(): number {
-      return this.$store.state.timetable.courses.length;
-    },
-  },
-  methods: {
-    async goResult() {
-      tool.goToResultPage('/timetable');
-    },
-  },
+  setup: (_, context) => {
+    const timetableLength = computed((): number => context.root.$store
+      .state.timetable.courses.length);
 
+    const goResult = async () => {
+      tool.goToResultPage('/timetable');
+    };
+
+    return {
+      timetableLength,
+      goResult,
+    };
+  },
 });
 </script>
 

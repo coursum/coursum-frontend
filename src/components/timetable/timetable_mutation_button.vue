@@ -23,12 +23,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent, computed } from '@vue/composition-api';
 import { CourseInfo } from '@/assets/CourseInfo';
 import localStorage from '@/api/local_storage';
 import request from '@/api/request';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'TimetableMutationButton',
   props: {
     title: {
@@ -40,26 +40,31 @@ export default Vue.extend({
       default: '',
     },
   },
-  computed: {
-    isInclude(): boolean {
-      const { courses } = this.$store.state.timetable;
+  setup: (props, context) => {
+    const isInclude = computed((): boolean => {
+      const { courses } = context.root.$store.state.timetable;
 
-      return courses.some((course: CourseInfo) => `{"title":"${course.title?.name?.jp}","teacher":"${course.lecturers?.[0]?.name?.jp}"}` === `{"title":"${this.title}","teacher":"${this.teacher}"}`);
-    },
+      return courses.some((course: CourseInfo) => `{"title":"${course.title?.name?.jp}","teacher":"${course.lecturers?.[0]?.name?.jp}"}` === `{"title":"${props.title}","teacher":"${props.teacher}"}`);
+    });
+
+    const removeCourse = () => {
+      context.root.$store.commit('timetable/removeCourse', { title: props.title, teacher: props.teacher });
+
+      localStorage.removeFromLocalStrage({ title: props.title, teacher: props.teacher });
+    };
+
+    const addCourse = () => {
+      request.fetchAndStoreCourseForTimetable(`search?query=${props.title}&teacher=${props.teacher}`);
+
+      localStorage.addToLocalStrage({ title: props.title, teacher: props.teacher });
+    };
+
+    return {
+      isInclude,
+      removeCourse,
+      addCourse,
+    };
   },
-  methods: {
-    removeCourse() {
-      this.$store.commit('timetable/removeCourse', { title: this.title, teacher: this.teacher });
-
-      localStorage.removeFromLocalStrage({ title: this.title, teacher: this.teacher });
-    },
-    addCourse() {
-      request.fetchAndStoreCourseForTimetable(`search?query=${this.title}&teacher=${this.teacher}`);
-
-      localStorage.addToLocalStrage({ title: this.title, teacher: this.teacher });
-    },
-  },
-
 });
 </script>
 

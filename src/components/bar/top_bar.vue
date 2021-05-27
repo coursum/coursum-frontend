@@ -28,31 +28,36 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from '@vue/composition-api';
 import SearchInput from '@/components/search/search_input.vue';
 import CoursumLogo from '@/components/course/coursum_logo.vue';
 import AdvancedInputs from '@/components/search/advanced_inputs.vue';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'TopBar',
   components: {
     SearchInput,
     AdvancedInputs,
     CoursumLogo,
   },
-
-  methods: {
-    goBack() {
+  setup: (_, context) => {
+    const goBack = () => {
       if (window.history.length > 1) {
-        this.$router.go(-1);
+        context.root.$router.go(-1);
       } else {
-        this.$router.push('/');
+        context.root.$router.push('/');
       }
-    },
-    changeSideBarState() {
-      const state = this.$store.state.sideBarState;
-      this.$store.commit('setSideBarState', !state);
-    },
+    };
+
+    const changeSideBarState = () => {
+      const state = context.root.$store.state.sideBarState;
+      context.root.$store.commit('setSideBarState', !state);
+    };
+
+    return {
+      goBack,
+      changeSideBarState,
+    };
   },
 });
 </script>

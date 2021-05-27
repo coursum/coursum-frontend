@@ -30,40 +30,41 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent, onMounted, reactive } from '@vue/composition-api';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'SettingShow',
-  data() {
-    return {
+  setup: (_, context) => {
+    const state = reactive({
       languages: { jp: '日本語', en: 'English' },
       language: 0,
       themeSwitch: false,
-    };
-  },
-  watch: {
-    themeSwitch() {
-      this.$vuetify.theme.dark = this.themeSwitch;
-      this.setThemeState();
-    },
-  },
-  created() {
-    if (this.$root.$i18n.locale === 'jp') {
-      this.language = 0;
-    } else {
-      this.language = 1;
-    }
+    });
 
-    this.themeSwitch = this.$vuetify.theme.dark;
-  },
-  methods: {
-    setLangState(locale: string) {
-      this.$root.$i18n.locale = locale;
+    // watch: {
+    //   themeSwitch() {
+    //     this.$vuetify.theme.dark = this.themeSwitch;
+    //     this.setThemeState();
+    //   },
+    // },
+    onMounted(() => {
+      if (context.root.$root.$i18n.locale === 'jp') {
+        state.language = 0;
+      } else {
+        state.language = 1;
+      }
+
+      state.themeSwitch = context.root.$vuetify.theme.dark;
+    });
+
+    const setLangState = (locale: string) => {
+      // context.root.$root.$i18n.locale = locale;
       localStorage.setItem('langState', JSON.stringify(locale));
-    },
-    setThemeState() {
-      localStorage.setItem('themeState', JSON.stringify(this.$vuetify.theme.dark));
-    },
+    };
+
+    const setThemeState = () => {
+      localStorage.setItem('themeState', JSON.stringify(context.root.$vuetify.theme.dark));
+    };
   },
 });
 </script>

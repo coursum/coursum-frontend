@@ -108,7 +108,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {
+  computed, defineComponent, onMounted, reactive,
+} from '@vue/composition-api';
 import tool from '@/api/build_query';
 import request from '@/api/request';
 
@@ -121,10 +123,10 @@ interface AdvancedInputs {
   time: string;
 }
 
-export default Vue.extend({
+export default defineComponent({
   name: 'AdvancedInputs',
-  data() {
-    return {
+  setup: (_, context) => {
+    const state = reactive({
       dialog: false,
       giga: '',
       teacher: '',
@@ -134,90 +136,95 @@ export default Vue.extend({
       time: '',
       setWidth: { width: '100px', margin: '15px' },
       setFlex: 'd-flex align-center',
+    });
+
+    const getAdvancedInputs = computed((): AdvancedInputs => context.root.$store
+      .state.advancedInputs);
+
+    const languages = computed(() => [context.root.$i18n.t('english'), context.root.$i18n.t('japanese')]);
+
+    const semesters = computed(() => [context.root.$i18n.t('spring'), context.root.$i18n.t('autumn')]);
+
+    const timesStr = computed((): string => `${typeof state.day === 'string' ? state.day : ''}${typeof state.time === 'string' ? state.time : ''}`);
+
+    const days = computed(() => [
+      context.root.$i18n.t('sunday'),
+      context.root.$i18n.t('monday'),
+      context.root.$i18n.t('tuesday'),
+      context.root.$i18n.t('wednesday'),
+      context.root.$i18n.t('thursday'),
+      context.root.$i18n.t('friday'),
+      context.root.$i18n.t('saturday')]);
+
+    const times = computed(() => [
+      `1${context.root.$i18n.t('period')}`,
+      `2${context.root.$i18n.t('period')}`,
+      `3${context.root.$i18n.t('period')}`,
+      `4${context.root.$i18n.t('period')}`,
+      `5${context.root.$i18n.t('period')}`,
+      `6${context.root.$i18n.t('period')}`,
+      `7${context.root.$i18n.t('period')}`]);
+
+    const setValues = () => {
+      state.giga = getAdvancedInputs.value.giga;
+      state.teacher = getAdvancedInputs.value.teacher;
+      state.language = getAdvancedInputs.value.language;
+      state.semester = getAdvancedInputs.value.semester;
+      state.day = getAdvancedInputs.value.day;
+      state.time = getAdvancedInputs.value.time;
     };
-  },
-  computed: {
-    getAdvancedInputs(): AdvancedInputs {
-      return this.$store.state.advancedInputs;
-    },
-    languages() {
-      return [this.$i18n.t('english'), this.$i18n.t('japanese')];
-    },
-    semesters() {
-      return [this.$i18n.t('spring'), this.$i18n.t('autumn')];
-    },
-    timesStr(): string {
-      return `${typeof this.day === 'string' ? this.day : ''}${typeof this.time === 'string' ? this.time : ''}`;
-    },
-    days() {
-      return [
-        this.$i18n.t('sunday'),
-        this.$i18n.t('monday'),
-        this.$i18n.t('tuesday'),
-        this.$i18n.t('wednesday'),
-        this.$i18n.t('thursday'),
-        this.$i18n.t('friday'),
-        this.$i18n.t('saturday')];
-    },
-    times() {
-      return [
-        `1${this.$i18n.t('period')}`,
-        `2${this.$i18n.t('period')}`,
-        `3${this.$i18n.t('period')}`,
-        `4${this.$i18n.t('period')}`,
-        `5${this.$i18n.t('period')}`,
-        `6${this.$i18n.t('period')}`,
-        `7${this.$i18n.t('period')}`];
-    },
-  },
-  created() {
-    this.setValues();
-  },
-  methods: {
-    setValues() {
-      this.giga = this.getAdvancedInputs.giga;
-      this.teacher = this.getAdvancedInputs.teacher;
-      this.language = this.getAdvancedInputs.language;
-      this.semester = this.getAdvancedInputs.semester;
-      this.day = this.getAdvancedInputs.day;
-      this.time = this.getAdvancedInputs.time;
-    },
-    storeValues() {
+
+    onMounted(() => {
+      setValues();
+    });
+
+    const storeValues = () => {
       const advancedInputs = {
-        giga: this.giga,
-        teacher: this.teacher,
-        language: this.language,
-        semester: this.semester,
-        times: this.timesStr,
+        giga: state.giga,
+        teacher: state.teacher,
+        language: state.language,
+        semester: state.semester,
+        times: timesStr.value,
       };
 
-      this.$store.commit('setAdvancedInputs', advancedInputs);
-    },
-    resetValues() {
-      this.giga = '';
-      this.teacher = '';
-      this.language = '';
-      this.semester = '';
-      this.day = '';
-      this.time = '';
-    },
-    async goResult() {
+      context.root.$store.commit('setAdvancedInputs', advancedInputs);
+    };
+
+    const resetValues = () => {
+      state.giga = '';
+      state.teacher = '';
+      state.language = '';
+      state.semester = '';
+      state.day = '';
+      state.time = '';
+    };
+
+    const goResult = async () => {
       const searchQuery = tool.buildQuery({
         builder: {
-          giga: this.giga,
-          teacher: this.teacher,
-          language: this.language,
-          semester: this.semester,
-          times: this.timesStr,
+          giga: state.giga,
+          teacher: state.teacher,
+          language: state.language,
+          semester: state.semester,
+          times: timesStr.value,
         },
       });
 
       await request.fetchAndStoreCourses(searchQuery);
 
-      this.storeValues();
-      this.dialog = false;
+      storeValues();
+      state.dialog = false;
       tool.goToResultPage(`/course/${searchQuery}`);
-    },
+    };
+
+    return {
+      languages,
+      semesters,
+      times,
+      days,
+      resetValues,
+      goResult,
+    };
   },
 });
 </script>
