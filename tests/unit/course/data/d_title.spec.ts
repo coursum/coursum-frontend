@@ -1,7 +1,9 @@
-import DTitle from '@/components/course/data/d_title.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../../setup';
+
 import { titleNameMock } from '../../../data';
+import { i18n } from '../../../setup';
+
+import DTitle from '@/components/course/data/d_title.vue';
 
 const correct = titleNameMock.en;
 

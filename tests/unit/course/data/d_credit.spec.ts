@@ -1,7 +1,9 @@
-import DCredit from '@/components/course/data/d_credit.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../../setup';
+
 import { creditMock } from '../../../data';
+import { i18n } from '../../../setup';
+
+import DCredit from '@/components/course/data/d_credit.vue';
 
 const correct = creditMock;
 

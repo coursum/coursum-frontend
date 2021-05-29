@@ -49,8 +49,9 @@
 import {
   computed, defineComponent, reactive, toRefs,
 } from '@vue/composition-api';
-import CourseShow from '@/components/course/course_show.vue';
+
 import { CourseInfo } from '@/assets/CourseInfo';
+import CourseShow from '@/components/course/course_show.vue';
 
 export default defineComponent({
   name: 'CourseIndex',

@@ -1,7 +1,9 @@
-import DSummary from '@/components/course/data/d_summary.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../../setup';
+
 import { summaryMock, titleMock } from '../../../data';
+import { i18n } from '../../../setup';
+
+import DSummary from '@/components/course/data/d_summary.vue';
 
 const correct = summaryMock.en;
 

@@ -1,7 +1,9 @@
-import DPostscript from '@/components/course/data/d_postscript.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../../setup';
+
 import { titlePostscriptMock } from '../../../data';
+import { i18n } from '../../../setup';
+
+import DPostscript from '@/components/course/data/d_postscript.vue';
 
 const correct = titlePostscriptMock.en;
 

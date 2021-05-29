@@ -1,7 +1,9 @@
-import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../../setup';
+
 import { scheduleTimesMock } from '../../../data';
+import { i18n } from '../../../setup';
+
+import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
 
 const correct = scheduleTimesMock.jp;
 

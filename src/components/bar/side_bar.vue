@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
+
 import SettingShow from '@/components/setting/setting_show.vue';
 import TimetableLink from '@/components/timetable/timetable_link.vue';
 

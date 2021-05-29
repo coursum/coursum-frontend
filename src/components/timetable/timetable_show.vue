@@ -45,8 +45,9 @@
 
 <script lang="ts">
 import {
-  defineComponent, onMounted, computed, reactive,
+  computed, defineComponent, onMounted, reactive,
 } from '@vue/composition-api';
+
 import { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
 

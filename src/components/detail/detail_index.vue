@@ -27,8 +27,9 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
+
+import { CourseInfo, Registration, Tag } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
-import { CourseInfo, Tag, Registration } from '@/assets/CourseInfo';
 import DetailShow from '@/components/detail/detail_show.vue';
 
 export default defineComponent({

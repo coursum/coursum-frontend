@@ -1,14 +1,15 @@
 import './registerServiceWorker';
-import ElementUI from 'element-ui';
-import lang from 'element-ui/lib/locale/lang/ja';
-import locale from 'element-ui/lib/locale';
-import Vue from 'vue';
 import VueCompositionApi from '@vue/composition-api';
+import ElementUI from 'element-ui';
+import locale from 'element-ui/lib/locale';
+import lang from 'element-ui/lib/locale/lang/ja';
+import Vue from 'vue';
+
+import App from './App.vue';
+import i18n from './i18n';
+import vuetify from './plugins/vuetify';
 import router from './router';
 import store from './store';
-import i18n from './i18n';
-import App from './App.vue';
-import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
 Vue.use(VueCompositionApi);

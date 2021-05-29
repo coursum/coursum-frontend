@@ -1,10 +1,11 @@
-import DetailShow from '@/components/detail/detail_show.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../setup';
 
 import {
-  registrationMock, relatedMock, classroomMock, typesMock, tagMock, curriculumCodeMock,
+  classroomMock, curriculumCodeMock, registrationMock, relatedMock, tagMock, typesMock,
 } from '../../data';
+import { i18n } from '../../setup';
+
+import DetailShow from '@/components/detail/detail_show.vue';
 
 const options = {
   i18n,

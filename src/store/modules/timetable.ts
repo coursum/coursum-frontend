@@ -1,4 +1,4 @@
-import { ValidIdParams, CourseInfo } from '@/assets/CourseInfo';
+import { CourseInfo, ValidIdParams } from '@/assets/CourseInfo';
 
 const coursesType: CourseInfo[] = [];
 

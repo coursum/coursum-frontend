@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { AdvancedInputs } from '@/assets/SearchInfo';
+
 import course from './modules/course';
 import timetable from './modules/timetable';
+
+import { AdvancedInputs } from '@/assets/SearchInfo';
 
 Vue.use(Vuex);
 

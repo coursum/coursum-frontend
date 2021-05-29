@@ -1,6 +1,6 @@
-import CourseIndex from '@/components/course/course_index.vue';
+import { mount, shallowMount } from '@vue/test-utils';
 
-import { shallowMount, mount } from '@vue/test-utils';
+import CourseIndex from '@/components/course/course_index.vue';
 
 jest.mock('@/api/request');
 

@@ -80,7 +80,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { PropType, computed, defineComponent } from '@vue/composition-api';
+
 import { Registration, Tag } from '@/assets/CourseInfo';
 
 export default defineComponent({

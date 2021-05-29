@@ -1,7 +1,9 @@
-import DScheduleSemester from '@/components/course/data/d_schedule_semester.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../../setup';
+
 import { scheduleSemesterMock } from '../../../data';
+import { i18n } from '../../../setup';
+
+import DScheduleSemester from '@/components/course/data/d_schedule_semester.vue';
 
 const correct = scheduleSemesterMock.en;
 

@@ -1,7 +1,9 @@
-import DCategory from '@/components/course/data/d_category.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../../setup';
+
 import { categoryMock } from '../../../data';
+import { i18n } from '../../../setup';
+
+import DCategory from '@/components/course/data/d_category.vue';
 
 const correct = categoryMock.en;
 

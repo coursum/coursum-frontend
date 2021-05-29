@@ -1,8 +1,9 @@
-import CourseShow from '@/components/course/course_show.vue';
-import { shallowMount, mount } from '@vue/test-utils';
-import { i18n } from '../../setup';
+import { mount, shallowMount } from '@vue/test-utils';
 
 import { courseDataMock } from '../../data';
+import { i18n } from '../../setup';
+
+import CourseShow from '@/components/course/course_show.vue';
 
 const options = {
   i18n,

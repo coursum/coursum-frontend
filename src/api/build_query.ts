@@ -1,6 +1,6 @@
-import store from '@/store';
-import router from '@/router';
 import { AdvancedInputs } from '@/assets/SearchInfo';
+import router from '@/router';
+import store from '@/store';
 
 interface QueryParams {
   builder: string | null | undefined | AdvancedInputs;

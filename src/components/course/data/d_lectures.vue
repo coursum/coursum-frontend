@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { PropType, computed, defineComponent } from '@vue/composition-api';
+
 import { Lecturer } from '@/assets/CourseInfo';
 
 export default defineComponent({

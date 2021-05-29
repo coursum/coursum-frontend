@@ -25,7 +25,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
+
 import tool from '@/api/build_query';
 
 export default defineComponent({

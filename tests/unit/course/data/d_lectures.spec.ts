@@ -1,7 +1,9 @@
-import DLectures from '@/components/course/data/d_lectures.vue';
 import { shallowMount } from '@vue/test-utils';
-import { i18n } from '../../../setup';
+
 import { lecturersMock } from '../../../data';
+import { i18n } from '../../../setup';
+
+import DLectures from '@/components/course/data/d_lectures.vue';
 
 const correct = lecturersMock[0].name.en;
 

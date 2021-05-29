@@ -29,9 +29,10 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import SearchInput from '@/components/search/search_input.vue';
+
 import CoursumLogo from '@/components/course/coursum_logo.vue';
 import AdvancedInputs from '@/components/search/advanced_inputs.vue';
+import SearchInput from '@/components/search/search_input.vue';
 
 export default defineComponent({
   name: 'TopBar',

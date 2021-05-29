@@ -9,11 +9,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed } from '@vue/composition-api';
-import TopBar from '@/components/bar/top_bar.vue';
-import SideBar from '@/components/bar/side_bar.vue';
+import { defineComponent, onMounted } from '@vue/composition-api';
+
 import request from '@/api/request';
 import { ValidIdParams } from '@/assets/CourseInfo';
+import SideBar from '@/components/bar/side_bar.vue';
+import TopBar from '@/components/bar/top_bar.vue';
 
 export default defineComponent({
   name: 'App',

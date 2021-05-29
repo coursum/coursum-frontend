@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import Vuetify from 'vuetify';
 import VueI18n from 'vue-i18n';
+import Vuetify from 'vuetify';
 import Vuex from 'vuex';
 
 Vue.use(Vuetify);

@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, onMounted, reactive, toRefs, watch, ref,
+  defineComponent, onMounted, reactive, ref, toRefs, watch,
 } from '@vue/composition-api';
 
 export default defineComponent({

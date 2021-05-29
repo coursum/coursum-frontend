@@ -14,8 +14,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from '@vue/composition-api';
-import { basicTemplate, Basic, Title } from '@/assets/CourseInfo';
+import { PropType, computed, defineComponent } from '@vue/composition-api';
+
+import { Basic, Title, basicTemplate } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DSummary',

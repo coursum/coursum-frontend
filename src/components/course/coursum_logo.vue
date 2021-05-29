@@ -11,8 +11,9 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
-import request from '@/api/request';
+
 import tool from '@/api/build_query';
+import request from '@/api/request';
 
 export default defineComponent({
   name: 'CoursumLogo',

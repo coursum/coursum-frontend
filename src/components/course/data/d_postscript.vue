@@ -9,8 +9,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from '@vue/composition-api';
-import { basicTemplate, Basic } from '@/assets/CourseInfo';
+import { PropType, computed, defineComponent } from '@vue/composition-api';
+
+import { Basic, basicTemplate } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DPostsctipt',

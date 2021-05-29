@@ -54,20 +54,21 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, reactive, toRefs, PropType,
+  PropType, computed, defineComponent, reactive, toRefs,
 } from '@vue/composition-api';
-import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
+
+import tool from '@/api/build_query';
+import request from '@/api/request';
+import { Basic, CourseInfo, Lecturer } from '@/assets/CourseInfo';
+import DCategory from '@/components/course/data/d_category.vue';
+import DCredit from '@/components/course/data/d_credit.vue';
+import DLectures from '@/components/course/data/d_lectures.vue';
 import DPostscript from '@/components/course/data/d_postscript.vue';
 import DScheduleSemester from '@/components/course/data/d_schedule_semester.vue';
 import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
-import DCredit from '@/components/course/data/d_credit.vue';
 import DSummary from '@/components/course/data/d_summary.vue';
-import DLectures from '@/components/course/data/d_lectures.vue';
 import DTitle from '@/components/course/data/d_title.vue';
-import { Lecturer, Basic, CourseInfo } from '@/assets/CourseInfo';
-import DCategory from '@/components/course/data/d_category.vue';
-import request from '@/api/request';
-import tool from '@/api/build_query';
+import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
 
 export default defineComponent({
   name: 'CourseShow',

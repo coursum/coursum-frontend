@@ -1,5 +1,6 @@
+import { courseDataMock, courseDatasMock } from '../../../tests/data';
+
 import { ValidIdParams } from '@/assets/CourseInfo';
-import { courseDatasMock, courseDataMock } from '../../../tests/data';
 
 const request: { 'fetchAndStoreCourses': Function } = jest.genMockFromModule('request');
 
