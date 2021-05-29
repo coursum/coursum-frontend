@@ -17,6 +17,11 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 
+    // Fix ESLint error of "Cannot read property 'loc' of undefined."
+    // https://github.com/typescript-eslint/typescript-eslint/issues/792#issuecomment-517762395
+    indent: 'off',
+    '@typescript-eslint/indent': ['error', 2],
+
     'vue/max-attributes-per-line': 'off',
 
     'import/order': [
