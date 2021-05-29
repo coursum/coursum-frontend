@@ -26,7 +26,8 @@ export default defineComponent({
     const getThemeState = () => {
       const themeState = localStorage.getItem('themeState');
       if (typeof themeState === 'string') {
-        //
+        // eslint-disable-next-line no-param-reassign
+        context.root.$vuetify.theme.dark = JSON.parse(themeState);
       }
     };
 
