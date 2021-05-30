@@ -9,12 +9,13 @@ import router from './router';
 import store from './store';
 
 Vue.config.productionTip = false;
+
 Vue.use(VueCompositionApi);
 
 new Vue({
+  i18n,
+  vuetify,
   router,
   store,
-  vuetify,
-  i18n,
   render: (h) => h(App),
 }).$mount('#app');

@@ -9,12 +9,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@vue/composition-api';
+/* eslint-disable no-param-reassign */
+import { defineComponent, onBeforeMount, onMounted } from '@vue/composition-api';
 
 import request from '@/api/request';
 import { ValidIdParams } from '@/assets/CourseInfo';
 import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
+import useStorage from '@/composables/useStorage';
 
 export default defineComponent({
   name: 'App',
@@ -22,22 +24,15 @@ export default defineComponent({
     TopBar,
     SideBar,
   },
-  setup: (_, context) => {
-    const getThemeState = () => {
-      const themeState = localStorage.getItem('themeState');
-      if (typeof themeState === 'string') {
-        // eslint-disable-next-line no-param-reassign
-        context.root.$vuetify.theme.dark = JSON.parse(themeState);
-      }
+  setup: (_, { root: { $vuetify, $i18n } }) => {
+    const { getItem } = useStorage(localStorage);
+
+    const applyStoredConfig = () => {
+      $vuetify.theme.dark = getItem('vuetify.theme.dark') || $vuetify.theme.dark;
+      $i18n.locale = getItem('i18n.locale') || $i18n.locale;
     };
 
-    const getLangState = () => {
-      const langState = localStorage.getItem('langState');
-      if (typeof langState === 'string') {
-        // eslint-disable-next-line no-param-reassign
-        context.root.$i18n.locale = JSON.parse(langState);
-      }
-    };
+    onBeforeMount(applyStoredConfig);
 
     onMounted(async () => {
       const ids = localStorage.getItem('timetable/ids');
@@ -46,9 +41,6 @@ export default defineComponent({
         const idObjs: ValidIdParams[] = JSON.parse(ids);
         await request.fetchAndStoreCoursesForTimetable(idObjs);
       }
-
-      getThemeState();
-      getLangState();
 
       if (window.location.pathname === '/') {
         await request.fetchAndStoreCourses('search?');

@@ -22,7 +22,11 @@ module.exports = {
     indent: 'off',
     '@typescript-eslint/indent': ['error', 2],
 
+    '@typescript-eslint/no-explicit-any': 'off',
     'vue/max-attributes-per-line': 'off',
+    'vue/component-tags-order': ['error', {
+      order: ['template', 'script', 'style'],
+    }],
 
     'import/order': [
       'error',

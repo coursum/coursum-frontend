@@ -3,29 +3,21 @@
     <v-divider />
 
     <div class="d-flex justify-space-between">
-      <v-icon>
-        mdi-theme-light-dark
-      </v-icon>
-      <v-switch
-        v-model="themeSwitch"
-        color="secondary"
-        @click.stop
+      <v-icon>mdi-theme-light-dark</v-icon>
+      <v-switch v-model="isDark"
+                color="secondary"
+                @click.stop
       />
     </div>
 
     <div class="d-flex justify-space-between">
       <v-icon>mdi-translate</v-icon>
-      <v-chip-group
-        v-model="language"
-        mandatory
-      >
-        <v-chip
-          v-for="([locale, localeName], idx) in Object.entries(languages)"
-          :key="idx"
-          outlined
-          @click.stop="setLangState(locale)"
-        >
-          {{ localeName }}
+      <v-chip-group v-model="locale" mandatory>
+        <v-chip outlined value="jp">
+          日本語
+        </v-chip>
+        <v-chip outlined value="en">
+          English
         </v-chip>
       </v-chip-group>
     </div>
@@ -33,67 +25,34 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent, onMounted, reactive, ref, toRefs, watch,
-} from '@vue/composition-api';
+/* eslint-disable no-param-reassign */
+import { defineComponent, ref, watch } from '@vue/composition-api';
+
+import useStorage from '@/composables/useStorage';
 
 export default defineComponent({
   name: 'SettingShow',
-  setup: (_, context) => {
-    const state = reactive({
-      languages: { jp: '日本語', en: 'English' },
-      language: 0,
+  setup: (_, { root: { $vuetify, $i18n } }) => {
+    const { setItem } = useStorage(localStorage);
+
+    const isDark = ref($vuetify.theme.dark);
+
+    watch(isDark, () => {
+      $vuetify.theme.dark = isDark.value;
+      setItem('vuetify.theme.dark', isDark.value);
     });
 
-    const themeSwitch = ref(false);
+    const locale = ref($i18n.locale);
 
-    const setThemeState = () => {
-      localStorage.setItem('themeState', JSON.stringify(context.root.$vuetify.theme.dark));
-    };
-
-    watch(themeSwitch, () => {
-      // eslint-disable-next-line no-param-reassign
-      context.root.$vuetify.theme.dark = themeSwitch.value;
-      setThemeState();
+    watch(locale, () => {
+      $i18n.locale = locale.value;
+      setItem('i18n.locale', locale.value);
     });
-
-    onMounted(() => {
-      if (context.root.$root.$i18n.locale === 'jp') {
-        state.language = 0;
-      } else {
-        state.language = 1;
-      }
-
-      themeSwitch.value = context.root.$vuetify.theme.dark;
-    });
-
-    const setLangState = (locale: string) => {
-      // eslint-disable-next-line no-param-reassign
-      context.root.$root.$i18n.locale = locale;
-      localStorage.setItem('langState', JSON.stringify(locale));
-    };
 
     return {
-      ...toRefs(state),
-      setLangState,
-      setThemeState,
-      themeSwitch,
+      isDark,
+      locale,
     };
   },
 });
 </script>
-
-<i18n>
-{
-  "en": {
-    "darkMode": "Dark mode",
-    "lang": "Language",
-    "languages": ["jp", "en"]
-  },
-  "jp": {
-    "darkMode": "ダークモード",
-    "lang": "言語",
-    "languages": ["日本語", "英語"]
-  }
-}
-</i18n>
