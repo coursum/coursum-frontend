@@ -1,105 +1,50 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    max-width="500"
-  >
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        icon
-        v-bind="attrs"
-        v-on="on"
-      >
-        <v-icon
-          class="mx-2"
-        >
+  <v-dialog v-model="dialog" max-width="500">
+    <template v-slot:activator="{ attrs, on }">
+      <v-btn icon v-bind="attrs" v-on="on">
+        <v-icon class="mx-2">
           mdi-tune
         </v-icon>
       </v-btn>
     </template>
 
-    <v-card
-      class="px-12 py-6"
-    >
-      <div :class="setFlex">
-        <div :style="setWidth">
-          {{ $t("giga") }}
-        </div>
-        <v-checkbox
-          v-model="giga"
-          class="pa-0 ma-0"
-          hide-details
-        />
+    <v-card class="px-12 py-6">
+      <div class="d-flex align-center">
+        <div>{{ $t("giga") }}</div>
+        <v-checkbox v-model="giga" class="pa-0 ma-0" hide-details />
       </div>
-      <div :class="setFlex">
-        <div :style="setWidth">
-          {{ $t("lecturer") }}
-        </div>
-        <v-text-field
-          v-model="teacher"
-          dense
-          hide-details
-          solo
-        />
+
+      <div class="d-flex align-center">
+        <div>{{ $t("lecturer") }}</div>
+        <v-text-field v-model="teacher" dense hide-details solo />
       </div>
-      <div :class="setFlex">
-        <div :style="setWidth">
-          {{ $t("language") }}
-        </div>
-        <v-select
-          v-model="language"
-          :items="languages"
-          dense
-          hide-details
-          solo
-        />
+
+      <div class="d-flex align-center">
+        <div>{{ $t("language") }}</div>
+        <v-select v-model="language" :items="languages" dense hide-details solo />
       </div>
-      <div :class="setFlex">
-        <div :style="setWidth">
-          {{ $t("semester") }}
-        </div>
-        <v-select
-          v-model="semester"
-          :items="semesters"
-          dense
-          hide-details
-          solo
-        />
+
+      <div class="d-flex align-center">
+        <div>{{ $t("semester") }}</div>
+        <v-select v-model="semester" :items="semesters" dense hide-details solo />
       </div>
-      <div :class="setFlex">
-        <div :style="setWidth">
-          {{ $t("day") }}
-        </div>
-        <v-select
-          v-model="day"
-          :items="days"
-          dense
-          hide-details
-          solo
-        />
+
+      <div class="d-flex align-center">
+        <div>{{ $t("day") }}</div>
+        <v-select v-model="day" :items="days" dense hide-details solo />
       </div>
-      <div :class="setFlex">
-        <div :style="setWidth">
-          {{ $t("time") }}
-        </div>
-        <v-select
-          v-model="time"
-          :items="times"
-          dense
-          hide-details
-          solo
-        />
+
+      <div class="d-flex align-center">
+        <div>{{ $t("time") }}</div>
+        <v-select v-model="time" :items="times" dense hide-details solo />
       </div>
 
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          @click="resetValues"
-        >
+        <v-btn @click="resetValues">
           reset
         </v-btn>
-        <v-btn
-          @click="goResult"
-        >
+        <v-btn @click="goResult">
           submit
         </v-btn>
       </v-card-actions>
@@ -109,7 +54,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, onMounted, reactive, toRefs,
+  computed, defineComponent, onMounted, reactive, ref, toRefs,
 } from '@vue/composition-api';
 
 import tool from '@/api/build_query';
@@ -127,44 +72,43 @@ interface AdvancedInputs {
 export default defineComponent({
   name: 'AdvancedInputs',
   setup: (_, context) => {
+    const translateArray = (keys: string[]) => keys.map((key) => context.root.$i18n.t(key));
+
+    const dialog = ref(false);
+
     const state = reactive({
-      dialog: false,
       giga: '',
       teacher: '',
       language: '',
       semester: '',
       day: '',
       time: '',
-      setWidth: { width: '100px', margin: '15px' },
-      setFlex: 'd-flex align-center',
     });
 
-    const getAdvancedInputs = computed((): AdvancedInputs => context.root.$store
-      .state.advancedInputs);
+    const getAdvancedInputs = computed((): AdvancedInputs => (
+      context.root.$store.state.advancedInputs
+    ));
 
-    const languages = computed(() => [context.root.$i18n.t('english'), context.root.$i18n.t('japanese')]);
+    const languages = computed(() => translateArray(['english', 'japanese']));
 
-    const semesters = computed(() => [context.root.$i18n.t('spring'), context.root.$i18n.t('autumn')]);
+    const semesters = computed(() => translateArray(['spring', 'autumn']));
 
-    const timesStr = computed((): string => `${typeof state.day === 'string' ? state.day : ''}${typeof state.time === 'string' ? state.time : ''}`);
+    const timesStr = computed(() => {
+      const day = typeof state.day === 'string' ? state.day : '';
+      const time = typeof state.time === 'string' ? state.time : '';
 
-    const days = computed(() => [
-      context.root.$i18n.t('sunday'),
-      context.root.$i18n.t('monday'),
-      context.root.$i18n.t('tuesday'),
-      context.root.$i18n.t('wednesday'),
-      context.root.$i18n.t('thursday'),
-      context.root.$i18n.t('friday'),
-      context.root.$i18n.t('saturday')]);
+      return `${day}${time}`;
+    });
 
-    const times = computed(() => [
-      `1${context.root.$i18n.t('period')}`,
-      `2${context.root.$i18n.t('period')}`,
-      `3${context.root.$i18n.t('period')}`,
-      `4${context.root.$i18n.t('period')}`,
-      `5${context.root.$i18n.t('period')}`,
-      `6${context.root.$i18n.t('period')}`,
-      `7${context.root.$i18n.t('period')}`]);
+    const days = computed(() => translateArray(
+      ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+    ));
+
+    const times = computed(() => (
+      Array(7).fill(0)
+        .map((_, num) => num + 1)
+        .map((period) => `${period} ${context.root.$i18n.t('period')}`)
+    ));
 
     const setValues = () => {
       state.giga = getAdvancedInputs.value.giga;
@@ -214,11 +158,13 @@ export default defineComponent({
       await request.fetchAndStoreCourses(searchQuery);
 
       storeValues();
-      state.dialog = false;
+      dialog.value = false;
       tool.goToResultPage(`/course/${searchQuery}`);
     };
 
     return {
+      dialog,
+
       languages,
       semesters,
       times,
@@ -230,3 +176,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+v-card > div > div {
+  width: 100px;
+  margin: 15px;
+}
+</style>

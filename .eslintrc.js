@@ -35,15 +35,19 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     /* Import */
-    'import/order': ['error',
-      {
-        alphabetize: { order: 'asc' },
-        'newlines-between': 'always',
-      },
+    'import/order': ['error', {
+      alphabetize: { order: 'asc' },
+      'newlines-between': 'always',
+    },
     ],
     'sort-imports': ['error',
       { ignoreDeclarationSort: true },
     ],
+
+    /* Other */
+    'no-shadow': ['error', {
+      allow: ['_'],
+    }],
   },
   overrides: [
     {

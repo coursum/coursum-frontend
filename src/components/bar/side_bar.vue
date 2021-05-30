@@ -1,12 +1,11 @@
 <template>
   <v-navigation-drawer app color="primary" :value="isVisible">
+    <!-- TODO: remove the inline style here or hind a better layout -->
     <div style="height: 100%" class="d-flex flex-column">
-      <div>
+      <v-list nav dense>
         <timetable-link />
-      </div>
-      <div class="mt-auto">
-        <setting-show />
-      </div>
+      </v-list>
+      <setting-show class="mt-auto" />
     </div>
   </v-navigation-drawer>
 </template>
