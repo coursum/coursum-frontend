@@ -28,7 +28,7 @@ describe('DPostscript', () => {
   });
 
   it('should not render anything when prop is falsy', () => {
-    [undefined, null, ''].forEach((falsyProp: undefined| null | string) => {
+    [undefined, null, ''].forEach((falsyProp: string | null | undefined) => {
       options.propsData.postscript.en = falsyProp;
       const wrapper = shallowMount(DPostscript, options);
 

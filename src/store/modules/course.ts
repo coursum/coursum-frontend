@@ -1,4 +1,4 @@
-import { CourseInfo } from '@/assets/CourseInfo';
+import type { CourseInfo } from '@/assets/CourseInfo';
 
 interface State {
   courses: CourseInfo[];

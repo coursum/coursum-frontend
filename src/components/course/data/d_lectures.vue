@@ -18,9 +18,10 @@
 </template>
 
 <script lang="ts">
-import { PropType, computed, defineComponent } from '@vue/composition-api';
+import type { PropType } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 
-import { Lecturer } from '@/assets/CourseInfo';
+import type { Lecturer } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DLectures',
@@ -37,7 +38,7 @@ export default defineComponent({
     },
   },
   setup: (_: any, context: any) => {
-    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'jp');
 
     return {
       curLang,

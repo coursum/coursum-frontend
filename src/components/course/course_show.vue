@@ -53,13 +53,14 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from '@vue/composition-api';
 import {
-  PropType, computed, defineComponent, reactive, toRefs,
+  computed, defineComponent, reactive, toRefs,
 } from '@vue/composition-api';
 
 import tool from '@/api/build_query';
 import request from '@/api/request';
-import { Basic, CourseInfo, Lecturer } from '@/assets/CourseInfo';
+import type { Basic, CourseInfo, Lecturer } from '@/assets/CourseInfo';
 import DCategory from '@/components/course/data/d_category.vue';
 import DCredit from '@/components/course/data/d_credit.vue';
 import DLectures from '@/components/course/data/d_lectures.vue';

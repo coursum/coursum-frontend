@@ -48,7 +48,7 @@ import {
   computed, defineComponent, onMounted, reactive,
 } from '@vue/composition-api';
 
-import { CourseInfo } from '@/assets/CourseInfo';
+import type { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
 
 interface State {
@@ -153,6 +153,9 @@ export default defineComponent({
     return {
       isLoading,
       courses,
+      sorted,
+      idx,
+      setCourseDatas,
     };
   },
 

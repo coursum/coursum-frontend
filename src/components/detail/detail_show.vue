@@ -80,9 +80,10 @@
 </template>
 
 <script lang="ts">
-import { PropType, computed, defineComponent } from '@vue/composition-api';
+import type { PropType } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 
-import { Registration, Tag } from '@/assets/CourseInfo';
+import type { Registration, Tag } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DetailShow',
@@ -113,7 +114,7 @@ export default defineComponent({
     },
   },
   setup: (props, context) => {
-    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'jp');
 
     const number = computed((): null | undefined => props.registration?.number);
 

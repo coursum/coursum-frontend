@@ -1,9 +1,9 @@
-import { AdvancedInputs } from '@/assets/SearchInfo';
+import type { AdvancedInputs } from '@/assets/SearchInfo';
 import router from '@/router';
 import store from '@/store';
 
 interface QueryParams {
-  builder: string | null | undefined | AdvancedInputs;
+  builder: AdvancedInputs | string | null | undefined;
 }
 
 function keywordsToString(keywords: AdvancedInputs): string {
@@ -57,7 +57,7 @@ export default {
 
     return `search?query=${query}&${keywords}`;
   },
-  goToResultPage(path: string) {
+  goToResultPage(path: string): void {
     if (path !== window.location.pathname) {
       router.push({ path });
     }

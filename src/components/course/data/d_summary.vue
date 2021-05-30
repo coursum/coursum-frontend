@@ -14,9 +14,11 @@
 </template>
 
 <script lang="ts">
-import { PropType, computed, defineComponent } from '@vue/composition-api';
+import type { PropType } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 
-import { Basic, Title, basicTemplate } from '@/assets/CourseInfo';
+import type { Basic, Title } from '@/assets/CourseInfo';
+import { basicTemplate } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DSummary',
@@ -39,7 +41,7 @@ export default defineComponent({
 
     const titleJp = computed((): string | null | undefined => props.title?.name?.jp);
 
-    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'jp');
 
     const summaryData = computed((): string | null | undefined => {
       if (titleJp.value === '研究会Ａ' || titleJp.value === '研究会Ｂ') {

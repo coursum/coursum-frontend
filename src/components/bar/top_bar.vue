@@ -20,7 +20,8 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, computed, defineComponent } from '@vue/composition-api';
+import type { SetupContext } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 
 import tool from '@/api/build_query';
 import request from '@/api/request';

@@ -13,9 +13,11 @@
 </template>
 
 <script lang="ts">
-import { PropType, computed, defineComponent } from '@vue/composition-api';
+import type { PropType } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 
-import { Basic, basicTemplate } from '@/assets/CourseInfo';
+import type { Basic } from '@/assets/CourseInfo';
+import { basicTemplate } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DScheduleTimes',

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { CourseInfo, ValidIdParams } from '@/assets/CourseInfo';
+import type { CourseInfo, ValidIdParams } from '@/assets/CourseInfo';
 import store from '@/store';
 
 axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL || undefined;
@@ -22,7 +22,7 @@ export default {
     }
   },
   async fetchAndStoreCourse(query: string) {
-    let course: CourseInfo | {} = {};
+    let course: CourseInfo | undefined;
 
     try {
       store.commit('setLoadingState', true);

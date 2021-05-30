@@ -13,7 +13,7 @@
 import { defineComponent, onBeforeMount, onMounted } from '@vue/composition-api';
 
 import request from '@/api/request';
-import { ValidIdParams } from '@/assets/CourseInfo';
+import type { ValidIdParams } from '@/assets/CourseInfo';
 import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
 import useStorage from '@/composables/useStorage';

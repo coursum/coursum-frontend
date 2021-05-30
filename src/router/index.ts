@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import type { RouteConfig } from 'vue-router';
+import VueRouter from 'vue-router';
 
 import CourseIndex from '@/components/course/course_index.vue';
 import DetailIndex from '@/components/detail/detail_index.vue';

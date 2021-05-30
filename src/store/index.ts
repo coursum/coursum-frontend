@@ -5,7 +5,7 @@ import course from './modules/course';
 import sidebar from './modules/sidebar';
 import timetable from './modules/timetable';
 
-import { AdvancedInputs } from '@/assets/SearchInfo';
+import type { AdvancedInputs } from '@/assets/SearchInfo';
 
 Vue.use(Vuex);
 

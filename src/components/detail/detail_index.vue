@@ -28,7 +28,7 @@
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
 
-import { CourseInfo, Registration, Tag } from '@/assets/CourseInfo';
+import type { CourseInfo, Registration, Tag } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
 import DetailShow from '@/components/detail/detail_show.vue';
 
@@ -58,7 +58,7 @@ export default defineComponent({
     const curriculumCode = computed((): string | null
     | undefined => courseData?.value.curriculumCode);
 
-    const width = computed((): object => {
+    const width = computed(() => {
       const breakpoint = context.root.$vuetify.breakpoint.name;
       let size;
 

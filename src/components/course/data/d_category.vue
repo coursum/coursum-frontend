@@ -7,9 +7,10 @@
 </template>
 
 <script lang="ts">
-import { PropType, computed, defineComponent } from '@vue/composition-api';
+import type { PropType } from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 
-import { Basic } from '@/assets/CourseInfo';
+import type { Basic } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'DCategory',
@@ -17,7 +18,7 @@ export default defineComponent({
     category: { type: Object as PropType<Basic>, required: true },
   },
   setup: (props, context) => {
-    const curLang = computed(() => context.root.$i18n.locale as 'jp' | 'en');
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'jp');
 
     const categoryData = computed((): string | null | undefined => props.category?.[curLang.value]);
 

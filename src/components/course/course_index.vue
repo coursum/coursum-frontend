@@ -50,7 +50,7 @@ import {
   computed, defineComponent, reactive, toRefs,
 } from '@vue/composition-api';
 
-import { CourseInfo } from '@/assets/CourseInfo';
+import type { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
 
 export default defineComponent({

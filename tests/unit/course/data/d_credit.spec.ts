@@ -28,7 +28,7 @@ describe('DCredit', () => {
   });
 
   it('should not render anything when prop is falsy', () => {
-    [undefined, null].forEach((falsyProp: undefined| null) => {
+    [undefined, null].forEach((falsyProp: null | undefined) => {
       options.propsData.credit = falsyProp;
       const wrapper = shallowMount(DCredit, options);
 

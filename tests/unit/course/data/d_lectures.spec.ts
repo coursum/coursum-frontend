@@ -28,7 +28,7 @@ describe('DLectures', () => {
   });
 
   it('should not render anything when prop is falsy', () => {
-    [undefined, null, ''].forEach((falsyProp: undefined| null | string) => {
+    [undefined, null, ''].forEach((falsyProp: string | null | undefined) => {
       options.propsData.lecturers[0].name.en = falsyProp;
       const wrapper = shallowMount(DLectures, options);
 

@@ -1,4 +1,4 @@
-import { ValidIdParams } from '@/assets/CourseInfo';
+import type { ValidIdParams } from '@/assets/CourseInfo';
 
 const setToLocalStrage = (ids: ValidIdParams[]) => {
   localStorage.setItem('timetable/ids', JSON.stringify(ids));

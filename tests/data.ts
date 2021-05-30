@@ -1,4 +1,4 @@
-import {
+import type {
   Basic, CourseInfo, Lecturer, Registration, Schedule, Tag, Title,
 } from '@/assets/CourseInfo';
 

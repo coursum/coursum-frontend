@@ -27,7 +27,7 @@ import { computed, defineComponent } from '@vue/composition-api';
 
 import localStorage from '@/api/local_storage';
 import request from '@/api/request';
-import { CourseInfo } from '@/assets/CourseInfo';
+import type { CourseInfo } from '@/assets/CourseInfo';
 
 export default defineComponent({
   name: 'TimetableMutationButton',

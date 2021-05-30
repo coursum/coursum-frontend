@@ -28,7 +28,7 @@ describe('DTitle', () => {
   });
 
   it('should not render anything when prop is falsy', () => {
-    [undefined, null, ''].forEach((falsyProp: undefined| null | string) => {
+    [undefined, null, ''].forEach((falsyProp: string | null | undefined) => {
       options.propsData.title.en = falsyProp;
       const wrapper = shallowMount(DTitle, options);
 

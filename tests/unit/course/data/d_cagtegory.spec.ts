@@ -28,7 +28,7 @@ describe('DCategory', () => {
   });
 
   it('should render correct markup when prop is falsy', () => {
-    [undefined, null, ''].forEach((falsyProp: undefined| null| string) => {
+    [undefined, null, ''].forEach((falsyProp: string | null | undefined) => {
       options.propsData.category.en = falsyProp;
       const wrapper = shallowMount(DCategory, options);
 
