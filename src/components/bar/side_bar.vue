@@ -1,14 +1,6 @@
 <template>
-  <v-navigation-drawer
-    :value="sideBarState"
-    app
-    color="primary"
-    @input="changeSideBarState"
-  >
-    <div
-      style="height: 100%"
-      class="d-flex flex-column"
-    >
+  <v-navigation-drawer app color="primary" :value="isVisible">
+    <div style="height: 100%" class="d-flex flex-column">
       <div>
         <timetable-link />
       </div>
@@ -31,16 +23,11 @@ export default defineComponent({
     SettingShow,
     TimetableLink,
   },
-  setup: (_, context) => {
-    const sideBarState = computed(() => context.root.$store.state.sideBarState);
-
-    const changeSideBarState = (state: boolean) => {
-      context.root.$store.commit('setSideBarState', state);
-    };
+  setup: (_, { root: { $store } }) => {
+    const isVisible = computed(() => $store.state.sidebar.isVisible);
 
     return {
-      sideBarState,
-      changeSideBarState,
+      isVisible,
     };
   },
 });

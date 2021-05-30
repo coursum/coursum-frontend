@@ -1,21 +1,13 @@
 <template>
-  <v-app-bar
-    app
-    color="primary"
-  >
-    <v-app-bar-nav-icon @click.stop="changeSideBarState" />
+  <v-app-bar app color="primary">
+    <v-app-bar-nav-icon @click.stop="toggleSideBar" />
 
-    <!-- <v-btn
-      icon
-      @click="goBack"
-    >
+    <!-- <v-btn icon @click="goBack">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn> -->
 
     <coursum-logo />
-
     <v-spacer />
-
     <search-input />
 
     <span class="mx-1">
@@ -37,27 +29,26 @@ import SearchInput from '@/components/search/search_input.vue';
 export default defineComponent({
   name: 'TopBar',
   components: {
-    SearchInput,
-    AdvancedInputs,
     CoursumLogo,
+    AdvancedInputs,
+    SearchInput,
   },
-  setup: (_, context) => {
-    const goBack = () => {
-      if (window.history.length > 1) {
-        context.root.$router.go(-1);
-      } else {
-        context.root.$router.push('/');
-      }
-    };
+  setup: (_, { root: { $store } }) => {
+    // const goBack = () => {
+    //   if (window.history.length > 1) {
+    //     $router.go(-1);
+    //   } else {
+    //     $router.push('/');
+    //   }
+    // };
 
-    const changeSideBarState = () => {
-      const state = context.root.$store.state.sideBarState;
-      context.root.$store.commit('setSideBarState', !state);
+    const toggleSideBar = () => {
+      $store.commit('sidebar/toggle', !$store.state.sidebar.isVisible);
     };
 
     return {
-      goBack,
-      changeSideBarState,
+      // goBack,
+      toggleSideBar,
     };
   },
 });

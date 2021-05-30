@@ -21,8 +21,8 @@ import useStorage from '@/composables/useStorage';
 export default defineComponent({
   name: 'App',
   components: {
-    TopBar,
     SideBar,
+    TopBar,
   },
   setup: (_, { root: { $vuetify, $i18n } }) => {
     const { getItem } = useStorage(localStorage);

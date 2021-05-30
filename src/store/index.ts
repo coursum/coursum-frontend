@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import course from './modules/course';
+import sidebar from './modules/sidebar';
 import timetable from './modules/timetable';
 
 import { AdvancedInputs } from '@/assets/SearchInfo';
@@ -11,7 +12,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLoading: false,
-    sideBarState: false,
     searchInput: '',
     currentSelectedPage: 1,
     advancedInputs: {
@@ -32,9 +32,6 @@ export default new Vuex.Store({
     setLoadingState(state, isLoading: boolean) {
       state.isLoading = isLoading;
     },
-    setSideBarState(state, sideBarState: boolean) {
-      state.sideBarState = sideBarState;
-    },
     updateCurrentSelectedPage(state, updatedValue: number) {
       state.currentSelectedPage = updatedValue;
     },
@@ -43,6 +40,7 @@ export default new Vuex.Store({
   },
   modules: {
     course,
+    sidebar,
     timetable,
   },
   strict: process.env.NODE_ENV !== 'production',
