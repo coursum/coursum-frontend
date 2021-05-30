@@ -16,7 +16,8 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, defineComponent, ref } from '@vue/composition-api';
+import type { SetupContext } from '@vue/composition-api';
+import { defineComponent, ref } from '@vue/composition-api';
 
 import tool from '@/api/build_query';
 import request from '@/api/request';
