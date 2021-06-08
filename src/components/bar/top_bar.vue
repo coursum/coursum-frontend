@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="primary">
-    <v-app-bar-nav-icon @click.stop="toggleSideBar" />
+    <v-app-bar-nav-icon @click.stop="$emit('toogle')" />
 
     <span v-if="isMdAndUp" class="coursum-title" @click="goResult">
       Coursum
@@ -28,16 +28,6 @@ import request from '@/api/request';
 import AdvancedInputs from '@/components/search/advanced_inputs.vue';
 import SearchInput from '@/components/search/search_input.vue';
 
-const useSideBar = (context: SetupContext) => {
-  const { $store } = context.root;
-
-  const toggleSideBar = () => {
-    $store.commit('sidebar/toggle', !$store.state.sidebar.isVisible);
-  };
-
-  return { toggleSideBar };
-};
-
 const useCoursumTitle = (context: SetupContext) => {
   const { $vuetify } = context.root;
 
@@ -45,7 +35,7 @@ const useCoursumTitle = (context: SetupContext) => {
 
   // TODO: Dont fetch course in index page, fetch only after search.
   const goResult = async () => {
-    await request.fetchAndStoreCourses('search?');
+    await request.fetchAndStoreCourses('');
 
     tool.goToResultPage('/');
   };
@@ -75,7 +65,6 @@ export default defineComponent({
     SearchInput,
   },
   setup: (_, context) => ({
-    ...useSideBar(context),
     ...useCoursumTitle(context),
     ...useSearchBar(context),
   }),

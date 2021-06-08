@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <top-bar />
-    <side-bar />
+    <top-bar @toogle="visibility = !visibility" />
+    <side-bar v-model="visibility" />
     <v-main>
       <router-view />
     </v-main>
@@ -10,7 +10,9 @@
 
 <script lang="ts">
 /* eslint-disable no-param-reassign */
-import { defineComponent, onBeforeMount, onMounted } from '@vue/composition-api';
+import {
+  defineComponent, onBeforeMount, onMounted, ref,
+} from '@vue/composition-api';
 
 import request from '@/api/request';
 import type { ValidIdParams } from '@/assets/CourseInfo';
@@ -25,6 +27,8 @@ export default defineComponent({
     TopBar,
   },
   setup: (_, { root: { $vuetify, $i18n } }) => {
+    const visibility = ref(false);
+
     const { getItem } = useStorage(localStorage);
 
     const applyStoredConfig = () => {
@@ -48,6 +52,10 @@ export default defineComponent({
         await request.fetchAndStoreCourses(`search${window.location.search}`);
       }
     });
+
+    return {
+      visibility,
+    };
   },
 });
 </script>

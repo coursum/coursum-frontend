@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app color="primary" :value="isVisible">
+  <v-navigation-drawer v-model="visibility" app color="primary">
     <!-- TODO: remove the inline style here or hind a better layout -->
     <div style="height: 100%" class="d-flex flex-column">
       <v-list nav dense>
@@ -22,11 +22,24 @@ export default defineComponent({
     SettingShow,
     TimetableLink,
   },
-  setup: (_, { root: { $store } }) => {
-    const isVisible = computed(() => $store.state.sidebar.isVisible);
+  props: {
+    value: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  setup(props, context) {
+    const visibility = computed({
+      get() {
+        return props.value;
+      },
+      set(value) {
+        context.emit('input', value);
+      },
+    });
 
     return {
-      isVisible,
+      visibility,
     };
   },
 });

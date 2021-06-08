@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import course from './modules/course';
-import sidebar from './modules/sidebar';
 import timetable from './modules/timetable';
 
 import type { AdvancedInputs } from '@/assets/SearchInfo';
@@ -40,7 +39,6 @@ export default new Vuex.Store({
   },
   modules: {
     course,
-    sidebar,
     timetable,
   },
   strict: process.env.NODE_ENV !== 'production',
