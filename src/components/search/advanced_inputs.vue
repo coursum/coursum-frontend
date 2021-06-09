@@ -10,32 +10,44 @@
 
     <v-card class="px-12 py-6">
       <div class="d-flex align-center">
-        <div>{{ $t("giga") }}</div>
+        <div class="input-label">
+          {{ $t("giga") }}
+        </div>
         <v-checkbox v-model="giga" class="pa-0 ma-0" hide-details />
       </div>
 
       <div class="d-flex align-center">
-        <div>{{ $t("lecturer") }}</div>
+        <div class="input-label">
+          {{ $t("lecturer") }}
+        </div>
         <v-text-field v-model="teacher" dense hide-details solo />
       </div>
 
       <div class="d-flex align-center">
-        <div>{{ $t("language") }}</div>
+        <div class="input-label">
+          {{ $t("language") }}
+        </div>
         <v-select v-model="language" :items="languages" dense hide-details solo />
       </div>
 
       <div class="d-flex align-center">
-        <div>{{ $t("semester") }}</div>
+        <div class="input-label">
+          {{ $t("semester") }}
+        </div>
         <v-select v-model="semester" :items="semesters" dense hide-details solo />
       </div>
 
       <div class="d-flex align-center">
-        <div>{{ $t("day") }}</div>
+        <div class="input-label">
+          {{ $t("day") }}
+        </div>
         <v-select v-model="day" :items="days" dense hide-details solo />
       </div>
 
       <div class="d-flex align-center">
-        <div>{{ $t("time") }}</div>
+        <div class="input-label">
+          {{ $t("time") }}
+        </div>
         <v-select v-model="time" :items="times" dense hide-details solo />
       </div>
 
@@ -178,7 +190,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-v-card > div > div {
+.input-label {
   width: 100px;
   margin: 15px;
 }
