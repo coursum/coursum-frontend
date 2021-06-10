@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <top-bar @toogle="visibility = !visibility" />
-    <side-bar v-model="visibility" />
+    <top-bar />
+    <side-bar />
     <v-main>
       <router-view />
     </v-main>
@@ -9,16 +9,92 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable no-param-reassign */
+import type { SetupContext } from '@vue/composition-api';
 import {
-  defineComponent, onBeforeMount, onMounted, ref,
+  defineComponent, onBeforeMount, onMounted, provide, ref,
 } from '@vue/composition-api';
 
-import request from '@/api/request';
-import type { ValidIdParams } from '@/assets/CourseInfo';
+import type { CourseInfo, ValidIdParams } from '@/assets/CourseInfo';
 import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
-import useStorage from '@/composables/useStorage';
+import {
+  isLoadingKey, setLoadingStateKey, toggleSideBarKey, visibilityKey,
+} from '@/util/injectionKeys';
+import request from '@/util/request';
+import useStorage from '@/util/useStorage';
+
+const useToggleSideBar = () => {
+  const visibility = ref(false);
+  const toggleSideBar = (value: boolean) => {
+    visibility.value = value;
+  };
+
+  provide(visibilityKey, visibility);
+  provide(toggleSideBarKey, toggleSideBar);
+
+  return {
+    toggleSideBarKey,
+  };
+};
+
+const useLoading = () => {
+  const isLoading = ref(false);
+  const setLoadingState = (value: boolean) => {
+    isLoading.value = value;
+  };
+
+  provide(isLoadingKey, isLoading);
+  provide(setLoadingStateKey, setLoadingState);
+
+  return {
+    setLoadingState,
+  };
+};
+
+const useConfigInStorage = (context: SetupContext) => {
+  const { $vuetify, $i18n } = context.root;
+
+  const { getItem } = useStorage(localStorage);
+
+  onBeforeMount(() => {
+    $vuetify.theme.dark = getItem('vuetify.theme.dark') || $vuetify.theme.dark;
+    $i18n.locale = getItem('i18n.locale') || $i18n.locale;
+  });
+};
+
+const useTimetable = (context: SetupContext, setLoadingState: (value: boolean) => void) => {
+  const { $store } = context.root;
+  const { getItem } = useStorage(localStorage);
+
+  onMounted(async () => {
+    // TODO: better naming
+    const idObjs: ValidIdParams[] = getItem('timetable/ids') || [];
+
+    const fetchAndStoreCourseForTimetable = async (idObj: ValidIdParams) => {
+      try {
+        const response = await request.axios.get(`search?query=${idObj.title}&teacher=${idObj.teacher}`);
+        const courses: CourseInfo[] = response.data.Hits;
+        const course = courses[0];
+
+        if (course !== undefined) {
+          $store.commit('timetable/addCourse', course);
+        }
+      } catch (e) {
+        console.error(e.message);
+      }
+    };
+
+    try {
+      setLoadingState(true);
+
+      await Promise.all(idObjs.map(fetchAndStoreCourseForTimetable));
+    } catch (e) {
+      console.error(e.message);
+    } finally {
+      setLoadingState(false);
+    }
+  });
+};
 
 export default defineComponent({
   name: 'App',
@@ -26,36 +102,13 @@ export default defineComponent({
     SideBar,
     TopBar,
   },
-  setup: (_, { root: { $vuetify, $i18n } }) => {
-    const visibility = ref(false);
+  setup: (_, context) => {
+    useToggleSideBar();
 
-    const { getItem } = useStorage(localStorage);
+    const { setLoadingState } = useLoading();
 
-    const applyStoredConfig = () => {
-      $vuetify.theme.dark = getItem('vuetify.theme.dark') || $vuetify.theme.dark;
-      $i18n.locale = getItem('i18n.locale') || $i18n.locale;
-    };
-
-    onBeforeMount(applyStoredConfig);
-
-    onMounted(async () => {
-      const ids = localStorage.getItem('timetable/ids');
-
-      if (ids !== null) {
-        const idObjs: ValidIdParams[] = JSON.parse(ids);
-        await request.fetchAndStoreCoursesForTimetable(idObjs);
-      }
-
-      if (window.location.pathname === '/') {
-        await request.fetchAndStoreCourses('search?');
-      } else {
-        await request.fetchAndStoreCourses(`search${window.location.search}`);
-      }
-    });
-
-    return {
-      visibility,
-    };
+    useConfigInStorage(context);
+    useTimetable(context, setLoadingState);
   },
 });
 </script>

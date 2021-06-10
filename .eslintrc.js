@@ -21,6 +21,9 @@ module.exports = {
     'vue/component-tags-order': ['error', {
       order: ['template', 'script', 'style'],
     }],
+    'vue/no-static-inline-styles': ['error', {
+      allowBinding: true,
+    }],
 
     /* TypeScript */
     // Fix ESLint error of "Cannot read property 'loc' of undefined."

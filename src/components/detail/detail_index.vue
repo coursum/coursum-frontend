@@ -1,25 +1,22 @@
 <template>
   <div class="ma-5">
     <div v-if="isLoading">
-      loding
+      now loading...
     </div>
-    <div
-      v-else
-      :style="width"
-      class="mx-auto"
+    <div v-else
+         class="mx-auto"
+         :style="width"
     >
-      <course-show
-        :course-data="courseData"
-        :text-truncate="false"
+      <course-show :course-data="courseData"
+                   :text-truncate="false"
       />
 
-      <detail-show
-        :registration="registration"
-        :classroom="classroom"
-        :related="related"
-        :types="types"
-        :tag="tag"
-        :curriculum-code="curriculumCode"
+      <detail-show :registration="registration"
+                   :classroom="classroom"
+                   :related="related"
+                   :types="types"
+                   :tag="tag"
+                   :curriculum-code="curriculumCode"
       />
     </div>
   </div>
@@ -31,6 +28,8 @@ import { computed, defineComponent } from '@vue/composition-api';
 import type { CourseInfo, Registration, Tag } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
 import DetailShow from '@/components/detail/detail_show.vue';
+import { injectStrict } from '@/util';
+import { isLoadingKey } from '@/util/injectionKeys';
 
 export default defineComponent({
   name: 'DetailIndex',
@@ -39,11 +38,13 @@ export default defineComponent({
     CourseShow,
   },
   setup: (_, context) => {
-    const courseData = computed((): CourseInfo => context.root.$store.state.course.course);
+    const { $i18n, $store } = context.root;
 
-    const isLoading = computed((): boolean => context.root.$store.state.isLoading);
+    const courseData = computed((): CourseInfo => $store.state.course.course);
 
-    const curLang = computed((): string => context.root.$i18n.locale);
+    const isLoading = injectStrict(isLoadingKey);
+
+    const curLang = computed((): string => $i18n.locale);
 
     const registration = computed((): Registration => courseData?.value.registration);
 

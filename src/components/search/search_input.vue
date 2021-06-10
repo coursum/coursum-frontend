@@ -17,26 +17,50 @@
 
 <script lang="ts">
 import type { SetupContext } from '@vue/composition-api';
-import { defineComponent, ref } from '@vue/composition-api';
+import { defineComponent, ref, watch } from '@vue/composition-api';
 
-import tool from '@/api/build_query';
-import request from '@/api/request';
+import type { CourseInfo } from '@/assets/CourseInfo';
+import { injectStrict } from '@/util';
+import {
+  advancedInputsKey, searchInputKey, setLoadingStateKey, setSearchInputKey,
+} from '@/util/injectionKeys';
+import request from '@/util/request';
 
 const useSearch = (context: SetupContext) => {
-  const { $store } = context.root;
+  const { $store, $router } = context.root;
 
-  const input = ref('');
+  const setLoadingState = injectStrict(setLoadingStateKey);
+  const searchInput = injectStrict(searchInputKey);
+  const advancedInputs = injectStrict(advancedInputsKey);
+  const setSearchInput = injectStrict(setSearchInputKey);
+
+  const input = ref(searchInput.value);
+  watch(searchInput, () => {
+    input.value = searchInput.value;
+  });
 
   const search = async () => {
-    const searchQuery = tool.buildQuery({
-      builder: input.value,
+    const searchQuery = request.buildQuery({
+      query: input.value,
+      advanced: advancedInputs,
     });
 
-    await request.fetchAndStoreCourses(searchQuery);
+    $router.push(`search?${searchQuery}`);
 
-    $store.commit('setSearchInput', input.value);
+    try {
+      setLoadingState(true);
 
-    tool.goToResultPage(`/course/${searchQuery}`);
+      const response = await request.axios.get(`search?${searchQuery}`);
+      const courses: CourseInfo[] = response.data.Hits;
+
+      $store.commit('course/setCourses', courses);
+    } catch (e) {
+      console.error(e.message);
+    } finally {
+      setLoadingState(false);
+    }
+
+    setSearchInput(input.value);
   };
 
   return { input, search };

@@ -1,26 +1,19 @@
 <template>
   <v-hover v-if="courseData">
     <template v-slot:default="{ hover }">
-      <v-card
-        :class="cardClass(hover)"
-        class="my-2 px-5 pb-2 pt-4 d-flex flex-column justify-space-between"
-        :style="cardStyle"
-        @click.prevent="goResult"
+      <v-card class="my-2 px-5 pb-2 pt-4 d-flex flex-column justify-space-between"
+              :class="cardClass(hover)"
+              :style="cardStyle"
+              @click.prevent="goResult"
       >
         <div>
           <d-category :category="category" />
-
-          <d-title
-            :title="title"
-          />
-
+          <d-title :title="title" />
           <d-postscript :postscript="postscript" />
-
-          <d-summary
-            v-if="showSummary"
-            :title="title"
-            :summary="summary"
-            :text-truncate="textTruncate"
+          <d-summary v-if="showSummary"
+                     :title="title"
+                     :summary="summary"
+                     :text-truncate="textTruncate"
           />
         </div>
 
@@ -36,15 +29,8 @@
           <v-divider class="my-1" />
 
           <div class="d-flex justify-space-between align-center">
-            <d-lectures
-              :text-truncate="textTruncate"
-              :lecturers="lecturers"
-            />
-
-            <timetable-mutation-button
-              :title="titleForId"
-              :teacher="teacherForId"
-            />
+            <d-lectures :text-truncate="textTruncate" :lecturers="lecturers" />
+            <timetable-mutation-button :title="titleForId" :teacher="teacherForId" />
           </div>
         </div>
       </v-card>
@@ -54,12 +40,8 @@
 
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
-import {
-  computed, defineComponent, reactive, toRefs,
-} from '@vue/composition-api';
+import { computed, defineComponent } from '@vue/composition-api';
 
-import tool from '@/api/build_query';
-import request from '@/api/request';
 import type { Basic, CourseInfo, Lecturer } from '@/assets/CourseInfo';
 import DCategory from '@/components/course/data/d_category.vue';
 import DCredit from '@/components/course/data/d_credit.vue';
@@ -70,6 +52,9 @@ import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
 import DSummary from '@/components/course/data/d_summary.vue';
 import DTitle from '@/components/course/data/d_title.vue';
 import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
+import { injectStrict } from '@/util';
+import { setLoadingStateKey } from '@/util/injectionKeys';
+import request from '@/util/request';
 
 export default defineComponent({
   name: 'CourseShow',
@@ -106,14 +91,16 @@ export default defineComponent({
       default: false,
     },
   },
-  setup: (props: any, context: any) => {
-    const state = reactive({
-      dialog: false,
-    });
+  setup: (props, context) => {
+    const {
+      $vuetify, $i18n, $store, $router,
+    } = context.root;
+
+    const setLoadingState = injectStrict(setLoadingStateKey);
 
     const title = computed((): Basic | undefined => props.courseData?.title?.name);
 
-    const curLang = computed((): string => context.root.$i18n.locale);
+    const curLang = computed((): string => $i18n.locale);
 
     const category = computed((): Basic | undefined => props.courseData?.category);
 
@@ -134,7 +121,7 @@ export default defineComponent({
     const teacherForId = computed((): string => `${props.courseData?.lecturers?.[0]?.name?.jp}`);
 
     const cardWidth = computed((): number => {
-      switch (context.root.$vuetify.breakpoint.name) {
+      switch ($vuetify.breakpoint.name) {
         case 'xs':
           return 100;
         case 'sm':
@@ -182,17 +169,28 @@ export default defineComponent({
     });
 
     const goResult = async () => {
-      const searchQuery = `?title=${title.value?.jp}&teacher=${lecturers.value?.[0]?.name?.jp}`;
+      const searchQuery = `title=${title.value?.jp}&teacher=${lecturers.value?.[0]?.name?.jp}`;
 
-      await request.fetchAndStoreCourse(`search${searchQuery}`);
+      await $router.push(`/course/search?${searchQuery}`);
 
-      tool.goToResultPage(`/course-detail/search${searchQuery}`);
+      try {
+        setLoadingState(true);
+
+        const response = await request.axios.get(`search?${searchQuery}`);
+        const courses: CourseInfo[] = response.data.Hits;
+        const course = courses[0];
+
+        $store.commit('course/setCourse', course);
+      } catch (e) {
+        console.error(e.message);
+      } finally {
+        setLoadingState(false);
+      }
     };
 
     return {
       goResult,
       cardClass,
-      ...toRefs(state),
       curLang,
       category,
       postscript,

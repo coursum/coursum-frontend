@@ -135,22 +135,22 @@ export default defineComponent({
 });
 </script>
 
-<style>
-table{
+<style scope>
+table {
   width: 100%;
   border-collapse: collapse;
   empty-cells: show;
 }
 
-table tr:nth-child(2n){
+table tr:nth-child(2n) {
   background-color: var(--v-lightgrey-base);
 }
 
-table tr:nth-child(2n+1){
+table tr:nth-child(2n + 1) {
   background-color: var(--v-darkgrey-base);
 }
 
-table th{
+table th {
   position: relative;
   text-align: left;
   width: 30%;
@@ -159,7 +159,7 @@ table th{
   padding: 10px 0;
 }
 
-table td{
+table td {
   text-align: left;
   width: 70%;
   text-align: center;

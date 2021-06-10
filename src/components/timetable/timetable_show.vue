@@ -4,12 +4,10 @@
       now loading...
     </div>
     <div v-else>
-      <course-show
-        v-for="(course, n) in courses"
-        :key="n"
-        :has-width="true"
-        :course-data="course"
-        :show-summary="false"
+      <course-show v-for="(course, n) in courses" :key="n"
+                   :has-width="true"
+                   :course-data="course"
+                   :show-summary="false"
       />
 
       <!-- <div
@@ -50,6 +48,8 @@ import {
 
 import type { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
+import { injectStrict } from '@/util';
+import { isLoadingKey } from '@/util/injectionKeys';
 
 interface State {
   isSharedPage: boolean;
@@ -62,6 +62,8 @@ export default defineComponent({
     CourseShow,
   },
   setup: (_, context) => {
+    const { $store } = context.root;
+
     const state = reactive<State>(
       {
         isSharedPage: false,
@@ -69,11 +71,11 @@ export default defineComponent({
       },
     );
 
-    const courses = computed((): CourseInfo[] => context.root.$store.state.timetable.courses);
+    const courses = computed((): CourseInfo[] => $store.state.timetable.courses);
 
-    const ids = computed((): string[] => context.root.$store.state.timetable.ids);
+    const ids = computed((): string[] => $store.state.timetable.ids);
 
-    const isLoading = computed((): boolean => context.root.$store.state.isLoading);
+    const isLoading = injectStrict(isLoadingKey);
 
     const sorted = computed((): [string, number[]][][] => {
       const daySort = state.sortedIDs;

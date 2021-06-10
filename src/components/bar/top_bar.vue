@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="primary">
-    <v-app-bar-nav-icon @click.stop="$emit('toogle')" />
+    <v-app-bar-nav-icon @click.stop="toggleSideBar(!visibility)" />
 
     <span v-if="isMdAndUp" class="coursum-title" @click="goResult">
       Coursum
@@ -9,11 +9,7 @@
     <v-spacer />
 
     <search-input :style="searchBarWidth" class="mx-auto" />
-    <span class="mx-1">
-      <keep-alive>
-        <advanced-inputs />
-      </keep-alive>
-    </span>
+    <advanced-inputs />
 
     <v-spacer />
   </v-app-bar>
@@ -21,29 +17,66 @@
 
 <script lang="ts">
 import type { SetupContext } from '@vue/composition-api';
-import { computed, defineComponent } from '@vue/composition-api';
+import {
+  computed, defineComponent, provide, reactive, ref,
+} from '@vue/composition-api';
 
-import tool from '@/api/build_query';
-import request from '@/api/request';
 import AdvancedInputs from '@/components/search/advanced_inputs.vue';
 import SearchInput from '@/components/search/search_input.vue';
+import { injectStrict } from '@/util';
+import {
+  advancedInputsKey,
+  searchInputKey,
+  setAdvancedInputsKey,
+  setSearchInputKey,
+  toggleSideBarKey,
+  visibilityKey,
+} from '@/util/injectionKeys';
+
+const useStoredSearchInput = () => {
+  const searchInput = ref('');
+  const setSearchInput = (value: string) => {
+    searchInput.value = value;
+  };
+
+  const advancedInputs = reactive({
+    giga: '',
+    teacher: '',
+    language: '',
+    semester: '',
+    times: '',
+  });
+  const setAdvancedInputs = (value: typeof advancedInputs) => {
+    Object.assign(advancedInputs, value);
+  };
+
+  provide(searchInputKey, searchInput);
+  provide(setSearchInputKey, setSearchInput);
+
+  provide(advancedInputsKey, advancedInputs);
+  provide(setAdvancedInputsKey, setAdvancedInputs);
+
+  return {
+    setSearchInput,
+    setAdvancedInputs,
+  };
+};
 
 const useCoursumTitle = (context: SetupContext) => {
-  const { $vuetify } = context.root;
+  const { $vuetify, $router } = context.root;
 
   const isMdAndUp = computed(() => $vuetify.breakpoint.mdAndUp);
 
-  // TODO: Dont fetch course in index page, fetch only after search.
-  const goResult = async () => {
-    await request.fetchAndStoreCourses('');
-
-    tool.goToResultPage('/');
+  const goResult = () => {
+    if ($router.currentRoute.path !== '/') {
+      $router.push('/');
+    }
   };
 
   return { isMdAndUp, goResult };
 };
 
-const useSearchBar = (context: SetupContext) => {
+const useSearchBarInTopBar = (context: SetupContext) => {
   const { $vuetify } = context.root;
 
   const searchBarWidth = computed(() => {
@@ -64,10 +97,19 @@ export default defineComponent({
     AdvancedInputs,
     SearchInput,
   },
-  setup: (_, context) => ({
-    ...useCoursumTitle(context),
-    ...useSearchBar(context),
-  }),
+  setup: (_, context) => {
+    const visibility = injectStrict(visibilityKey);
+    const toggleSideBar = injectStrict(toggleSideBarKey);
+
+    useStoredSearchInput();
+
+    return {
+      visibility,
+      toggleSideBar,
+      ...useCoursumTitle(context),
+      ...useSearchBarInTopBar(context),
+    };
+  },
 });
 </script>
 

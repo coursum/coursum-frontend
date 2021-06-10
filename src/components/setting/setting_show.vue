@@ -28,7 +28,7 @@
 /* eslint-disable no-param-reassign */
 import { defineComponent, ref, watch } from '@vue/composition-api';
 
-import useStorage from '@/composables/useStorage';
+import useStorage from '@/util/useStorage';
 
 export default defineComponent({
   name: 'SettingShow',

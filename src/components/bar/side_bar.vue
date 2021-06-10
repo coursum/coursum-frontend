@@ -1,20 +1,21 @@
 <template>
-  <v-navigation-drawer v-model="visibility" app color="primary">
-    <!-- TODO: remove the inline style here or hind a better layout -->
-    <div style="height: 100%" class="d-flex flex-column">
-      <v-list nav dense>
-        <timetable-link />
-      </v-list>
+  <v-navigation-drawer v-model="visibility" app color="primary" @input="toggleSideBar">
+    <v-list nav dense>
+      <timetable-link />
+    </v-list>
+    <template v-slot:append>
       <setting-show class="mt-auto" />
-    </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@vue/composition-api';
 
 import SettingShow from '@/components/setting/setting_show.vue';
 import TimetableLink from '@/components/timetable/timetable_link.vue';
+import { injectStrict } from '@/util';
+import { toggleSideBarKey, visibilityKey } from '@/util/injectionKeys';
 
 export default defineComponent({
   name: 'SideBar',
@@ -22,24 +23,13 @@ export default defineComponent({
     SettingShow,
     TimetableLink,
   },
-  props: {
-    value: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  setup(props, context) {
-    const visibility = computed({
-      get() {
-        return props.value;
-      },
-      set(value) {
-        context.emit('input', value);
-      },
-    });
+  setup() {
+    const visibility = injectStrict(visibilityKey);
+    const toggleSideBar = injectStrict(toggleSideBarKey);
 
     return {
       visibility,
+      toggleSideBar,
     };
   },
 });

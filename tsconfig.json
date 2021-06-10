@@ -27,7 +27,8 @@
 			"dom",
 			"dom.iterable",
 			"scripthost"
-		]
+		],
+		"downlevelIteration": true
 	},
 	"include": [
 		"src/**/*.ts",

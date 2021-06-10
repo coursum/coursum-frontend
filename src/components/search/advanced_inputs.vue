@@ -10,6 +10,10 @@
 
     <v-card class="px-12 py-6">
       <div class="d-flex align-center">
+        <search-input />
+      </div>
+
+      <div class="d-flex align-center">
         <div class="input-label">
           {{ $t("giga") }}
         </div>
@@ -66,124 +70,113 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, onMounted, reactive, ref, toRefs,
+  computed, defineComponent, reactive, ref, toRefs,
 } from '@vue/composition-api';
+import type { SetupContext } from '@vue/composition-api';
 
-import tool from '@/api/build_query';
-import request from '@/api/request';
+import type { CourseInfo } from '@/assets/CourseInfo';
+import SearchInput from '@/components/search/search_input.vue';
+import { injectStrict } from '@/util';
+import { searchInputKey, setAdvancedInputsKey, setLoadingStateKey } from '@/util/injectionKeys';
+import request from '@/util/request';
 
-interface AdvancedInputs {
-  giga: string;
-  teacher: string;
-  language: string;
-  semester: string;
-  day: string;
-  time: string;
-}
+const useTranslate = (context: SetupContext) => {
+  const { $i18n } = context.root;
+  const translateArray = (keys: string[]) => keys.map((key) => $i18n.t(key));
+
+  const languages = computed(() => translateArray(['english', 'japanese']));
+
+  const semesters = computed(() => translateArray(['spring', 'autumn']));
+
+  const days = computed(() => translateArray(
+    ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+  ));
+
+  const times = computed(() => (
+    Array(7).fill(0)
+      .map((_, num) => num + 1)
+      .map((period) => `${period} ${$i18n.t('period')}`)
+  ));
+
+  return {
+    languages,
+    semesters,
+    times,
+    days,
+  };
+};
 
 export default defineComponent({
   name: 'AdvancedInputs',
+  components: {
+    SearchInput,
+  },
   setup: (_, context) => {
-    const translateArray = (keys: string[]) => keys.map((key) => context.root.$i18n.t(key));
+    const { $store, $router } = context.root;
+
+    const setLoadingState = injectStrict(setLoadingStateKey);
+    const searchInput = injectStrict(searchInputKey);
+    const setAdvancedInputs = injectStrict(setAdvancedInputsKey);
 
     const dialog = ref(false);
 
-    const state = reactive({
+    const initialState = {
       giga: '',
       teacher: '',
       language: '',
       semester: '',
       day: '',
       time: '',
-    });
-
-    const getAdvancedInputs = computed((): AdvancedInputs => (
-      context.root.$store.state.advancedInputs
-    ));
-
-    const languages = computed(() => translateArray(['english', 'japanese']));
-
-    const semesters = computed(() => translateArray(['spring', 'autumn']));
-
-    const timesStr = computed(() => {
-      const day = typeof state.day === 'string' ? state.day : '';
-      const time = typeof state.time === 'string' ? state.time : '';
-
-      return `${day}${time}`;
-    });
-
-    const days = computed(() => translateArray(
-      ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
-    ));
-
-    const times = computed(() => (
-      Array(7).fill(0)
-        .map((_, num) => num + 1)
-        .map((period) => `${period} ${context.root.$i18n.t('period')}`)
-    ));
-
-    const setValues = () => {
-      state.giga = getAdvancedInputs.value.giga;
-      state.teacher = getAdvancedInputs.value.teacher;
-      state.language = getAdvancedInputs.value.language;
-      state.semester = getAdvancedInputs.value.semester;
-      state.day = getAdvancedInputs.value.day;
-      state.time = getAdvancedInputs.value.time;
     };
 
-    onMounted(() => {
-      setValues();
-    });
+    const state = reactive({ ...initialState });
 
-    const storeValues = () => {
-      const advancedInputs = {
+    const times = computed(() => `${state.day}${state.time}`);
+
+    const resetValues = () => {
+      Object.assign(state, initialState);
+    };
+
+    const goResult = async () => {
+      const advanced = {
         giga: state.giga,
         teacher: state.teacher,
         language: state.language,
         semester: state.semester,
-        times: timesStr.value,
+        times: times.value,
       };
 
-      context.root.$store.commit('setAdvancedInputs', advancedInputs);
-    };
-
-    const resetValues = () => {
-      state.giga = '';
-      state.teacher = '';
-      state.language = '';
-      state.semester = '';
-      state.day = '';
-      state.time = '';
-    };
-
-    const goResult = async () => {
-      const searchQuery = tool.buildQuery({
-        builder: {
-          giga: state.giga,
-          teacher: state.teacher,
-          language: state.language,
-          semester: state.semester,
-          times: timesStr.value,
-        },
+      const searchQuery = request.buildQuery({
+        query: searchInput.value,
+        advanced,
       });
 
-      await request.fetchAndStoreCourses(searchQuery);
+      $router.push(`search?${searchQuery}`);
 
-      storeValues();
+      try {
+        setLoadingState(true);
+
+        const response = await request.axios.get(`search?${searchQuery}`);
+        const courses: CourseInfo[] = response.data.Hits;
+
+        $store.commit('course/setCourses', courses);
+      } catch (e) {
+        console.error(e.message);
+      } finally {
+        setLoadingState(false);
+      }
+
+      setAdvancedInputs(advanced);
       dialog.value = false;
-      tool.goToResultPage(`/course/${searchQuery}`);
     };
 
     return {
       dialog,
-
-      languages,
-      semesters,
-      times,
-      days,
+      ...toRefs(state),
+      ...useTranslate(context),
       resetValues,
       goResult,
-      ...toRefs(state),
+
     };
   },
 });

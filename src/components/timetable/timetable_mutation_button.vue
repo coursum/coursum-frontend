@@ -1,21 +1,15 @@
 <template>
   <span>
-    <v-btn
-      v-if="isInclude"
-      icon
-      small
-      color="#CFD8DC"
-      @click.stop="removeCourse"
+    <v-btn v-if="isInclude"
+           icon small color="#CFD8DC"
+           @click.stop="removeCourse"
     >
       <v-icon> mdi-folder </v-icon>
     </v-btn>
 
-    <v-btn
-      v-else
-      icon
-      small
-      color="#CFD8DC"
-      @click.stop="addCourse"
+    <v-btn v-else
+           icon small color="#CFD8DC"
+           @click.stop="addCourse"
     >
       <v-icon> mdi-folder-outline</v-icon>
     </v-btn>
@@ -25,9 +19,9 @@
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
 
-import localStorage from '@/api/local_storage';
-import request from '@/api/request';
-import type { CourseInfo } from '@/assets/CourseInfo';
+import type { CourseInfo, ValidIdParams } from '@/assets/CourseInfo';
+import request from '@/util/request';
+import useStorage from '@/util/useStorage';
 
 export default defineComponent({
   name: 'TimetableMutationButton',
@@ -41,23 +35,57 @@ export default defineComponent({
       default: '',
     },
   },
-  setup: (props, context) => {
-    const isInclude = computed((): boolean => {
-      const { courses } = context.root.$store.state.timetable;
+  setup: (props, { root: { $store } }) => {
+    const { getItem, setItem } = useStorage(localStorage);
 
-      return courses.some((course: CourseInfo) => `{"title":"${course.title?.name?.jp}","teacher":"${course.lecturers?.[0]?.name?.jp}"}` === `{"title":"${props.title}","teacher":"${props.teacher}"}`);
+    // computed?
+    const courseInfo = {
+      title: props.title,
+      teacher: props.teacher,
+    };
+
+    const isInclude = computed(() => {
+      const { courses }: {courses: CourseInfo[]} = $store.state.timetable;
+
+      return courses.some((course) => (
+        `{"title":"${course.title?.name?.jp}","teacher":"${course.lecturers?.[0]?.name?.jp}"}`
+        === `{"title":"${props.title}","teacher":"${props.teacher}"}`
+      ));
     });
 
     const removeCourse = () => {
-      context.root.$store.commit('timetable/removeCourse', { title: props.title, teacher: props.teacher });
+      $store.commit('timetable/removeCourse', courseInfo);
 
-      localStorage.removeFromLocalStrage({ title: props.title, teacher: props.teacher });
+      const courseIds: ValidIdParams[] = getItem('timetable/ids') || [];
+
+      setItem('timetable/ids', courseIds.filter((courseId) => (
+        `{"title":"${courseId.title}","teacher":"${courseId.teacher}"}`
+        !== `{"title":"${courseInfo.title}","teacher":"${courseInfo.teacher}"}`
+      )));
     };
 
     const addCourse = () => {
-      request.fetchAndStoreCourseForTimetable(`search?query=${props.title}&teacher=${props.teacher}`);
+      const fetchAndStoreCourseForTimetable = async () => {
+        try {
+          const response = await request.axios.get(`search?query=${props.title}&teacher=${props.teacher}`);
+          const courses: CourseInfo[] = response.data.Hits;
+          const course = courses[0];
 
-      localStorage.addToLocalStrage({ title: props.title, teacher: props.teacher });
+          if (course !== undefined) {
+            $store.commit('timetable/addCourse', course);
+          }
+        } catch (e) {
+          console.error(e.message);
+        }
+      };
+
+      fetchAndStoreCourseForTimetable();
+
+      const courseIds: ValidIdParams[] = getItem('timetable/ids') || [];
+
+      courseIds.push(courseInfo);
+
+      setItem('timetable/ids', courseIds);
     };
 
     return {

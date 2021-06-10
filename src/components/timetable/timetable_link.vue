@@ -18,17 +18,17 @@
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
 
-import tool from '@/api/build_query';
-
 export default defineComponent({
   name: 'TimetableLink',
   setup: (_, context) => {
+    const { $store, $router } = context.root;
+
     const timetableLength = computed((): number => (
-      context.root.$store.state.timetable.courses.length
+      $store.state.timetable.courses.length
     ));
 
     const goResult = async () => {
-      tool.goToResultPage('/timetable');
+      $router.push('/timetable');
     };
 
     return {

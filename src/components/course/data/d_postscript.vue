@@ -1,8 +1,6 @@
 <template>
-  <span
-    v-if="postscriptData"
-    style="color: #929292"
-    class="px-6 text-caption text-truncate"
+  <span v-if="postscriptData"
+        class="px-6 text-caption text-truncate"
   >
     {{ postscriptData }}
   </span>
@@ -35,3 +33,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+span {
+  color: #929292;
+}
+</style>

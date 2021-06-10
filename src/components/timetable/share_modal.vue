@@ -1,12 +1,11 @@
 <template>
   <div v-if="!isLoading">
-    <time-table />
+    <!-- <time-table />
     <div class="d-flex align-center flex-column py-12">
       <div>TimeTable</div>
-      <v-dialog
-        v-model="dialog2"
-        persistent
-        max-width="500"
+      <v-dialog v-model="dialog2"
+                persistent
+                max-width="500"
       >
         <template v-slot:activator="{ on, attrs }">
           <span>
@@ -57,7 +56,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </div>
+    </div> -->
   </div>
 </template>
 
