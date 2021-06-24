@@ -32,7 +32,7 @@ module.exports = {
     '@typescript-eslint/indent': ['error', 2],
 
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error',
+    '@typescript-eslint/no-unused-vars': ['warn',
       { varsIgnorePattern: '_' },
     ],
 

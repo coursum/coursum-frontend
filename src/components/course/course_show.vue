@@ -39,10 +39,10 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from '@vue/composition-api';
+import type { PropType, SetupContext } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic, CourseInfo, Lecturer } from '@/assets/CourseInfo';
+import type { CourseInfo } from '@/assets/CourseInfo';
 import DCategory from '@/components/course/data/d_category.vue';
 import DCredit from '@/components/course/data/d_credit.vue';
 import DLectures from '@/components/course/data/d_lectures.vue';
@@ -52,9 +52,55 @@ import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
 import DSummary from '@/components/course/data/d_summary.vue';
 import DTitle from '@/components/course/data/d_title.vue';
 import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
-import { injectStrict } from '@/util';
-import { setLoadingStateKey } from '@/util/injectionKeys';
-import request from '@/util/request';
+
+interface Props {
+  courseData: PropType<CourseInfo>;
+  showSummary: boolean;
+  textTruncate: boolean;
+  hasWidth: boolean;
+  hasHeight: boolean;
+}
+
+const useCard = ({ textTruncate, hasWidth, hasHeight }: Partial<Props>, context: SetupContext) => {
+  const cardWidth = computed(() => {
+    const { name } = context.root.$vuetify.breakpoint;
+    const widths = {
+      xs: 100, sm: 80, md: 48, lg: 32, xl: 30,
+    };
+
+    if (name in widths) return widths[name];
+
+    return 30;
+  });
+
+  const cardClass = computed(() => (hover: boolean) => {
+    let height;
+    const classes: string[] = [];
+
+    if (textTruncate) {
+      height = hover ? 4 : 1;
+      classes.push('transition-swing');
+    } else {
+      height = 1;
+    }
+    classes.push(`elevation-${height}`);
+
+    return classes.join(' ');
+  });
+
+  const cardStyle = computed(() => {
+    const width = hasWidth ? { width: `${cardWidth.value}%` } : {};
+    const height = (hasWidth && hasHeight) ? { height: '230px' } : {};
+
+    return { ...width, ...height };
+  });
+
+  return {
+    cardWidth,
+    cardClass,
+    cardStyle,
+  };
+};
 
 export default defineComponent({
   name: 'CourseShow',
@@ -74,11 +120,11 @@ export default defineComponent({
       type: Object as PropType<CourseInfo>,
       required: true,
     },
-    textTruncate: {
+    showSummary: {
       type: Boolean,
       default: true,
     },
-    showSummary: {
+    textTruncate: {
       type: Boolean,
       default: true,
     },
@@ -92,105 +138,37 @@ export default defineComponent({
     },
   },
   setup: (props, context) => {
+    const { $router } = context.root;
+
+    const course = props.courseData;
+    const curLang = context.root.$i18n.locale;
+    const title = course.title.name;
+    const { category } = course;
+    const { postscript } = course.title;
+    const { lecturers } = course;
+    const { credit } = course;
+    const { semester } = course.schedule;
+    const { times } = course.schedule;
+    const { summary } = course;
+    const titleForId = String(course.title.name.jp);
+    const teacherForId = String(course.lecturers?.[0].name.jp);
+
+    const { textTruncate, hasWidth, hasHeight } = props;
     const {
-      $vuetify, $i18n, $store, $router,
-    } = context.root;
-
-    const setLoadingState = injectStrict(setLoadingStateKey);
-
-    const title = computed((): Basic | undefined => props.courseData?.title?.name);
-
-    const curLang = computed((): string => $i18n.locale);
-
-    const category = computed((): Basic | undefined => props.courseData?.category);
-
-    const postscript = computed((): Basic | undefined => props.courseData?.title?.postscript);
-
-    const lecturers = computed((): Lecturer[] | undefined => props.courseData?.lecturers);
-
-    const credit = computed((): number | null | undefined => props.courseData?.credit);
-
-    const semester = computed((): Basic | undefined => props.courseData?.schedule?.semester);
-
-    const times = computed((): Basic | undefined => props.courseData?.schedule?.times);
-
-    const summary = computed((): Basic | undefined => props.courseData?.summary);
-
-    const titleForId = computed((): string => `${props.courseData?.title?.name?.jp}`);
-
-    const teacherForId = computed((): string => `${props.courseData?.lecturers?.[0]?.name?.jp}`);
-
-    const cardWidth = computed((): number => {
-      switch ($vuetify.breakpoint.name) {
-        case 'xs':
-          return 100;
-        case 'sm':
-          return 80;
-        case 'md':
-          return 48;
-        case 'lg':
-          return 32;
-        case 'xl':
-          return 30;
-        default:
-          return 30;
-      }
-    });
-
-    const cardClass = computed(() => (hover: boolean) => {
-      let height;
-
-      if (props.textTruncate) {
-        if (hover) {
-          height = 4;
-        } else {
-          height = 1;
-        }
-        return `elevation-${height} transition-swing`;
-      }
-
-      height = 1;
-      return `elevation-${height}`;
-    });
-
-    const cardStyle = computed(() => {
-      if (!props.hasWidth) {
-        return {};
-      }
-
-      if (props.hasHeight) {
-        return {
-          width: `${cardWidth.value}%`,
-          height: '230px',
-        };
-      }
-
-      return { width: `${cardWidth.value}%` };
-    });
+      cardClass,
+      cardStyle,
+    } = useCard({ textTruncate, hasWidth, hasHeight }, context);
 
     const goResult = async () => {
-      const searchQuery = `title=${title.value?.jp}&teacher=${lecturers.value?.[0]?.name?.jp}`;
+      const searchQuery = new URLSearchParams({
+        title: title.jp || '',
+        teacher: lecturers?.[0]?.name?.jp || '',
+      });
 
-      await $router.push(`/course/search?${searchQuery}`);
-
-      try {
-        setLoadingState(true);
-
-        const response = await request.axios.get(`search?${searchQuery}`);
-        const courses: CourseInfo[] = response.data.Hits;
-        const course = courses[0];
-
-        $store.commit('course/setCourse', course);
-      } catch (e) {
-        console.error(e.message);
-      } finally {
-        setLoadingState(false);
-      }
+      await $router.push(`/course/search?${searchQuery.toString()}`);
     };
 
     return {
-      goResult,
-      cardClass,
       curLang,
       category,
       postscript,
@@ -202,7 +180,11 @@ export default defineComponent({
       teacherForId,
       lecturers,
       title,
+
+      cardClass,
       cardStyle,
+
+      goResult,
     };
   },
 });

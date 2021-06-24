@@ -7,7 +7,7 @@
          class="mx-auto"
          :style="width"
     >
-      <course-show :course-data="courseData"
+      <course-show :course-data="course"
                    :text-truncate="false"
       />
 
@@ -23,13 +23,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api';
+import {
+  computed, defineComponent, ref, watch,
+} from '@vue/composition-api';
+import qs from 'qs';
 
-import type { CourseInfo, Registration, Tag } from '@/assets/CourseInfo';
+import type { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
 import DetailShow from '@/components/detail/detail_show.vue';
-import { injectStrict } from '@/util';
-import { isLoadingKey } from '@/util/injectionKeys';
+import request from '@/util/request';
 
 export default defineComponent({
   name: 'DetailIndex',
@@ -38,26 +40,43 @@ export default defineComponent({
     CourseShow,
   },
   setup: (_, context) => {
-    const { $i18n, $store } = context.root;
+    const isLoading = ref(false);
+    const curLang = computed((): string => context.root.$i18n.locale);
 
-    const courseData = computed((): CourseInfo => $store.state.course.course);
+    const course = ref<CourseInfo>();
+    const registration = ref<CourseInfo['registration']>();
+    const related = ref<CourseInfo['related']>();
+    const classroom = ref<CourseInfo['classroom']>();
+    const types = ref<CourseInfo['types']>();
+    const tag = ref<CourseInfo['tag']>();
+    const curriculumCode = ref<CourseInfo['curriculumCode']>();
 
-    const isLoading = injectStrict(isLoadingKey);
+    const fetchCourse = async () => {
+      try {
+        isLoading.value = true;
 
-    const curLang = computed((): string => $i18n.locale);
+        const querystring = qs.stringify(context.root.$route.query);
+        const response = await request.axios.get(`/search?${querystring}`);
 
-    const registration = computed((): Registration => courseData?.value.registration);
+        const hitCourse: CourseInfo = response.data.Hits[0];
 
-    const related = computed((): null | undefined => courseData?.value.related);
+        course.value = hitCourse;
+        registration.value = hitCourse.registration;
+        related.value = hitCourse.related;
+        classroom.value = hitCourse.classroom;
+        types.value = hitCourse.types;
+        tag.value = hitCourse.tag;
+        curriculumCode.value = hitCourse.curriculumCode;
+      } catch (e) {
+        console.error(e.message);
+      } finally {
+        isLoading.value = false;
+      }
+    };
 
-    const classroom = computed((): string | null | undefined => courseData?.value.classroom);
+    fetchCourse();
 
-    const types = computed((): null | undefined => courseData?.value.types);
-
-    const tag = computed((): Tag => courseData?.value.tag);
-
-    const curriculumCode = computed((): string | null
-    | undefined => courseData?.value.curriculumCode);
+    watch(() => context.root.$route, fetchCourse);
 
     const width = computed(() => {
       const breakpoint = context.root.$vuetify.breakpoint.name;
@@ -96,7 +115,7 @@ export default defineComponent({
       curriculumCode,
       tag,
       width,
-      courseData,
+      course,
     };
   },
 });

@@ -9,7 +9,7 @@
 
     <template v-else-if="courses !== null">
       <div class="d-flex flex-wrap justify-space-around px-3 align-content-start">
-        <course-show v-for="(course, i) in currentShowingCourses" :key="i"
+        <course-show v-for="course in currentShowingCourses" :key="course.curriculumCode"
                      :course-data="course"
                      :has-width="true"
                      :has-height="true"
@@ -34,6 +34,7 @@
 import {
   computed, defineComponent, ref, watch,
 } from '@vue/composition-api';
+import qs from 'qs';
 
 import type { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
@@ -95,7 +96,8 @@ export default defineComponent({
       try {
         isLoading.value = true;
 
-        const response = await request.axios.get(context.root.$route.fullPath);
+        const querystring = qs.stringify(context.root.$route.query);
+        const response = await request.axios.get(`/search?${querystring}`);
 
         courses.value = response.data.Hits;
       } catch (e) {
