@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import type { AdvancedInputs } from '@/assets/SearchInfo';
+import type { AdvancedQuery } from '@/assets/SearchInfo';
 
 interface QueryParams {
   query: string;
-  advanced: AdvancedInputs;
+  advanced: AdvancedQuery;
 }
 
 export default {

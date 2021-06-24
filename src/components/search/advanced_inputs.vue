@@ -70,13 +70,13 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, reactive, ref, toRefs,
+  computed, defineComponent, reactive, ref, toRefs, watch,
 } from '@vue/composition-api';
 import type { SetupContext } from '@vue/composition-api';
 
 import SearchInput from '@/components/search/search_input.vue';
 import { injectStrict } from '@/util';
-import { searchInputKey, setAdvancedInputsKey } from '@/util/injectionKeys';
+import { advancedQueryKey, searchInputKey, setAdvancedQueryKey } from '@/util/injectionKeys';
 import request from '@/util/request';
 
 const useTranslate = (context: SetupContext) => {
@@ -114,7 +114,8 @@ export default defineComponent({
     const { $router } = context.root;
 
     const searchInput = injectStrict(searchInputKey);
-    const setAdvancedInputs = injectStrict(setAdvancedInputsKey);
+    const advancedInputs = injectStrict(advancedQueryKey);
+    const setAdvancedQuery = injectStrict(setAdvancedQueryKey);
 
     const dialog = ref(false);
 
@@ -128,6 +129,11 @@ export default defineComponent({
     };
 
     const state = reactive({ ...initialState });
+    watch(advancedInputs, () => {
+      // TODO: try to refill day & time
+      const { times: _, ...rest } = advancedInputs;
+      Object.assign(state, rest);
+    });
 
     const times = computed(() => `${state.day}${state.time}`);
 
@@ -146,7 +152,7 @@ export default defineComponent({
     const advancedSearch = async () => {
       dialog.value = false;
 
-      setAdvancedInputs(advanced.value);
+      setAdvancedQuery(advanced.value);
 
       const searchQuery = request.buildQuery({
         query: searchInput.value,

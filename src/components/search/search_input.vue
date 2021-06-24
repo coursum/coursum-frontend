@@ -20,14 +20,14 @@ import type { SetupContext } from '@vue/composition-api';
 import { defineComponent, ref, watch } from '@vue/composition-api';
 
 import { injectStrict } from '@/util';
-import { advancedInputsKey, searchInputKey, setSearchInputKey } from '@/util/injectionKeys';
+import { advancedQueryKey, searchInputKey, setSearchInputKey } from '@/util/injectionKeys';
 import request from '@/util/request';
 
 const useSearch = (context: SetupContext) => {
   const { $router } = context.root;
 
   const searchInput = injectStrict(searchInputKey);
-  const advancedInputs = injectStrict(advancedInputsKey);
+  const advancedInputs = injectStrict(advancedQueryKey);
   const setSearchInput = injectStrict(setSearchInputKey);
 
   const input = ref(searchInput.value);

@@ -31,6 +31,11 @@ module.exports = {
     indent: 'off',
     '@typescript-eslint/indent': ['error', 2],
 
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error',
+      { varsIgnorePattern: '_' },
+    ],
+
     '@typescript-eslint/consistent-type-imports': 'error',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/type-annotation-spacing': 'error',

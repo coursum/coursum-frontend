@@ -1,6 +1,6 @@
 import type { InjectionKey, Ref } from '@vue/composition-api';
 
-import type { AdvancedInputs } from '@/assets/SearchInfo';
+import type { AdvancedQuery } from '@/assets/SearchInfo';
 
 const visibilityKey: InjectionKey<Ref<boolean>> = Symbol('visibility');
 const toggleSideBarKey: InjectionKey<(value: boolean) => void> = Symbol('toggleSideBar');
@@ -11,8 +11,8 @@ const setLoadingStateKey: InjectionKey<(value: boolean) => void> = Symbol('setLo
 const searchInputKey: InjectionKey<Ref<string>> = Symbol('searchInput');
 const setSearchInputKey: InjectionKey<(value: string) => void> = Symbol('setSearchInput');
 
-const advancedInputsKey: InjectionKey<AdvancedInputs> = Symbol('advancedInputs');
-const setAdvancedInputsKey: InjectionKey<(value: AdvancedInputs) => void> = Symbol('setAdvancedInputs');
+const advancedQueryKey: InjectionKey<AdvancedQuery> = Symbol('advancedQuery');
+const setAdvancedQueryKey: InjectionKey<(value: Partial<AdvancedQuery>) => void> = Symbol('setAdvancedQuery');
 
 export {
   visibilityKey,
@@ -21,6 +21,6 @@ export {
   setLoadingStateKey,
   searchInputKey,
   setSearchInputKey,
-  advancedInputsKey,
-  setAdvancedInputsKey,
+  advancedQueryKey,
+  setAdvancedQueryKey,
 };
