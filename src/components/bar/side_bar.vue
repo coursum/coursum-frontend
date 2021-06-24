@@ -23,7 +23,7 @@ export default defineComponent({
     SettingShow,
     TimetableLink,
   },
-  setup() {
+  setup: () => {
     const visibility = injectStrict(visibilityKey);
     const toggleSideBar = injectStrict(toggleSideBarKey);
 

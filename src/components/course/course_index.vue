@@ -7,7 +7,7 @@
       />
     </div>
 
-    <template v-else-if="courseDatas !== null">
+    <template v-else-if="courses !== null">
       <div class="d-flex flex-wrap justify-space-around px-3 align-content-start">
         <course-show v-for="(course, i) in currentShowingCourses" :key="i"
                      :course-data="course"
@@ -31,12 +31,36 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from '@vue/composition-api';
+import {
+  computed, defineComponent, ref, watch,
+} from '@vue/composition-api';
 
 import type { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
-import { injectStrict } from '@/util';
-import { isLoadingKey } from '@/util/injectionKeys';
+import request from '@/util/request';
+
+const usePagination = () => {
+  const currentSelectedPage = ref(1);
+
+  const goPreviousPage = () => {
+    currentSelectedPage.value -= 1;
+  };
+
+  const goNextPage = () => {
+    currentSelectedPage.value += 1;
+  };
+
+  const goTargetPage = (updatedValue: number) => {
+    currentSelectedPage.value = updatedValue;
+  };
+
+  return {
+    currentSelectedPage,
+    goPreviousPage,
+    goNextPage,
+    goTargetPage,
+  };
+};
 
 export default defineComponent({
   name: 'CourseIndex',
@@ -44,45 +68,54 @@ export default defineComponent({
     CourseShow,
   },
   setup: (_, context) => {
-    const { $store } = context.root;
+    const {
+      currentSelectedPage,
+      goPreviousPage,
+      goNextPage,
+      goTargetPage,
+    } = usePagination();
 
-    const isLoading = injectStrict(isLoadingKey);
+    const isLoading = ref(false);
+    const courses = ref<CourseInfo[]>([]);
 
     // TODO: find an appropriate number
     const coursePerPage = 12;
-
-    const courseDatas = computed<CourseInfo[]>(() => $store.state.course.courses);
-
-    const currentSelectedPage = ref(1);
 
     const currentShowingCourses = computed<CourseInfo[]>(() => {
       // currentSelectedPageは1から始まる
       const start = (currentSelectedPage.value - 1) * coursePerPage;
       const end = start + coursePerPage;
 
-      return courseDatas.value.slice(start, end);
+      return courses.value.slice(start, end);
     });
 
-    const pgTotalLength = computed(() => Math.ceil(courseDatas.value.length / coursePerPage));
+    const pgTotalLength = computed(() => Math.ceil(courses.value.length / coursePerPage));
 
-    const goPreviousPage = () => {
-      currentSelectedPage.value -= 1;
+    const fetchCourses = async () => {
+      try {
+        isLoading.value = true;
+
+        const response = await request.axios.get(context.root.$route.fullPath);
+
+        courses.value = response.data.Hits;
+      } catch (e) {
+        console.error(e.message);
+      } finally {
+        isLoading.value = false;
+      }
     };
 
-    const goNextPage = () => {
-      currentSelectedPage.value += 1;
-    };
+    fetchCourses();
 
-    const goTargetPage = (updatedValue: number) => {
-      currentSelectedPage.value = updatedValue;
-    };
+    watch(() => context.root.$route, fetchCourses);
 
     return {
       isLoading,
       coursePerPage,
-      courseDatas,
-      currentSelectedPage,
+      courses,
       currentShowingCourses,
+
+      currentSelectedPage,
       pgTotalLength,
       goPreviousPage,
       goNextPage,

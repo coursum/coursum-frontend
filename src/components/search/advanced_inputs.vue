@@ -60,7 +60,7 @@
         <v-btn @click="resetValues">
           reset
         </v-btn>
-        <v-btn @click="goResult">
+        <v-btn @click="advancedSearch">
           submit
         </v-btn>
       </v-card-actions>
@@ -74,10 +74,9 @@ import {
 } from '@vue/composition-api';
 import type { SetupContext } from '@vue/composition-api';
 
-import type { CourseInfo } from '@/assets/CourseInfo';
 import SearchInput from '@/components/search/search_input.vue';
 import { injectStrict } from '@/util';
-import { searchInputKey, setAdvancedInputsKey, setLoadingStateKey } from '@/util/injectionKeys';
+import { searchInputKey, setAdvancedInputsKey } from '@/util/injectionKeys';
 import request from '@/util/request';
 
 const useTranslate = (context: SetupContext) => {
@@ -112,9 +111,8 @@ export default defineComponent({
     SearchInput,
   },
   setup: (_, context) => {
-    const { $store, $router } = context.root;
+    const { $router } = context.root;
 
-    const setLoadingState = injectStrict(setLoadingStateKey);
     const searchInput = injectStrict(searchInputKey);
     const setAdvancedInputs = injectStrict(setAdvancedInputsKey);
 
@@ -137,37 +135,25 @@ export default defineComponent({
       Object.assign(state, initialState);
     };
 
-    const goResult = async () => {
-      const advanced = {
-        giga: state.giga,
-        teacher: state.teacher,
-        language: state.language,
-        semester: state.semester,
-        times: times.value,
-      };
+    const advanced = computed(() => ({
+      giga: state.giga,
+      teacher: state.teacher,
+      language: state.language,
+      semester: state.semester,
+      times: times.value,
+    }));
+
+    const advancedSearch = async () => {
+      dialog.value = false;
+
+      setAdvancedInputs(advanced.value);
 
       const searchQuery = request.buildQuery({
         query: searchInput.value,
-        advanced,
+        advanced: advanced.value,
       });
 
       $router.push(`search?${searchQuery}`);
-
-      try {
-        setLoadingState(true);
-
-        const response = await request.axios.get(`search?${searchQuery}`);
-        const courses: CourseInfo[] = response.data.Hits;
-
-        $store.commit('course/setCourses', courses);
-      } catch (e) {
-        console.error(e.message);
-      } finally {
-        setLoadingState(false);
-      }
-
-      setAdvancedInputs(advanced);
-      dialog.value = false;
     };
 
     return {
@@ -175,8 +161,7 @@ export default defineComponent({
       ...toRefs(state),
       ...useTranslate(context),
       resetValues,
-      goResult,
-
+      advancedSearch,
     };
   },
 });

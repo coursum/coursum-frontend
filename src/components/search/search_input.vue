@@ -19,17 +19,13 @@
 import type { SetupContext } from '@vue/composition-api';
 import { defineComponent, ref, watch } from '@vue/composition-api';
 
-import type { CourseInfo } from '@/assets/CourseInfo';
 import { injectStrict } from '@/util';
-import {
-  advancedInputsKey, searchInputKey, setLoadingStateKey, setSearchInputKey,
-} from '@/util/injectionKeys';
+import { advancedInputsKey, searchInputKey, setSearchInputKey } from '@/util/injectionKeys';
 import request from '@/util/request';
 
 const useSearch = (context: SetupContext) => {
-  const { $store, $router } = context.root;
+  const { $router } = context.root;
 
-  const setLoadingState = injectStrict(setLoadingStateKey);
   const searchInput = injectStrict(searchInputKey);
   const advancedInputs = injectStrict(advancedInputsKey);
   const setSearchInput = injectStrict(setSearchInputKey);
@@ -40,27 +36,14 @@ const useSearch = (context: SetupContext) => {
   });
 
   const search = async () => {
+    setSearchInput(input.value);
+
     const searchQuery = request.buildQuery({
       query: input.value,
       advanced: advancedInputs,
     });
 
     $router.push(`search?${searchQuery}`);
-
-    try {
-      setLoadingState(true);
-
-      const response = await request.axios.get(`search?${searchQuery}`);
-      const courses: CourseInfo[] = response.data.Hits;
-
-      $store.commit('course/setCourses', courses);
-    } catch (e) {
-      console.error(e.message);
-    } finally {
-      setLoadingState(false);
-    }
-
-    setSearchInput(input.value);
   };
 
   return { input, search };
