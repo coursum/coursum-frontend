@@ -42,7 +42,6 @@
 import type { PropType, SetupContext } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { CourseInfo } from '@/assets/CourseInfo';
 import DCategory from '@/components/course/data/d_category.vue';
 import DCredit from '@/components/course/data/d_credit.vue';
 import DLectures from '@/components/course/data/d_lectures.vue';
@@ -52,6 +51,7 @@ import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
 import DSummary from '@/components/course/data/d_summary.vue';
 import DTitle from '@/components/course/data/d_title.vue';
 import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
+import type { CourseInfo } from '@/types/CourseInfo';
 
 interface Props {
   courseData: PropType<CourseInfo>;

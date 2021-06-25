@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import type { AdvancedQuery } from '@/assets/SearchInfo';
+import type { AdvancedQuery } from '@/types/SearchInfo';
 
 interface QueryParams {
   query: string;

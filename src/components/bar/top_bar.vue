@@ -21,9 +21,9 @@ import {
   computed, defineComponent, provide, reactive, ref,
 } from '@vue/composition-api';
 
-import type { AdvancedQuery } from '@/assets/SearchInfo';
 import AdvancedInputs from '@/components/search/advanced_inputs.vue';
 import SearchInput from '@/components/search/search_input.vue';
+import type { AdvancedQuery } from '@/types/SearchInfo';
 import { injectStrict } from '@/util';
 import {
   advancedQueryKey,

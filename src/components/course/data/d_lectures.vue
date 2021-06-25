@@ -21,7 +21,7 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Lecturer } from '@/assets/CourseInfo';
+import type { Lecturer } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DLectures',

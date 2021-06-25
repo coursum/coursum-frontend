@@ -17,8 +17,8 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic, Title } from '@/assets/CourseInfo';
-import { basicTemplate } from '@/assets/CourseInfo';
+import type { Basic, Title } from '@/types/CourseInfo';
+import { basicTemplate } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DSummary',
@@ -60,7 +60,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
 
 .summary p {
   display: -webkit-box;

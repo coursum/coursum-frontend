@@ -19,7 +19,7 @@
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { CourseInfo, ValidIdParams } from '@/assets/CourseInfo';
+import type { CourseInfo, ValidIdParams } from '@/types/CourseInfo';
 import request from '@/util/request';
 import useStorage from '@/util/useStorage';
 

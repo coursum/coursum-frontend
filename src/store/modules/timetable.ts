@@ -1,4 +1,4 @@
-import type { CourseInfo, ValidIdParams } from '@/assets/CourseInfo';
+import type { CourseInfo, ValidIdParams } from '@/types/CourseInfo';
 
 interface State {
   courses: CourseInfo[];

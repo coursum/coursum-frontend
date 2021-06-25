@@ -11,7 +11,7 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic } from '@/assets/CourseInfo';
+import type { Basic } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DTitle',
@@ -34,7 +34,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-div{
+div {
   font-size: 0.9rem;
 }
 </style>

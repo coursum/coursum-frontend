@@ -14,9 +14,9 @@ import {
   defineComponent, onBeforeMount, onMounted, provide, ref,
 } from '@vue/composition-api';
 
-import type { CourseInfo, ValidIdParams } from '@/assets/CourseInfo';
 import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
+import type { CourseInfo, ValidIdParams } from '@/types/CourseInfo';
 import {
   isLoadingKey, setLoadingStateKey, toggleSideBarKey, visibilityKey,
 } from '@/util/injectionKeys';

@@ -1,6 +1,6 @@
 import type {
   Basic, CourseInfo, Lecturer, Registration, Schedule, Tag, Title,
-} from '@/assets/CourseInfo';
+} from '@/types/CourseInfo';
 
 const categoryMock: Basic = { en: 'category en', jp: 'category jp', kana: 'category kana' };
 

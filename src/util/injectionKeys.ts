@@ -1,6 +1,6 @@
 import type { InjectionKey, Ref } from '@vue/composition-api';
 
-import type { AdvancedQuery } from '@/assets/SearchInfo';
+import type { AdvancedQuery } from '@/types/SearchInfo';
 
 const visibilityKey: InjectionKey<Ref<boolean>> = Symbol('visibility');
 const toggleSideBarKey: InjectionKey<(value: boolean) => void> = Symbol('toggleSideBar');

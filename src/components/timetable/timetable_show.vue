@@ -46,8 +46,8 @@ import {
   computed, defineComponent, onMounted, reactive,
 } from '@vue/composition-api';
 
-import type { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
+import type { CourseInfo } from '@/types/CourseInfo';
 import { injectStrict } from '@/util';
 import { isLoadingKey } from '@/util/injectionKeys';
 

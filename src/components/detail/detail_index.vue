@@ -28,9 +28,9 @@ import {
 } from '@vue/composition-api';
 import qs from 'qs';
 
-import type { CourseInfo } from '@/assets/CourseInfo';
 import CourseShow from '@/components/course/course_show.vue';
 import DetailShow from '@/components/detail/detail_show.vue';
+import type { CourseInfo } from '@/types/CourseInfo';
 import request from '@/util/request';
 
 export default defineComponent({

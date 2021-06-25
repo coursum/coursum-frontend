@@ -10,8 +10,8 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic } from '@/assets/CourseInfo';
-import { basicTemplate } from '@/assets/CourseInfo';
+import type { Basic } from '@/types/CourseInfo';
+import { basicTemplate } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DPostsctipt',
