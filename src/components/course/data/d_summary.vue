@@ -1,13 +1,9 @@
 <template>
-  <div
-    v-if="summaryData"
-    :class="{summary: textTruncate}"
-    class="caption--text"
-    :style="summaryStyle"
+  <div v-if="summaryData"
+       class="caption--text"
+       :class="{summary: textTruncate}"
   >
-    <p
-      class="my-0"
-    >
+    <p class="my-0">
       {{ summaryData }}
     </p>
   </div>
@@ -17,18 +13,18 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic, Title } from '@/types/CourseInfo';
-import { basicTemplate } from '@/types/CourseInfo';
+import type { CourseInfo } from '@/types/CourseInfo';
+import { i18nDataTemplate } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DSummary',
   props: {
     summary: {
-      type: Object as PropType<Basic>,
-      default: basicTemplate,
+      type: Object as PropType<CourseInfo['summary']>,
+      default: i18nDataTemplate,
     },
     title: {
-      type: Object as PropType<Title>,
+      type: Object as PropType<CourseInfo['title']['name']>,
       required: true,
     },
     textTruncate: {
@@ -37,22 +33,12 @@ export default defineComponent({
     },
   },
   setup: (props, context) => {
-    const summaryStyle = { 'font-size': '0.85rem' };
-
-    const titleJp = computed((): string | null | undefined => props.title?.name?.jp);
-
-    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'jp');
-
-    const summaryData = computed((): string | null | undefined => {
-      if (titleJp.value === '研究会Ａ' || titleJp.value === '研究会Ｂ') {
-        return props.summary?.en;
-      }
-
-      return props.summary?.[curLang.value];
-    });
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'ja');
+    const titleJp = props.title.ja || '';
+    const summaryLang = ['研究会Ａ', '研究会Ｂ'].includes(titleJp) ? 'en' : curLang.value;
+    const summaryData = props.summary[summaryLang];
 
     return {
-      summaryStyle,
       summaryData,
     };
   },
@@ -61,6 +47,10 @@ export default defineComponent({
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
+
+div {
+  font-size: 0.85rem;
+}
 
 .summary p {
   display: -webkit-box;

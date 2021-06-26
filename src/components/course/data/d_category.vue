@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="text-truncate caption--text"
-  >
+  <div class="text-truncate caption--text">
     {{ categoryData ? categoryData : $t("others") }}
   </div>
 </template>
@@ -10,17 +8,19 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic } from '@/types/CourseInfo';
+import type { CourseInfo } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DCategory',
   props: {
-    category: { type: Object as PropType<Basic>, required: true },
+    category: {
+      type: Object as PropType<CourseInfo['tag']['category']>,
+      required: true,
+    },
   },
   setup: (props, context) => {
-    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'jp');
-
-    const categoryData = computed((): string | null | undefined => props.category?.[curLang.value]);
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'ja');
+    const categoryData = computed(() => props.category[curLang.value]);
 
     return {
       categoryData,
@@ -40,7 +40,7 @@ div {
   "en": {
     "others": "others"
   },
-  "jp": {
+  "ja": {
     "others": "その他"
   }
 }

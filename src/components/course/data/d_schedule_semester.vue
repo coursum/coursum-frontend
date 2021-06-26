@@ -1,9 +1,8 @@
 <template>
-  <v-chip
-    v-if="semesterData"
-    color="caption"
-    outlined
-    x-small
+  <v-chip v-if="semesterData"
+          color="caption"
+          outlined
+          x-small
   >
     {{ semesterData }}
   </v-chip>
@@ -13,32 +12,23 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic } from '@/types/CourseInfo';
-import { basicTemplate } from '@/types/CourseInfo';
+import type { CourseInfo } from '@/types/CourseInfo';
+import { i18nDataTemplate } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DScheduleSemester',
   props: {
     semester: {
-      type: Object as PropType<Basic>,
-      default: basicTemplate,
+      type: Object as PropType<CourseInfo['schedule']['semester']>,
+      default: i18nDataTemplate,
     },
   },
   setup: (props, context) => {
-    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'jp');
-
-    const semesterData = computed((): string | null | undefined => props.semester?.[curLang.value]);
-
-    const isSpring = computed(() => {
-      if (semesterData.value === 'Spring' || semesterData.value?.includes('春')) {
-        return true;
-      }
-      return false;
-    });
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'ja');
+    const semesterData = computed(() => props.semester[curLang.value]);
 
     return {
       semesterData,
-      isSpring,
     };
   },
 });

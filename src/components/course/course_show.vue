@@ -1,6 +1,6 @@
 <template>
   <v-hover v-if="courseData">
-    <template v-slot:default="{ hover }">
+    <template #default="{ hover }">
       <v-card class="my-2 px-5 pb-2 pt-4 d-flex flex-column justify-space-between"
               :class="cardClass(hover)"
               :style="cardStyle"
@@ -8,10 +8,10 @@
       >
         <div>
           <d-category :category="category" />
-          <d-title :title="title" />
+          <d-title :title="titleName" />
           <d-postscript :postscript="postscript" />
           <d-summary v-if="showSummary"
-                     :title="title"
+                     :title="titleName"
                      :summary="summary"
                      :text-truncate="textTruncate"
           />
@@ -105,15 +105,15 @@ const useCard = ({ textTruncate, hasWidth, hasHeight }: Partial<Props>, context:
 export default defineComponent({
   name: 'CourseShow',
   components: {
-    TimetableMutationButton,
+    DCategory,
+    DTitle,
     DPostscript,
+    DSummary,
+    DCredit,
     DScheduleSemester,
     DScheduleTimes,
-    DCredit,
-    DSummary,
     DLectures,
-    DTitle,
-    DCategory,
+    TimetableMutationButton,
   },
   props: {
     courseData: {
@@ -141,50 +141,52 @@ export default defineComponent({
     const { $router } = context.root;
 
     const course = props.courseData;
-    const curLang = context.root.$i18n.locale;
-    const title = course.title.name;
-    const { category } = course;
-    const { postscript } = course.title;
-    const { lecturers } = course;
-    const { credit } = course;
-    const { semester } = course.schedule;
-    const { times } = course.schedule;
-    const { summary } = course;
-    const titleForId = String(course.title.name.jp);
-    const teacherForId = String(course.lecturers?.[0].name.jp);
+
+    const {
+      title: {
+        name: titleName,
+        postscript,
+      },
+      lecturers,
+      schedule: {
+        semester,
+        times,
+      },
+      credit,
+      summary,
+      yearClassId,
+      tag: {
+        category,
+      },
+    } = course;
+
+    const titleForId = course.title.name.ja || '';
+    const teacherForId = course.lecturers[0].name.ja || '';
 
     const { textTruncate, hasWidth, hasHeight } = props;
-    const {
-      cardClass,
-      cardStyle,
-    } = useCard({ textTruncate, hasWidth, hasHeight }, context);
+    const { cardClass, cardStyle } = useCard({ textTruncate, hasWidth, hasHeight }, context);
 
     const goResult = async () => {
-      const searchQuery = new URLSearchParams({
-        title: title.jp || '',
-        teacher: lecturers?.[0]?.name?.jp || '',
-      });
+      // TODO: wait for backend implementation
+      const searchQuery = new URLSearchParams({ yearClassId });
 
       await $router.push(`/course/search?${searchQuery.toString()}`);
     };
 
     return {
-      curLang,
+      cardClass,
+      cardStyle,
+      goResult,
       category,
+      titleName,
       postscript,
+      summary,
       credit,
       semester,
       times,
-      summary,
+      lecturers,
       titleForId,
       teacherForId,
-      lecturers,
-      title,
-
-      cardClass,
-      cardStyle,
-
-      goResult,
     };
   },
 });

@@ -21,7 +21,7 @@ export default {
     // timetable_mutation_button.vue
     removeCourse(state: State, removeCourse: ValidIdParams) {
       state.courses = state.courses.filter((course: CourseInfo) => (
-        `{"title":"${course.title?.name?.jp}","teacher":"${course.lecturers?.[0]?.name?.jp}"}`
+        `{"title":"${course.title.name.ja}","teacher":"${course.lecturers[0].name.ja}"}`
         !== `{"title":"${removeCourse.title}","teacher":"${removeCourse.teacher}"}`
       ));
     },

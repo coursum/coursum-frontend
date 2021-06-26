@@ -1,9 +1,8 @@
 <template>
-  <v-chip
-    v-if="credit"
-    color="caption"
-    outlined
-    x-small
+  <v-chip v-if="credit"
+          color="caption"
+          outlined
+          x-small
   >
     {{ credit }}{{ $t("credit") }}
   </v-chip>
@@ -28,7 +27,7 @@ export default defineComponent({
   "en": {
     "credit": "credit"
   },
-  "jp": {
+  "ja": {
     "credit": "単位"
   }
 }

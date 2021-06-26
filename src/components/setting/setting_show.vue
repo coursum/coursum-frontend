@@ -13,7 +13,7 @@
     <div class="d-flex justify-space-between">
       <v-icon>mdi-translate</v-icon>
       <v-chip-group v-model="locale" mandatory>
-        <v-chip outlined value="jp">
+        <v-chip outlined value="ja">
           日本語
         </v-chip>
         <v-chip outlined value="en">

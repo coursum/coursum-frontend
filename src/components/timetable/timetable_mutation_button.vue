@@ -20,6 +20,7 @@
 import { computed, defineComponent } from '@vue/composition-api';
 
 import type { CourseInfo, ValidIdParams } from '@/types/CourseInfo';
+import type { SearchResponse } from '@/types/Search';
 import request from '@/util/request';
 import useStorage from '@/util/useStorage';
 
@@ -48,7 +49,7 @@ export default defineComponent({
       const { courses }: {courses: CourseInfo[]} = $store.state.timetable;
 
       return courses.some((course) => (
-        `{"title":"${course.title?.name?.jp}","teacher":"${course.lecturers?.[0]?.name?.jp}"}`
+        `{"title":"${course.title?.name?.ja}","teacher":"${course.lecturers?.[0]?.name?.ja}"}`
         === `{"title":"${props.title}","teacher":"${props.teacher}"}`
       ));
     });
@@ -67,11 +68,17 @@ export default defineComponent({
     const addCourse = () => {
       const fetchAndStoreCourseForTimetable = async () => {
         try {
-          const response = await request.axios.get(`search?query=${props.title}&teacher=${props.teacher}`);
-          const courses: CourseInfo[] = response.data.Hits;
-          const course = courses[0];
+          const searchQuery = new URLSearchParams({
+            query: props.title,
+            teacher: props.teacher,
+          });
+          const querystring = searchQuery.toString();
+          const response = await request.axios.get<SearchResponse<CourseInfo>>(`/search?${querystring}`);
+          const courses = response.data.Hits;
 
-          if (course !== undefined) {
+          if (courses) {
+            const course = courses[0];
+
             $store.commit('timetable/addCourse', course);
           }
         } catch (e) {
@@ -103,7 +110,7 @@ export default defineComponent({
     "add": "add to time table",
     "remove": "remove from time table"
   },
-  "jp": {
+  "ja": {
     "add": "時間割に追加",
     "remove": "時間割から外す"
   }

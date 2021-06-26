@@ -18,13 +18,15 @@ module.exports = {
 
     /* Vue */
     'vue/max-attributes-per-line': 'off',
-    'vue/component-tags-order': ['error', {
-      order: ['template', 'script', 'style'],
-    }],
-    'vue/no-static-inline-styles': ['error', {
-      allowBinding: true,
-    }],
-
+    'vue/component-tags-order': ['error',
+      { order: ['template', 'script', 'style'] },
+    ],
+    'vue/no-static-inline-styles': ['error',
+      { allowBinding: true },
+    ],
+    'vue/no-unused-properties': ['error',
+      { groups: ['props', 'setup'] },
+    ],
     /* TypeScript */
     // Fix ESLint error of "Cannot read property 'loc' of undefined."
     // https://github.com/typescript-eslint/typescript-eslint/issues/792#issuecomment-517762395
@@ -41,21 +43,23 @@ module.exports = {
     '@typescript-eslint/type-annotation-spacing': 'error',
     // TODO: express warning first
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/member-delimiter-style': 'error',
 
     /* Import */
-    'import/order': ['error', {
-      alphabetize: { order: 'asc' },
-      'newlines-between': 'always',
-    },
+    'import/order': ['error',
+      {
+        alphabetize: { order: 'asc' },
+        'newlines-between': 'always',
+      },
     ],
     'sort-imports': ['error',
       { ignoreDeclarationSort: true },
     ],
 
     /* Other */
-    'no-shadow': ['error', {
-      allow: ['_'],
-    }],
+    'no-shadow': ['error',
+      { allow: ['_'] },
+    ],
   },
   overrides: [
     {

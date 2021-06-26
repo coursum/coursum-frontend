@@ -9,7 +9,7 @@
 
     <template v-else-if="courses !== null">
       <div class="d-flex flex-wrap justify-space-around px-3 align-content-start">
-        <course-show v-for="course in currentShowingCourses" :key="course.curriculumCode"
+        <course-show v-for="course in currentShowingCourses" :key="course.yearClassId"
                      :course-data="course"
                      :has-width="true"
                      :has-height="true"
@@ -38,6 +38,7 @@ import qs from 'qs';
 
 import CourseShow from '@/components/course/course_show.vue';
 import type { CourseInfo } from '@/types/CourseInfo';
+import type { SearchResponse } from '@/types/Search';
 import request from '@/util/request';
 
 const usePagination = () => {
@@ -96,10 +97,14 @@ export default defineComponent({
       try {
         isLoading.value = true;
 
+        // TODO: wrap request function
         const querystring = qs.stringify(context.root.$route.query);
-        const response = await request.axios.get(`/search?${querystring}`);
+        const response = await request.axios.get<SearchResponse<CourseInfo>>(`/search?${querystring}`);
+        const courseHits = response.data.Hits;
 
-        courses.value = response.data.Hits;
+        if (courseHits) {
+          courses.value = courseHits;
+        }
       } catch (e) {
         console.error(e.message);
       } finally {
@@ -116,7 +121,6 @@ export default defineComponent({
       coursePerPage,
       courses,
       currentShowingCourses,
-
       currentSelectedPage,
       pgTotalLength,
       goPreviousPage,

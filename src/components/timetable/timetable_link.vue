@@ -23,9 +23,7 @@ export default defineComponent({
   setup: (_, context) => {
     const { $store, $router } = context.root;
 
-    const timetableLength = computed((): number => (
-      $store.state.timetable.courses.length
-    ));
+    const timetableLength = computed((): number => $store.state.timetable.courses.length);
 
     const goResult = async () => {
       $router.push('/timetable');
@@ -44,7 +42,7 @@ export default defineComponent({
   "en": {
     "my-table": "My Time Table"
   },
-  "jp": {
+  "ja": {
     "my-table": "マイ時間割"
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
-    <template v-slot:activator="{ attrs, on }">
+    <template #activator="{ attrs, on }">
       <v-btn icon v-bind="attrs" v-on="on">
         <v-icon class="mx-2">
           mdi-tune
@@ -159,7 +159,7 @@ export default defineComponent({
         advanced: advanced.value,
       });
 
-      $router.push(`search?${searchQuery}`);
+      $router.push(`/search?${searchQuery}`);
     };
 
     return {

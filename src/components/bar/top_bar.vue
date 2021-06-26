@@ -23,7 +23,7 @@ import {
 
 import AdvancedInputs from '@/components/search/advanced_inputs.vue';
 import SearchInput from '@/components/search/search_input.vue';
-import type { AdvancedQuery } from '@/types/SearchInfo';
+import type { AdvancedQuery } from '@/types/Search';
 import { injectStrict } from '@/util';
 import {
   advancedQueryKey,
@@ -69,8 +69,8 @@ const useCoursumTitle = (context: SetupContext, {
   setSearchInput,
   setAdvancedQuery,
 }: {
-  setSearchInput: (value: string) => void
-  setAdvancedQuery: (value: Partial<AdvancedQuery>) => void
+  setSearchInput: (value: string) => void;
+  setAdvancedQuery: (value: Partial<AdvancedQuery>) => void;
 }) => {
   const { $vuetify, $router } = context.root;
 

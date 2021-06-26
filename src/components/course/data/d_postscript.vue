@@ -10,22 +10,20 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic } from '@/types/CourseInfo';
-import { basicTemplate } from '@/types/CourseInfo';
+import type { CourseInfo } from '@/types/CourseInfo';
+import { i18nDataTemplate } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DPostsctipt',
   props: {
     postscript: {
-      type: Object as PropType<Basic>,
-      default: basicTemplate,
+      type: Object as PropType<CourseInfo['title']['postscript']>,
+      default: i18nDataTemplate,
     },
   },
   setup: (props, context) => {
-    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'jp');
-
-    const postscriptData = computed((): string | null | undefined => props
-      .postscript?.[curLang.value]);
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'ja');
+    const postscriptData = computed(() => props.postscript[curLang.value]);
 
     return {
       postscriptData,

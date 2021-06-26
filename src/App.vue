@@ -17,6 +17,7 @@ import {
 import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
 import type { CourseInfo, ValidIdParams } from '@/types/CourseInfo';
+import type { SearchResponse } from '@/types/Search';
 import {
   isLoadingKey, setLoadingStateKey, toggleSideBarKey, visibilityKey,
 } from '@/util/injectionKeys';
@@ -72,11 +73,17 @@ const useTimetable = (context: SetupContext, setLoadingState: (value: boolean) =
 
     const fetchAndStoreCourseForTimetable = async (idObj: ValidIdParams) => {
       try {
-        const response = await request.axios.get(`search?query=${idObj.title}&teacher=${idObj.teacher}`);
-        const courses: CourseInfo[] = response.data.Hits;
-        const course = courses[0];
+        const searchQuery = new URLSearchParams({
+          query: idObj.title,
+          teacher: idObj.teacher,
+        });
+        const querystring = searchQuery.toString();
+        const response = await request.axios.get<SearchResponse<CourseInfo>>(`/search?${querystring}`);
+        const courseHits = response.data.Hits;
 
-        if (course !== undefined) {
+        if (courseHits) {
+          const course = courseHits[0];
+
           $store.commit('timetable/addCourse', course);
         }
       } catch (e) {

@@ -43,7 +43,7 @@ const useSearch = (context: SetupContext) => {
       advanced: advancedInputs,
     });
 
-    $router.push(`search?${searchQuery}`);
+    $router.push(`/search?${searchQuery}`);
   };
 
   return { input, search };

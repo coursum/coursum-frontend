@@ -1,93 +1,110 @@
-export interface Basic {
-  en: string | null | undefined;
-  jp: string | null | undefined;
-  kana: string | null | undefined;
+type Nullish = null | undefined;
+
+interface I18nData {
+  ja: string | Nullish;
+  en: string | Nullish;
+  kana?: string | Nullish;
 }
 
-export interface Lecturer {
-  imgUrl: string | null | undefined;
-  name: Basic;
-  id: string | null | undefined;
-  email: string | null | undefined;
-  inCharge: boolean | null | undefined;
+interface Title {
+  name: I18nData;
+  postscript: I18nData;
 }
 
-export interface Title {
-  postscript: Basic;
-  name: Basic;
+interface Lecturer {
+  id: string | Nullish;
+  imgUrl: string | Nullish;
+  name: I18nData;
+  email: string | Nullish;
+  inCharge: boolean | Nullish;
 }
 
-export interface Schedule {
-  year: number | null | undefined;
-  span: Basic;
-  semester: Basic;
-  times: Basic;
+interface Schedule {
+  year: number | Nullish;
+  semester: I18nData;
+  times: I18nData;
+  span: I18nData;
 }
 
-export interface Registration {
-  number: null | undefined;
-  suggestion: Basic;
-  requirement: Basic;
-  prerequisite: null | undefined;
+interface Registration {
+  number: string | Nullish;
+  prerequisite: {
+    mandatory: string | Nullish;
+    recommended: string | Nullish;
+  };
+  requirement: I18nData;
+  suggestion: I18nData;
 }
 
-export interface Tag {
-  giga: boolean | undefined;
+interface Tag {
+  curriculumCode: string | Nullish;
+  category: I18nData;
+  giga: boolean | Nullish;
 }
 
 export interface CourseInfo {
-  category: Basic;
-  language: Basic;
-  lecturers: Lecturer[] | never[];
   title: Title;
+  lecturers: Lecturer[];
   schedule: Schedule;
-  related: null | undefined;
+  classroom: string | Nullish;
+  credit: number | Nullish;
+  language: I18nData;
+  summary: I18nData;
+  types: I18nData;
   registration: Registration;
-  classroom: string | null | undefined;
-  summary: Basic;
-  types: null | undefined;
-  yearClassId: null | undefined;
+  related: string | Nullish;
+  yearClassId: string; // non nullish
+  syllabusURL: string | Nullish;
   tag: Tag;
-  curriculumCode: string | null | undefined;
-  credit: number | null | undefined;
 }
 
-export const basicTemplate: Basic = { en: undefined, jp: undefined, kana: undefined };
+export const i18nDataTemplate: I18nData = {
+  ja: undefined,
+  en: undefined,
+};
 
 export const courseTemplate: CourseInfo = {
-  category: basicTemplate,
-  language: basicTemplate,
-  lecturers: [{
-    imgUrl: undefined,
-    name: basicTemplate,
-    id: undefined,
-    email: undefined,
-    inCharge: undefined,
-  }],
   title: {
-    postscript: basicTemplate,
-    name: basicTemplate,
+    postscript: i18nDataTemplate,
+    name: i18nDataTemplate,
   },
+  lecturers: [
+    {
+      id: undefined,
+      imgUrl: undefined,
+      name: i18nDataTemplate,
+      email: undefined,
+      inCharge: undefined,
+    },
+  ],
   schedule: {
     year: undefined,
-    span: basicTemplate,
-    semester: basicTemplate,
-    times: basicTemplate,
-  },
-  related: undefined,
-  registration: {
-    number: undefined,
-    suggestion: basicTemplate,
-    requirement: basicTemplate,
-    prerequisite: undefined,
+    semester: i18nDataTemplate,
+    times: i18nDataTemplate,
+    span: i18nDataTemplate,
   },
   classroom: undefined,
-  summary: basicTemplate,
-  types: undefined,
-  yearClassId: undefined,
-  tag: { giga: undefined },
-  curriculumCode: undefined,
   credit: undefined,
+  language: i18nDataTemplate,
+  types: i18nDataTemplate,
+  summary: i18nDataTemplate,
+  registration: {
+    number: undefined,
+    prerequisite: {
+      mandatory: undefined,
+      recommended: undefined,
+    },
+    requirement: i18nDataTemplate,
+    suggestion: i18nDataTemplate,
+  },
+  related: undefined,
+  yearClassId: '2000_00000',
+  syllabusURL: undefined,
+  tag: {
+    curriculumCode: undefined,
+    category: i18nDataTemplate,
+    giga: undefined,
+  },
 };
 
 export interface ValidIdParams {

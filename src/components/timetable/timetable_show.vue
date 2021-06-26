@@ -42,6 +42,7 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable vue/no-unused-properties */
 import {
   computed, defineComponent, onMounted, reactive,
 } from '@vue/composition-api';
@@ -117,8 +118,8 @@ export default defineComponent({
     const idx = (d: [string, number[]][]): number => d?.[0]?.[1]?.[0];
 
     const setInitialData = (dataObj: CourseInfo) => {
-      const times = dataObj?.schedule?.times?.jp;
-      const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers?.[0]?.name?.jp}`;
+      const times = dataObj?.schedule?.times?.ja;
+      const id = `${dataObj?.title?.name?.ja} ${dataObj?.lecturers?.[0]?.name?.ja}`;
       const pattern = /([月火水木金土日])曜日([１２３４５６７1234567])時限/;
       let [day, time]: number[] = [100, 100];
       const week = ['月', '火', '水', '木', '金', '土', '日'];
@@ -141,7 +142,7 @@ export default defineComponent({
     const setCourseDatas = (datas: CourseInfo[]) => {
       datas
         .some((dataObj: CourseInfo) => {
-          const id = `${dataObj?.title?.name?.jp} ${dataObj?.lecturers?.[0]?.name?.jp}`;
+          const id = `${dataObj?.title?.name?.ja} ${dataObj?.lecturers?.[0]?.name?.ja}`;
 
           if (ids.value.includes(id)) {
             setInitialData(dataObj);
@@ -169,7 +170,7 @@ export default defineComponent({
   "en": {
     "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Others"]
   },
-  "jp": {
+  "ja": {
     "days": ["月", "火", "水", "木", "金", "土", "その他"]
   }
 }

@@ -11,13 +11,7 @@
                    :text-truncate="false"
       />
 
-      <detail-show :registration="registration"
-                   :classroom="classroom"
-                   :related="related"
-                   :types="types"
-                   :tag="tag"
-                   :curriculum-code="curriculumCode"
-      />
+      <detail-show :course-data="course" />
     </div>
   </div>
 </template>
@@ -31,6 +25,7 @@ import qs from 'qs';
 import CourseShow from '@/components/course/course_show.vue';
 import DetailShow from '@/components/detail/detail_show.vue';
 import type { CourseInfo } from '@/types/CourseInfo';
+import type { SearchResponse } from '@/types/Search';
 import request from '@/util/request';
 
 export default defineComponent({
@@ -41,32 +36,21 @@ export default defineComponent({
   },
   setup: (_, context) => {
     const isLoading = ref(false);
-    const curLang = computed((): string => context.root.$i18n.locale);
 
     const course = ref<CourseInfo>();
-    const registration = ref<CourseInfo['registration']>();
-    const related = ref<CourseInfo['related']>();
-    const classroom = ref<CourseInfo['classroom']>();
-    const types = ref<CourseInfo['types']>();
-    const tag = ref<CourseInfo['tag']>();
-    const curriculumCode = ref<CourseInfo['curriculumCode']>();
 
     const fetchCourse = async () => {
       try {
         isLoading.value = true;
 
         const querystring = qs.stringify(context.root.$route.query);
-        const response = await request.axios.get(`/search?${querystring}`);
+        const response = await request.axios.get<SearchResponse<CourseInfo>>(`/search?${querystring}`);
+        const courseHits = response.data.Hits;
 
-        const hitCourse: CourseInfo = response.data.Hits[0];
-
-        course.value = hitCourse;
-        registration.value = hitCourse.registration;
-        related.value = hitCourse.related;
-        classroom.value = hitCourse.classroom;
-        types.value = hitCourse.types;
-        tag.value = hitCourse.tag;
-        curriculumCode.value = hitCourse.curriculumCode;
+        if (courseHits) {
+          const courseHit = courseHits[0];
+          course.value = courseHit;
+        }
       } catch (e) {
         console.error(e.message);
       } finally {
@@ -107,13 +91,6 @@ export default defineComponent({
 
     return {
       isLoading,
-      curLang,
-      registration,
-      related,
-      classroom,
-      types,
-      curriculumCode,
-      tag,
       width,
       course,
     };

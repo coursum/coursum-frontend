@@ -1,13 +1,11 @@
 <template>
-  <span v-if="displays">
-    <v-chip
-      v-for="(display, i) in displays"
-      :key="i"
-      outlined
-      x-small
-      color="caption"
+  <span v-if="courseTimes">
+    <v-chip v-for="(time, i) in courseTimes" :key="i"
+            color="caption"
+            outlined
+            x-small
     >
-      {{ display }}
+      {{ time }}
     </v-chip>
   </span>
 </template>
@@ -16,44 +14,28 @@
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
 
-import type { Basic } from '@/types/CourseInfo';
-import { basicTemplate } from '@/types/CourseInfo';
+import type { CourseInfo } from '@/types/CourseInfo';
+import { i18nDataTemplate } from '@/types/CourseInfo';
 
 export default defineComponent({
   name: 'DScheduleTimes',
   props: {
     times: {
-      type: Object as PropType<Basic>,
-      default: basicTemplate,
+      type: Object as PropType<CourseInfo['schedule']['times']>,
+      default: i18nDataTemplate,
     },
   },
-  setup: (props) => {
-    const displays = computed((): string[] | undefined => {
-      const times = props.times.jp;
+  setup: (props, context) => {
+    const curLang = computed(() => context.root.$i18n.locale as 'en' | 'ja');
 
-      if (!times) return undefined;
+    const courseTimes = computed(() => {
+      const times = props.times[curLang.value] || '';
 
-      const schedule: string[] = times.split(' , ');
-
-      // const pattern = /([月火水木金土日])曜日([１２３４５６７1234567])時限/;
-      // const schedule: string[] = times.split(',').map((str: string) => {
-      //   const arr = pattern.exec(str);
-      //   let [day, time]: [string, number] = ['', -1];
-
-      //   if (arr) {
-      //     const toHalfWidth = String.fromCharCode(arr[2].charCodeAt(0) - 0xFEE0);
-      //     [, day] = arr;
-      //     time = Number(toHalfWidth);
-      //   }
-
-      //   return day + time;
-      // });
-
-      return schedule;
+      return times.split(',').map((time) => time.trim());
     });
 
     return {
-      displays,
+      courseTimes,
     };
   },
 });

@@ -3,7 +3,7 @@
     <v-list nav dense>
       <timetable-link />
     </v-list>
-    <template v-slot:append>
+    <template #append>
       <setting-show class="mt-auto" />
     </template>
   </v-navigation-drawer>
