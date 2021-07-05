@@ -26,7 +26,7 @@ export default defineComponent({
     const timetableLength = computed((): number => $store.state.timetable.courses.length);
 
     const goResult = async () => {
-      $router.push('/timetable');
+      await $router.push('/timetable');
     };
 
     return {

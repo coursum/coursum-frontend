@@ -156,15 +156,15 @@ export default defineComponent({
         advanced,
       });
 
-      $router.push(`/search?${searchQuery}`);
+      await $router.push(`/search?${searchQuery.toString()}`);
     };
 
     return {
       dialog,
+      advancedSearch,
       ...toRefs(state),
       ...useTranslate(context),
       resetValues,
-      advancedSearch,
     };
   },
 });

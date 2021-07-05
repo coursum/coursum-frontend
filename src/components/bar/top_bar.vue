@@ -76,9 +76,9 @@ const useCoursumTitle = (context: SetupContext, {
 
   const isMdAndUp = computed(() => $vuetify.breakpoint.mdAndUp);
 
-  const goResult = () => {
+  const goResult = async () => {
     if ($router.currentRoute.path !== '/') {
-      $router.push('/');
+      await $router.push('/');
       setSearchInput('');
       setAdvancedQuery(initialAdvancedQuery);
     }
