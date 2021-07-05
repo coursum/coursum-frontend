@@ -34,21 +34,13 @@ import {
   visibilityKey,
 } from '@/util/injection-keys';
 
-const initialAdvancedQuery = {
-  giga: '',
-  teacher: '',
-  language: '',
-  semester: '',
-  times: '',
-};
-
 const useStoredSearchInput = () => {
   const searchInput = ref('');
   const setSearchInput = (value: string) => {
     searchInput.value = value;
   };
 
-  const advancedQuery = reactive({ ...initialAdvancedQuery });
+  const advancedQuery = reactive({});
   const setAdvancedQuery = (value: AdvancedQuery) => {
     Object.assign(advancedQuery, value);
   };
@@ -80,7 +72,7 @@ const useCoursumTitle = (context: SetupContext, {
     if ($router.currentRoute.path !== '/') {
       await $router.push('/');
       setSearchInput('');
-      setAdvancedQuery(initialAdvancedQuery);
+      setAdvancedQuery({});
     }
   };
 
