@@ -19,8 +19,8 @@
 import type { SetupContext } from '@vue/composition-api';
 import { defineComponent, ref, watch } from '@vue/composition-api';
 
-import { injectStrict } from '@/util';
-import { advancedQueryKey, searchInputKey, setSearchInputKey } from '@/util/injectionKeys';
+import injectStrict from '@/util/inject-strict';
+import { advancedQueryKey, searchInputKey, setSearchInputKey } from '@/util/injection-keys';
 import request from '@/util/request';
 
 const useSearch = (context: SetupContext) => {

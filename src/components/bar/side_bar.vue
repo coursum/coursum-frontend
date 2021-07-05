@@ -14,8 +14,8 @@ import { defineComponent } from '@vue/composition-api';
 
 import SettingShow from '@/components/setting/setting_show.vue';
 import TimetableLink from '@/components/timetable/timetable_link.vue';
-import { injectStrict } from '@/util';
-import { toggleSideBarKey, visibilityKey } from '@/util/injectionKeys';
+import injectStrict from '@/util/inject-strict';
+import { toggleSideBarKey, visibilityKey } from '@/util/injection-keys';
 
 export default defineComponent({
   name: 'SideBar',

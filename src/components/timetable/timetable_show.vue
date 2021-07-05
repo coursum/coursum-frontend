@@ -49,8 +49,8 @@ import {
 import type { Course } from 'coursum-types';
 
 import CourseShow from '@/components/course/course_show.vue';
-import { injectStrict } from '@/util';
-import { isLoadingKey } from '@/util/injectionKeys';
+import injectStrict from '@/util/inject-strict';
+import { isLoadingKey } from '@/util/injection-keys';
 
 interface State {
   isSharedPage: boolean;

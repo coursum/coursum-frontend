@@ -19,9 +19,9 @@ import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
 import {
   isLoadingKey, setLoadingStateKey, toggleSideBarKey, visibilityKey,
-} from '@/util/injectionKeys';
+} from '@/util/injection-keys';
 import request from '@/util/request';
-import useStorage from '@/util/useStorage';
+import useStorage from '@/util/use-storage';
 
 const useToggleSideBar = () => {
   const visibility = ref(false);

@@ -10,7 +10,4 @@ function injectStrict<T>(key: InjectionKey<T>, fallback?: T) {
   return resolved;
 }
 
-export {
-  // eslint-disable-next-line import/prefer-default-export
-  injectStrict,
-};
+export default injectStrict;

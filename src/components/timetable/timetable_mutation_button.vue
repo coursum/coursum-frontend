@@ -21,7 +21,7 @@ import { computed, defineComponent } from '@vue/composition-api';
 import type { Course, SearchResponse } from 'coursum-types';
 
 import request from '@/util/request';
-import useStorage from '@/util/useStorage';
+import useStorage from '@/util/use-storage';
 
 export default defineComponent({
   name: 'TimetableMutationButton',

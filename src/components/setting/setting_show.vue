@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable no-param-reassign */
 import { defineComponent, ref, watch } from '@vue/composition-api';
 
-import useStorage from '@/util/useStorage';
+import useStorage from '@/util/use-storage';
 
 export default defineComponent({
   name: 'SettingShow',
-  setup: (_, { root: { $vuetify, $i18n } }) => {
+  setup: (_, context) => {
+    const { root: { $vuetify, $i18n } } = context;
     const { setItem } = useStorage(localStorage);
 
     const isDark = ref($vuetify.theme.dark);

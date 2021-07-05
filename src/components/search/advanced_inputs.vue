@@ -76,8 +76,8 @@ import type { SetupContext } from '@vue/composition-api';
 
 import SearchInput from '@/components/search/search_input.vue';
 import type { AdvancedQuery } from '@/types/Search';
-import { injectStrict } from '@/util';
-import { advancedQueryKey, searchInputKey, setAdvancedQueryKey } from '@/util/injectionKeys';
+import injectStrict from '@/util/inject-strict';
+import { advancedQueryKey, searchInputKey, setAdvancedQueryKey } from '@/util/injection-keys';
 import request from '@/util/request';
 
 const useTranslate = (context: SetupContext) => {

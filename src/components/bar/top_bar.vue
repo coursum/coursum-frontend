@@ -24,7 +24,7 @@ import {
 import AdvancedInputs from '@/components/search/advanced_inputs.vue';
 import SearchInput from '@/components/search/search_input.vue';
 import type { AdvancedQuery } from '@/types/Search';
-import { injectStrict } from '@/util';
+import injectStrict from '@/util/inject-strict';
 import {
   advancedQueryKey,
   searchInputKey,
@@ -32,7 +32,7 @@ import {
   setSearchInputKey,
   toggleSideBarKey,
   visibilityKey,
-} from '@/util/injectionKeys';
+} from '@/util/injection-keys';
 
 const initialAdvancedQuery = {
   giga: '',
