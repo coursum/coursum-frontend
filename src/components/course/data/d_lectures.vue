@@ -15,14 +15,13 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-
-import type { CourseInfo } from '@/types/CourseInfo';
+import type { Course } from 'coursum-types';
 
 export default defineComponent({
   name: 'DLectures',
   props: {
     lecturers: {
-      type: Array as PropType<CourseInfo['lecturers']>,
+      type: Array as PropType<Course['lecturers']>,
       default: undefined,
     },
     textTruncate: {

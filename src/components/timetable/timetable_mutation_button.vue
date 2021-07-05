@@ -18,63 +18,43 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
+import type { Course, SearchResponse } from 'coursum-types';
 
-import type { CourseInfo, ValidIdParams } from '@/types/CourseInfo';
-import type { SearchResponse } from '@/types/Search';
 import request from '@/util/request';
 import useStorage from '@/util/useStorage';
 
 export default defineComponent({
   name: 'TimetableMutationButton',
   props: {
-    title: {
+    id: {
       type: String,
-      default: '',
-    },
-    teacher: {
-      type: String,
-      default: '',
+      required: true,
     },
   },
-  setup: (props, { root: { $store } }) => {
+  setup: ({ id: courseId }, { root: { $store } }) => {
     const { getItem, setItem } = useStorage(localStorage);
 
-    // computed?
-    const courseInfo = {
-      title: props.title,
-      teacher: props.teacher,
-    };
-
     const isInclude = computed(() => {
-      const { courses }: {courses: CourseInfo[]} = $store.state.timetable;
+      const { courses }: {courses: Course[]} = $store.state.timetable;
 
-      return courses.some((course) => (
-        `{"title":"${course.title?.name?.ja}","teacher":"${course.lecturers?.[0]?.name?.ja}"}`
-        === `{"title":"${props.title}","teacher":"${props.teacher}"}`
-      ));
+      return courses.some((course) => (course.yearClassId === courseId));
     });
 
     const removeCourse = () => {
-      $store.commit('timetable/removeCourse', courseInfo);
+      $store.commit('timetable/removeCourse', courseId);
 
-      const courseIds: ValidIdParams[] = getItem('timetable/ids') || [];
+      const courseIds: Course['yearClassId'][] = getItem('timetable/ids') || [];
 
-      setItem('timetable/ids', courseIds.filter((courseId) => (
-        `{"title":"${courseId.title}","teacher":"${courseId.teacher}"}`
-        !== `{"title":"${courseInfo.title}","teacher":"${courseInfo.teacher}"}`
-      )));
+      setItem('timetable/ids', courseIds.filter((id) => (id !== courseId)));
     };
 
     const addCourse = () => {
       const fetchAndStoreCourseForTimetable = async () => {
         try {
-          const searchQuery = new URLSearchParams({
-            query: props.title,
-            teacher: props.teacher,
-          });
+          const searchQuery = new URLSearchParams({ id: courseId });
           const querystring = searchQuery.toString();
-          const response = await request.axios.get<SearchResponse<CourseInfo>>(`/search?${querystring}`);
-          const courses = response.data.Hits;
+          const response = await request.axios.get<SearchResponse<Course>>(`/search?${querystring}`);
+          const courses = response.data.hits;
 
           if (courses) {
             const course = courses[0];
@@ -88,9 +68,9 @@ export default defineComponent({
 
       fetchAndStoreCourseForTimetable();
 
-      const courseIds: ValidIdParams[] = getItem('timetable/ids') || [];
+      const courseIds: Course['yearClassId'][] = getItem('timetable/ids') || [];
 
-      courseIds.push(courseInfo);
+      courseIds.push(courseId);
 
       setItem('timetable/ids', courseIds);
     };

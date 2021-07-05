@@ -13,16 +13,14 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-
-import type { CourseInfo } from '@/types/CourseInfo';
-import { i18nDataTemplate } from '@/types/CourseInfo';
+import type { Course } from 'coursum-types';
 
 export default defineComponent({
   name: 'DScheduleTimes',
   props: {
     times: {
-      type: Object as PropType<CourseInfo['schedule']['times']>,
-      default: i18nDataTemplate,
+      type: Object as PropType<Course['schedule']['times']>,
+      required: true,
     },
   },
   setup: (props, context) => {

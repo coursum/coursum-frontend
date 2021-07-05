@@ -7,14 +7,13 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-
-import type { CourseInfo } from '@/types/CourseInfo';
+import type { Course } from 'coursum-types';
 
 export default defineComponent({
   name: 'DCategory',
   props: {
     category: {
-      type: Object as PropType<CourseInfo['tag']['category']>,
+      type: Object as PropType<Course['tag']['category']>,
       required: true,
     },
   },

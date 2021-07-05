@@ -49,7 +49,7 @@ const useStoredSearchInput = () => {
   };
 
   const advancedQuery = reactive({ ...initialAdvancedQuery });
-  const setAdvancedQuery = (value: Partial<AdvancedQuery>) => {
+  const setAdvancedQuery = (value: AdvancedQuery) => {
     Object.assign(advancedQuery, value);
   };
 
@@ -70,7 +70,7 @@ const useCoursumTitle = (context: SetupContext, {
   setAdvancedQuery,
 }: {
   setSearchInput: (value: string) => void;
-  setAdvancedQuery: (value: Partial<AdvancedQuery>) => void;
+  setAdvancedQuery: (value: AdvancedQuery) => void;
 }) => {
   const { $vuetify, $router } = context.root;
 

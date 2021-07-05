@@ -12,7 +12,7 @@ const searchInputKey: InjectionKey<Ref<string>> = Symbol('searchInput');
 const setSearchInputKey: InjectionKey<(value: string) => void> = Symbol('setSearchInput');
 
 const advancedQueryKey: InjectionKey<AdvancedQuery> = Symbol('advancedQuery');
-const setAdvancedQueryKey: InjectionKey<(value: Partial<AdvancedQuery>) => void> = Symbol('setAdvancedQuery');
+const setAdvancedQueryKey: InjectionKey<(value: AdvancedQuery) => void> = Symbol('setAdvancedQuery');
 
 export {
   visibilityKey,

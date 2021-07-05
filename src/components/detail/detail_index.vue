@@ -20,12 +20,11 @@
 import {
   computed, defineComponent, ref, watch,
 } from '@vue/composition-api';
+import type { Course, SearchResponse } from 'coursum-types';
 import qs from 'qs';
 
 import CourseShow from '@/components/course/course_show.vue';
 import DetailShow from '@/components/detail/detail_show.vue';
-import type { CourseInfo } from '@/types/CourseInfo';
-import type { SearchResponse } from '@/types/Search';
 import request from '@/util/request';
 
 export default defineComponent({
@@ -37,15 +36,15 @@ export default defineComponent({
   setup: (_, context) => {
     const isLoading = ref(false);
 
-    const course = ref<CourseInfo>();
+    const course = ref<Course>();
 
     const fetchCourse = async () => {
       try {
         isLoading.value = true;
 
         const querystring = qs.stringify(context.root.$route.query);
-        const response = await request.axios.get<SearchResponse<CourseInfo>>(`/search?${querystring}`);
-        const courseHits = response.data.Hits;
+        const response = await request.axios.get<SearchResponse<Course>>(`/search?${querystring}`);
+        const courseHits = response.data.hits;
 
         if (courseHits) {
           const courseHit = courseHits[0];

@@ -9,16 +9,14 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-
-import type { CourseInfo } from '@/types/CourseInfo';
-import { i18nDataTemplate } from '@/types/CourseInfo';
+import type { Course } from 'coursum-types';
 
 export default defineComponent({
   name: 'DPostsctipt',
   props: {
     postscript: {
-      type: Object as PropType<CourseInfo['title']['postscript']>,
-      default: i18nDataTemplate,
+      type: Object as PropType<Course['title']['postscript']>,
+      required: true,
     },
   },
   setup: (props, context) => {

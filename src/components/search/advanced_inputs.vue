@@ -75,13 +75,13 @@ import {
 import type { SetupContext } from '@vue/composition-api';
 
 import SearchInput from '@/components/search/search_input.vue';
+import type { AdvancedQuery } from '@/types/Search';
 import { injectStrict } from '@/util';
 import { advancedQueryKey, searchInputKey, setAdvancedQueryKey } from '@/util/injectionKeys';
 import request from '@/util/request';
 
 const useTranslate = (context: SetupContext) => {
-  const { $i18n } = context.root;
-  const translateArray = (keys: string[]) => keys.map((key) => $i18n.t(key));
+  const translateArray = (keys: string[]) => keys.map((key) => context.root.$i18n.t(key));
 
   const languages = computed(() => translateArray(['english', 'japanese']));
 
@@ -94,7 +94,7 @@ const useTranslate = (context: SetupContext) => {
   const times = computed(() => (
     Array(7).fill(0)
       .map((_, num) => num + 1)
-      .map((period) => `${period} ${$i18n.t('period')}`)
+      .map((period) => `${period} ${context.root.$i18n.t('period')}`)
   ));
 
   return {
@@ -117,46 +117,43 @@ export default defineComponent({
     const advancedInputs = injectStrict(advancedQueryKey);
     const setAdvancedQuery = injectStrict(setAdvancedQueryKey);
 
-    const dialog = ref(false);
-
     const initialState = {
-      giga: '',
       teacher: '',
-      language: '',
       semester: '',
       day: '',
       time: '',
+      language: '',
+      giga: false,
     };
 
+    const dialog = ref(false);
     const state = reactive({ ...initialState });
+
     watch(advancedInputs, () => {
       // TODO: try to refill day & time
       const { times: _, ...rest } = advancedInputs;
       Object.assign(state, rest);
     });
 
-    const times = computed(() => `${state.day}${state.time}`);
-
     const resetValues = () => {
       Object.assign(state, initialState);
     };
 
-    const advanced = computed(() => ({
-      giga: state.giga,
-      teacher: state.teacher,
-      language: state.language,
-      semester: state.semester,
-      times: times.value,
-    }));
-
     const advancedSearch = async () => {
       dialog.value = false;
 
-      setAdvancedQuery(advanced.value);
+      const advanced: AdvancedQuery = {};
+      if (state.teacher) advanced.teacher = state.teacher;
+      if (state.semester) advanced.semester = state.semester;
+      if (state.day && state.time) advanced.times = `${state.day}${state.time}`;
+      if (state.language) advanced.language = state.language;
+      if (state.giga) advanced.giga = '';
+
+      setAdvancedQuery(advanced);
 
       const searchQuery = request.buildQuery({
         query: searchInput.value,
-        advanced: advanced.value,
+        advanced,
       });
 
       $router.push(`/search?${searchQuery}`);

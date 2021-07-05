@@ -13,11 +13,10 @@ import type { SetupContext } from '@vue/composition-api';
 import {
   defineComponent, onBeforeMount, onMounted, provide, ref,
 } from '@vue/composition-api';
+import type { Course, SearchResponse } from 'coursum-types';
 
 import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
-import type { CourseInfo, ValidIdParams } from '@/types/CourseInfo';
-import type { SearchResponse } from '@/types/Search';
 import {
   isLoadingKey, setLoadingStateKey, toggleSideBarKey, visibilityKey,
 } from '@/util/injectionKeys';
@@ -68,18 +67,11 @@ const useTimetable = (context: SetupContext, setLoadingState: (value: boolean) =
   const { getItem } = useStorage(localStorage);
 
   onMounted(async () => {
-    // TODO: better naming
-    const idObjs: ValidIdParams[] = getItem('timetable/ids') || [];
-
-    const fetchAndStoreCourseForTimetable = async (idObj: ValidIdParams) => {
+    const fetchAndStoreCourseForTimetable = async (courseId: Course['yearClassId']) => {
       try {
-        const searchQuery = new URLSearchParams({
-          query: idObj.title,
-          teacher: idObj.teacher,
-        });
-        const querystring = searchQuery.toString();
-        const response = await request.axios.get<SearchResponse<CourseInfo>>(`/search?${querystring}`);
-        const courseHits = response.data.Hits;
+        const searchQuery = new URLSearchParams({ id: courseId });
+        const response = await request.axios.get<SearchResponse<Course>>(`/search?${searchQuery.toString()}`);
+        const courseHits = response.data.hits;
 
         if (courseHits) {
           const course = courseHits[0];
@@ -94,7 +86,10 @@ const useTimetable = (context: SetupContext, setLoadingState: (value: boolean) =
     try {
       setLoadingState(true);
 
-      await Promise.all(idObjs.map(fetchAndStoreCourseForTimetable));
+      // TODO: better naming
+      const ids: Course['yearClassId'][] = getItem('timetable/ids') || [];
+
+      await Promise.all(ids.map(fetchAndStoreCourseForTimetable));
     } catch (e) {
       console.error(e.message);
     } finally {

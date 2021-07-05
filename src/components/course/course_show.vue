@@ -30,7 +30,7 @@
 
           <div class="d-flex justify-space-between align-center">
             <d-lectures :text-truncate="textTruncate" :lecturers="lecturers" />
-            <timetable-mutation-button :title="titleForId" :teacher="teacherForId" />
+            <timetable-mutation-button :id="yearClassId" />
           </div>
         </div>
       </v-card>
@@ -41,6 +41,7 @@
 <script lang="ts">
 import type { PropType, SetupContext } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
+import type { Course } from 'coursum-types';
 
 import DCategory from '@/components/course/data/d_category.vue';
 import DCredit from '@/components/course/data/d_credit.vue';
@@ -51,10 +52,9 @@ import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
 import DSummary from '@/components/course/data/d_summary.vue';
 import DTitle from '@/components/course/data/d_title.vue';
 import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
-import type { CourseInfo } from '@/types/CourseInfo';
 
 interface Props {
-  courseData: PropType<CourseInfo>;
+  courseData: PropType<Course>;
   showSummary: boolean;
   textTruncate: boolean;
   hasWidth: boolean;
@@ -117,7 +117,7 @@ export default defineComponent({
   },
   props: {
     courseData: {
-      type: Object as PropType<CourseInfo>,
+      type: Object as PropType<Course>,
       required: true,
     },
     showSummary: {
@@ -160,15 +160,11 @@ export default defineComponent({
       },
     } = course;
 
-    const titleForId = course.title.name.ja || '';
-    const teacherForId = course.lecturers[0].name.ja || '';
-
     const { textTruncate, hasWidth, hasHeight } = props;
     const { cardClass, cardStyle } = useCard({ textTruncate, hasWidth, hasHeight }, context);
 
     const goResult = async () => {
-      // TODO: wait for backend implementation
-      const searchQuery = new URLSearchParams({ yearClassId });
+      const searchQuery = new URLSearchParams({ id: yearClassId });
 
       await $router.push(`/course/search?${searchQuery.toString()}`);
     };
@@ -185,8 +181,8 @@ export default defineComponent({
       semester,
       times,
       lecturers,
-      titleForId,
-      teacherForId,
+
+      yearClassId,
     };
   },
 });

@@ -34,11 +34,10 @@
 import {
   computed, defineComponent, ref, watch,
 } from '@vue/composition-api';
+import type { Course, SearchResponse } from 'coursum-types';
 import qs from 'qs';
 
 import CourseShow from '@/components/course/course_show.vue';
-import type { CourseInfo } from '@/types/CourseInfo';
-import type { SearchResponse } from '@/types/Search';
 import request from '@/util/request';
 
 const usePagination = () => {
@@ -78,12 +77,12 @@ export default defineComponent({
     } = usePagination();
 
     const isLoading = ref(false);
-    const courses = ref<CourseInfo[]>([]);
+    const courses = ref<Course[]>([]);
 
     // TODO: find an appropriate number
     const coursePerPage = 12;
 
-    const currentShowingCourses = computed<CourseInfo[]>(() => {
+    const currentShowingCourses = computed<Course[]>(() => {
       // currentSelectedPageは1から始まる
       const start = (currentSelectedPage.value - 1) * coursePerPage;
       const end = start + coursePerPage;
@@ -99,8 +98,8 @@ export default defineComponent({
 
         // TODO: wrap request function
         const querystring = qs.stringify(context.root.$route.query);
-        const response = await request.axios.get<SearchResponse<CourseInfo>>(`/search?${querystring}`);
-        const courseHits = response.data.Hits;
+        const response = await request.axios.get<SearchResponse<Course>>(`/search?${querystring}`);
+        const courseHits = response.data.hits;
 
         if (courseHits) {
           courses.value = courseHits;

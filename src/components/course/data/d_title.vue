@@ -9,14 +9,13 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-
-import type { CourseInfo } from '@/types/CourseInfo';
+import type { Course } from 'coursum-types';
 
 export default defineComponent({
   name: 'DTitle',
   props: {
     title: {
-      type: Object as PropType<CourseInfo['title']['name']>,
+      type: Object as PropType<Course['title']['name']>,
       required: true,
     },
   },

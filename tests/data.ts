@@ -1,4 +1,4 @@
-import type { CourseInfo } from '@/types/CourseInfo';
+import type { Course } from 'coursum-types';
 
 const categoryMock: Basic = { en: 'category en', jp: 'category jp', kana: 'category kana' };
 
@@ -58,7 +58,7 @@ const curriculumCodeMock: string | null | undefined = 'curriculumCode';
 
 const creditMock: number | null | undefined = 2;
 
-const courseDataMock: CourseInfo = {
+const courseDataMock: Course = {
   category: categoryMock,
   language: languageMock,
   lecturers: lecturersMock,
@@ -75,7 +75,7 @@ const courseDataMock: CourseInfo = {
   credit: creditMock,
 };
 
-const courseDatasMock: CourseInfo[] = [
+const courseDatasMock: Course[] = [
   courseDataMock,
   courseDataMock,
   courseDataMock,

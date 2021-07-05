@@ -46,9 +46,9 @@
 import {
   computed, defineComponent, onMounted, reactive,
 } from '@vue/composition-api';
+import type { Course } from 'coursum-types';
 
 import CourseShow from '@/components/course/course_show.vue';
-import type { CourseInfo } from '@/types/CourseInfo';
 import { injectStrict } from '@/util';
 import { isLoadingKey } from '@/util/injectionKeys';
 
@@ -72,7 +72,7 @@ export default defineComponent({
       },
     );
 
-    const courses = computed((): CourseInfo[] => $store.state.timetable.courses);
+    const courses = computed((): Course[] => $store.state.timetable.courses);
 
     const ids = computed((): string[] => $store.state.timetable.ids);
 
@@ -117,7 +117,7 @@ export default defineComponent({
 
     const idx = (d: [string, number[]][]): number => d?.[0]?.[1]?.[0];
 
-    const setInitialData = (dataObj: CourseInfo) => {
+    const setInitialData = (dataObj: Course) => {
       const times = dataObj?.schedule?.times?.ja;
       const id = `${dataObj?.title?.name?.ja} ${dataObj?.lecturers?.[0]?.name?.ja}`;
       const pattern = /([月火水木金土日])曜日([１２３４５６７1234567])時限/;
@@ -139,9 +139,9 @@ export default defineComponent({
       state.sortedIDs.push([id, [day, time]]);
     };
 
-    const setCourseDatas = (datas: CourseInfo[]) => {
+    const setCourseDatas = (datas: Course[]) => {
       datas
-        .some((dataObj: CourseInfo) => {
+        .some((dataObj: Course) => {
           const id = `${dataObj?.title?.name?.ja} ${dataObj?.lecturers?.[0]?.name?.ja}`;
 
           if (ids.value.includes(id)) {

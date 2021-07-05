@@ -12,19 +12,17 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-
-import type { CourseInfo } from '@/types/CourseInfo';
-import { i18nDataTemplate } from '@/types/CourseInfo';
+import type { Course } from 'coursum-types';
 
 export default defineComponent({
   name: 'DSummary',
   props: {
-    summary: {
-      type: Object as PropType<CourseInfo['summary']>,
-      default: i18nDataTemplate,
-    },
     title: {
-      type: Object as PropType<CourseInfo['title']['name']>,
+      type: Object as PropType<Course['title']['name']>,
+      required: true,
+    },
+    summary: {
+      type: Object as PropType<Course['summary']>,
       required: true,
     },
     textTruncate: {

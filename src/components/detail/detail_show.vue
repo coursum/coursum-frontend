@@ -74,14 +74,13 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-
-import type { CourseInfo } from '@/types/CourseInfo';
+import type { Course } from 'coursum-types';
 
 export default defineComponent({
   name: 'DetailShow',
   props: {
     courseData: {
-      type: Object as PropType<CourseInfo>,
+      type: Object as PropType<Course>,
       required: true,
     },
   },
