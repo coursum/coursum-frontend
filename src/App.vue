@@ -20,7 +20,7 @@ import TopBar from '@/components/bar/top_bar.vue';
 import {
   isLoadingKey, setLoadingStateKey, toggleSideBarKey, visibilityKey,
 } from '@/util/injection-keys';
-import request from '@/util/request';
+import { axios } from '@/util/request';
 import useStorage from '@/util/use-storage';
 
 const useToggleSideBar = () => {
@@ -70,7 +70,7 @@ const useTimetable = (context: SetupContext, setLoadingState: (value: boolean) =
     const fetchAndStoreCourseForTimetable = async (courseId: Course['yearClassId']) => {
       try {
         const searchQuery = new URLSearchParams({ id: courseId });
-        const response = await request.axios.get<SearchResponse<Course>>(`/search?${searchQuery.toString()}`);
+        const response = await axios.get<SearchResponse<Course>>(`/search?${searchQuery.toString()}`);
         const courseHits = response.data.hits;
 
         if (courseHits) {

@@ -20,7 +20,7 @@
 import { computed, defineComponent } from '@vue/composition-api';
 import type { Course, SearchResponse } from 'coursum-types';
 
-import request from '@/util/request';
+import { axios } from '@/util/request';
 import useStorage from '@/util/use-storage';
 
 export default defineComponent({
@@ -53,7 +53,7 @@ export default defineComponent({
         try {
           const searchQuery = new URLSearchParams({ id: courseId });
           const querystring = searchQuery.toString();
-          const response = await request.axios.get<SearchResponse<Course>>(`/search?${querystring}`);
+          const response = await axios.get<SearchResponse<Course>>(`/search?${querystring}`);
           const courses = response.data.hits;
 
           if (courses) {

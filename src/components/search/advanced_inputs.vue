@@ -78,7 +78,7 @@ import SearchInput from '@/components/search/search_input.vue';
 import type { AdvancedQuery } from '@/types/Search';
 import injectStrict from '@/util/inject-strict';
 import { advancedQueryKey, searchInputKey, setAdvancedQueryKey } from '@/util/injection-keys';
-import request from '@/util/request';
+import { buildQuery } from '@/util/request';
 
 const useTranslate = (context: SetupContext) => {
   const translateArray = (keys: string[]) => keys.map((key) => context.root.$i18n.t(key));
@@ -151,7 +151,7 @@ export default defineComponent({
 
       setAdvancedQuery(advanced);
 
-      const searchQuery = request.buildQuery({
+      const searchQuery = buildQuery({
         query: searchInput.value,
         advanced,
       });

@@ -21,7 +21,7 @@ import { defineComponent, ref, watch } from '@vue/composition-api';
 
 import injectStrict from '@/util/inject-strict';
 import { advancedQueryKey, searchInputKey, setSearchInputKey } from '@/util/injection-keys';
-import request from '@/util/request';
+import { buildQuery } from '@/util/request';
 
 const useSearch = (context: SetupContext) => {
   const { $router } = context.root;
@@ -38,7 +38,7 @@ const useSearch = (context: SetupContext) => {
   const search = async () => {
     setSearchInput(input.value);
 
-    const searchQuery = request.buildQuery({
+    const searchQuery = buildQuery({
       query: input.value,
       advanced: advancedInputs,
     });

@@ -25,7 +25,7 @@ import qs from 'qs';
 
 import CourseShow from '@/components/course/course_show.vue';
 import DetailShow from '@/components/detail/detail_show.vue';
-import request from '@/util/request';
+import { axios } from '@/util/request';
 
 export default defineComponent({
   name: 'DetailIndex',
@@ -43,7 +43,7 @@ export default defineComponent({
         isLoading.value = true;
 
         const querystring = qs.stringify(context.root.$route.query);
-        const response = await request.axios.get<SearchResponse<Course>>(`/search?${querystring}`);
+        const response = await axios.get<SearchResponse<Course>>(`/search?${querystring}`);
         const courseHits = response.data.hits;
 
         if (courseHits) {

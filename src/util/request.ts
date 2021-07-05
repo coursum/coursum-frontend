@@ -7,17 +7,19 @@ interface QueryParams {
   advanced: AdvancedQuery;
 }
 
-export default {
-  axios: axios.create({
-    baseURL: process.env.VUE_APP_API_BASE_URL,
-  }),
-  buildQuery({ query, advanced }: QueryParams) {
-    const params = new URLSearchParams({ query, ...advanced });
+const customAxios = axios.create({ baseURL: process.env.VUE_APP_API_BASE_URL });
 
-    [...params.entries()].forEach(([key, value]) => {
-      if (value === '') params.delete(key);
-    });
+const buildQuery = ({ query, advanced }: QueryParams) => {
+  const params = new URLSearchParams({ query, ...advanced });
 
-    return params;
-  },
+  [...params.entries()].forEach(([key, value]) => {
+    if (value === '') params.delete(key);
+  });
+
+  return params;
+};
+
+export {
+  customAxios as axios,
+  buildQuery,
 };
