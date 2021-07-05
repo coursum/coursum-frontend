@@ -1,8 +1,9 @@
 import Vue from 'vue';
+import type { UserVuetifyPreset } from 'vuetify';
 import Vuetify from 'vuetify/lib';
 import colors from 'vuetify/lib/util/colors';
 
-const options = {
+const options: UserVuetifyPreset = {
   theme: {
     options: {
       customProperties: true,
