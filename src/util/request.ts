@@ -9,15 +9,9 @@ interface QueryParams {
 
 const customAxios = axios.create({ baseURL: process.env.VUE_APP_API_BASE_URL });
 
-const buildQuery = ({ query, advanced }: QueryParams) => {
-  const params = new URLSearchParams({ query, ...advanced });
-
-  [...params.entries()].forEach(([key, value]) => {
-    if (value === '') params.delete(key);
-  });
-
-  return params;
-};
+const buildQuery = ({ query, advanced }: QueryParams) => (
+  new URLSearchParams({ query, ...advanced })
+);
 
 export {
   customAxios as axios,
