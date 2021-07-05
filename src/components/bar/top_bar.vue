@@ -18,7 +18,7 @@
 <script lang="ts">
 import type { SetupContext } from '@vue/composition-api';
 import {
-  computed, defineComponent, provide, reactive, ref,
+  computed, defineComponent, provide, ref,
 } from '@vue/composition-api';
 
 import AdvancedInputs from '@/components/search/advanced_inputs.vue';
@@ -40,9 +40,9 @@ const useStoredSearchInput = () => {
     searchInput.value = value;
   };
 
-  const advancedQuery = reactive({});
+  const advancedQuery = ref<AdvancedQuery>({});
   const setAdvancedQuery = (value: AdvancedQuery) => {
-    Object.assign(advancedQuery, value);
+    advancedQuery.value = value;
   };
 
   provide(searchInputKey, searchInput);
@@ -52,6 +52,8 @@ const useStoredSearchInput = () => {
   provide(setAdvancedQueryKey, setAdvancedQuery);
 
   return {
+    searchInput,
+    advancedQuery,
     setSearchInput,
     setAdvancedQuery,
   };
@@ -105,6 +107,8 @@ export default defineComponent({
     const toggleSideBar = injectStrict(toggleSideBarKey);
 
     const {
+      searchInput,
+      advancedQuery,
       setSearchInput,
       setAdvancedQuery,
     } = useStoredSearchInput();
@@ -117,6 +121,11 @@ export default defineComponent({
     return {
       visibility,
       toggleSideBar,
+      // For debugging in vue developer tool
+      // eslint-disable-next-line vue/no-unused-properties
+      searchInput,
+      // eslint-disable-next-line vue/no-unused-properties
+      advancedQuery,
       isMdAndUp,
       goResult,
       ...useSearchBarInTopBar(context),

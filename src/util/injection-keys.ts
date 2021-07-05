@@ -11,7 +11,7 @@ const setLoadingStateKey: InjectionKey<(value: boolean) => void> = Symbol('setLo
 const searchInputKey: InjectionKey<Ref<string>> = Symbol('searchInput');
 const setSearchInputKey: InjectionKey<(value: string) => void> = Symbol('setSearchInput');
 
-const advancedQueryKey: InjectionKey<AdvancedQuery> = Symbol('advancedQuery');
+const advancedQueryKey: InjectionKey<Ref<AdvancedQuery>> = Symbol('advancedQuery');
 const setAdvancedQueryKey: InjectionKey<(value: AdvancedQuery) => void> = Symbol('setAdvancedQuery');
 
 export {

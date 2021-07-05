@@ -70,7 +70,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, reactive, ref, toRefs, watch,
+  computed, defineComponent, ref, watch,
 } from '@vue/composition-api';
 import type { SetupContext } from '@vue/composition-api';
 
@@ -117,44 +117,46 @@ export default defineComponent({
     const advancedInputs = injectStrict(advancedQueryKey);
     const setAdvancedQuery = injectStrict(setAdvancedQueryKey);
 
-    const initialState = {
-      teacher: '',
-      semester: '',
-      day: '',
-      time: '',
-      language: '',
-      giga: false,
-    };
-
     const dialog = ref(false);
-    const state = reactive({ ...initialState });
-
-    watch(advancedInputs, () => {
-      // TODO: try to refill day & time
-      const { times: _, ...rest } = advancedInputs;
-      Object.assign(state, rest);
-    });
+    const teacher = ref('');
+    const semester = ref('');
+    const day = ref('');
+    const time = ref('');
+    const language = ref('');
+    const giga = ref(false);
 
     const resetValues = () => {
-      Object.assign(state, initialState);
+      teacher.value = '';
+      semester.value = '';
+      day.value = '';
+      time.value = '';
+      language.value = '';
+      giga.value = false;
     };
+
+    // TODO: try to refill day & time
+    watch(advancedInputs, () => {
+      teacher.value = advancedInputs.value.teacher;
+      semester.value = advancedInputs.value.semester;
+      language.value = advancedInputs.value.language;
+      giga.value = advancedInputs.value.giga === '';
+    });
 
     const advancedSearch = async () => {
       dialog.value = false;
 
       const advanced: AdvancedQuery = {};
-      if (state.teacher) advanced.teacher = state.teacher;
-      if (state.semester) advanced.semester = state.semester;
-      if (state.day && state.time) advanced.times = `${state.day}${state.time}`;
-      if (state.language) advanced.language = state.language;
-      if (state.giga) advanced.giga = '';
+      const times = day.value + time.value;
+
+      if (teacher.value) advanced.teacher = teacher.value;
+      if (semester.value) advanced.semester = semester.value;
+      if (times) advanced.times = times;
+      if (language.value) advanced.language = language.value;
+      if (giga.value) advanced.giga = '';
 
       setAdvancedQuery(advanced);
 
-      const searchQuery = buildQuery({
-        query: searchInput.value,
-        advanced,
-      });
+      const searchQuery = buildQuery({ query: searchInput.value, advanced });
 
       await $router.push(`/search?${searchQuery.toString()}`);
     };
@@ -162,7 +164,12 @@ export default defineComponent({
     return {
       dialog,
       advancedSearch,
-      ...toRefs(state),
+      teacher,
+      semester,
+      day,
+      time,
+      language,
+      giga,
       ...useTranslate(context),
       resetValues,
     };

@@ -38,10 +38,7 @@ const useSearch = (context: SetupContext) => {
   const search = async () => {
     setSearchInput(input.value);
 
-    const searchQuery = buildQuery({
-      query: input.value,
-      advanced: advancedInputs,
-    });
+    const searchQuery = buildQuery({ query: input.value, advanced: advancedInputs.value });
 
     await $router.push(`/search?${searchQuery.toString()}`);
   };
