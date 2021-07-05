@@ -30,7 +30,7 @@
 
           <div class="d-flex justify-space-between align-center">
             <d-lectures :text-truncate="textTruncate" :lecturers="lecturers" />
-            <timetable-mutation-button :id="yearClassId" />
+            <timetable-mutation-button :course="course" />
           </div>
         </div>
       </v-card>
@@ -181,8 +181,7 @@ export default defineComponent({
       semester,
       times,
       lecturers,
-
-      yearClassId,
+      course,
     };
   },
 });

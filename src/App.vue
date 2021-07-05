@@ -11,17 +11,32 @@
 <script lang="ts">
 import type { SetupContext } from '@vue/composition-api';
 import {
-  defineComponent, onBeforeMount, onMounted, provide, ref,
+  defineComponent, onBeforeMount, provide, ref,
 } from '@vue/composition-api';
-import type { Course, SearchResponse } from 'coursum-types';
+import type { Course } from 'coursum-types';
 
 import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
 import {
-  isLoadingKey, setLoadingStateKey, toggleSideBarKey, visibilityKey,
+  isLoadingKey,
+  setLoadingStateKey,
+  setTimetableCoursesKey,
+  timetableCoursesKey,
+  toggleSideBarKey,
+  visibilityKey,
 } from '@/util/injection-keys';
-import { axios } from '@/util/request';
 import useStorage from '@/util/use-storage';
+
+const useConfigInStorage = (context: SetupContext) => {
+  const { $vuetify, $i18n } = context.root;
+
+  const { getItem } = useStorage(localStorage);
+
+  onBeforeMount(() => {
+    $vuetify.theme.dark = getItem('vuetify.theme.dark') || $vuetify.theme.dark;
+    $i18n.locale = getItem('i18n.locale') || $i18n.locale;
+  });
+};
 
 const useToggleSideBar = () => {
   const visibility = ref(false);
@@ -33,7 +48,7 @@ const useToggleSideBar = () => {
   provide(toggleSideBarKey, toggleSideBar);
 
   return {
-    toggleSideBarKey,
+    visibility,
   };
 };
 
@@ -47,55 +62,26 @@ const useLoading = () => {
   provide(setLoadingStateKey, setLoadingState);
 
   return {
-    setLoadingState,
+    isLoading,
   };
 };
 
-const useConfigInStorage = (context: SetupContext) => {
-  const { $vuetify, $i18n } = context.root;
+const useTimetable = () => {
+  const { getItem, setItem } = useStorage(localStorage);
+  const courses: Course[] = getItem('timetable/courses') || [];
 
-  const { getItem } = useStorage(localStorage);
+  const timetableCourses = ref(courses);
+  const setTimetableCourses = (value: Course[]) => {
+    timetableCourses.value = value;
+    setItem('timetable/courses', value);
+  };
 
-  onBeforeMount(() => {
-    $vuetify.theme.dark = getItem('vuetify.theme.dark') || $vuetify.theme.dark;
-    $i18n.locale = getItem('i18n.locale') || $i18n.locale;
-  });
-};
+  provide(timetableCoursesKey, timetableCourses);
+  provide(setTimetableCoursesKey, setTimetableCourses);
 
-const useTimetable = (context: SetupContext, setLoadingState: (value: boolean) => void) => {
-  const { $store } = context.root;
-  const { getItem } = useStorage(localStorage);
-
-  onMounted(async () => {
-    const fetchAndStoreCourseForTimetable = async (courseId: Course['yearClassId']) => {
-      try {
-        const searchQuery = new URLSearchParams({ id: courseId });
-        const response = await axios.get<SearchResponse<Course>>(`/search?${searchQuery.toString()}`);
-        const courseHits = response.data.hits;
-
-        if (courseHits) {
-          const course = courseHits[0];
-
-          $store.commit('timetable/addCourse', course);
-        }
-      } catch (e) {
-        console.error(e.message);
-      }
-    };
-
-    try {
-      setLoadingState(true);
-
-      // TODO: better naming
-      const ids: Course['yearClassId'][] = getItem('timetable/ids') || [];
-
-      await Promise.all(ids.map(fetchAndStoreCourseForTimetable));
-    } catch (e) {
-      console.error(e.message);
-    } finally {
-      setLoadingState(false);
-    }
-  });
+  return {
+    timetableCourses,
+  };
 };
 
 export default defineComponent({
@@ -105,12 +91,13 @@ export default defineComponent({
     TopBar,
   },
   setup: (_, context) => {
-    useToggleSideBar();
-
-    const { setLoadingState } = useLoading();
-
     useConfigInStorage(context);
-    useTimetable(context, setLoadingState);
+
+    return {
+      ...useToggleSideBar(),
+      ...useLoading(),
+      ...useTimetable(),
+    };
   },
 });
 </script>

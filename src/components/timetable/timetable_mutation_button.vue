@@ -4,75 +4,59 @@
            icon small color="#CFD8DC"
            @click.stop="removeCourse"
     >
-      <v-icon> mdi-folder </v-icon>
+      <v-icon>mdi-folder</v-icon>
     </v-btn>
 
     <v-btn v-else
            icon small color="#CFD8DC"
            @click.stop="addCourse"
     >
-      <v-icon> mdi-folder-outline</v-icon>
+      <v-icon>mdi-folder-outline</v-icon>
     </v-btn>
   </span>
 </template>
 
 <script lang="ts">
+import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-import type { Course, SearchResponse } from 'coursum-types';
+import type { Course } from 'coursum-types';
 
-import { axios } from '@/util/request';
-import useStorage from '@/util/use-storage';
+import injectStrict from '@/util/inject-strict';
+import { setTimetableCoursesKey, timetableCoursesKey } from '@/util/injection-keys';
 
 export default defineComponent({
   name: 'TimetableMutationButton',
   props: {
-    id: {
-      type: String,
+    course: {
+      type: Object as PropType<Course>,
       required: true,
     },
   },
-  setup: ({ id: courseId }, { root: { $store } }) => {
-    const { getItem, setItem } = useStorage(localStorage);
+  setup: (props) => {
+    const timetableCourses = injectStrict(timetableCoursesKey);
+    const setTimetableCourses = injectStrict(setTimetableCoursesKey);
 
-    const isInclude = computed(() => {
-      const { courses }: {courses: Course[]} = $store.state.timetable;
+    const isCourseInTimetable = (course: Course) => (
+      timetableCourses.value.some((timetableCourse) => (
+        timetableCourse.yearClassId === course.yearClassId
+      ))
+    );
 
-      return courses.some((course) => (course.yearClassId === courseId));
-    });
+    const isInclude = computed(() => isCourseInTimetable(props.course));
 
     const removeCourse = () => {
-      $store.commit('timetable/removeCourse', courseId);
+      const courses = timetableCourses.value.filter((timetableCourse) => (
+        timetableCourse.yearClassId !== props.course.yearClassId
+      ));
 
-      const courseIds: Course['yearClassId'][] = getItem('timetable/ids') || [];
-
-      setItem('timetable/ids', courseIds.filter((id) => (id !== courseId)));
+      setTimetableCourses(courses);
     };
 
     const addCourse = () => {
-      const fetchAndStoreCourseForTimetable = async () => {
-        try {
-          const searchQuery = new URLSearchParams({ id: courseId });
-          const querystring = searchQuery.toString();
-          const response = await axios.get<SearchResponse<Course>>(`/search?${querystring}`);
-          const courses = response.data.hits;
+      if (isCourseInTimetable(props.course)) return;
 
-          if (courses) {
-            const course = courses[0];
-
-            $store.commit('timetable/addCourse', course);
-          }
-        } catch (e) {
-          console.error(e.message);
-        }
-      };
-
-      fetchAndStoreCourseForTimetable();
-
-      const courseIds: Course['yearClassId'][] = getItem('timetable/ids') || [];
-
-      courseIds.push(courseId);
-
-      setItem('timetable/ids', courseIds);
+      const courses = [...timetableCourses.value, props.course];
+      setTimetableCourses(courses);
     };
 
     return {
