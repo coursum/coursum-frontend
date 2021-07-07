@@ -20,17 +20,18 @@ import { computed, defineComponent } from '@vue/composition-api';
 
 import injectStrict from '@/util/inject-strict';
 import { timetableCoursesKey } from '@/util/injection-keys';
+import useRouter from '@/util/use-router';
 
 export default defineComponent({
   name: 'TimetableLink',
   setup: (_, context) => {
-    const { $router } = context.root;
+    const { routerPush } = useRouter(context.root.$router);
 
     const timetableCourses = injectStrict(timetableCoursesKey);
     const timetableLength = computed(() => timetableCourses.value.length);
 
     const goResult = async () => {
-      await $router.push('/timetable');
+      await routerPush('/timetable');
     };
 
     return {

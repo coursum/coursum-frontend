@@ -79,6 +79,7 @@ import type { AdvancedQuery } from '@/types/Search';
 import injectStrict from '@/util/inject-strict';
 import { advancedQueryKey, searchInputKey, setAdvancedQueryKey } from '@/util/injection-keys';
 import { buildQuery } from '@/util/request';
+import useRouter from '@/util/use-router';
 
 const useTranslate = (context: SetupContext) => {
   const translateArray = (keys: string[]) => keys.map((key) => context.root.$i18n.t(key));
@@ -111,7 +112,7 @@ export default defineComponent({
     SearchInput,
   },
   setup: (_, context) => {
-    const { $router } = context.root;
+    const { routerPush } = useRouter(context.root.$router);
 
     const searchInput = injectStrict(searchInputKey);
     const advancedInputs = injectStrict(advancedQueryKey);
@@ -158,7 +159,7 @@ export default defineComponent({
 
       const searchQuery = buildQuery({ query: searchInput.value, advanced });
 
-      await $router.push(`/search?${searchQuery.toString()}`);
+      await routerPush(`/search?${searchQuery.toString()}`);
     };
 
     return {

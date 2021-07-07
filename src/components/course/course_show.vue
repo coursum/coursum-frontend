@@ -52,6 +52,7 @@ import DScheduleTimes from '@/components/course/data/d_schedule_times.vue';
 import DSummary from '@/components/course/data/d_summary.vue';
 import DTitle from '@/components/course/data/d_title.vue';
 import TimetableMutationButton from '@/components/timetable/timetable_mutation_button.vue';
+import useRouter from '@/util/use-router';
 
 interface Props {
   courseData: PropType<Course>;
@@ -138,7 +139,7 @@ export default defineComponent({
     },
   },
   setup: (props, context) => {
-    const { $router } = context.root;
+    const { routerPush } = useRouter(context.root.$router);
 
     const course = props.courseData;
 
@@ -166,7 +167,7 @@ export default defineComponent({
     const goResult = async () => {
       const searchQuery = new URLSearchParams({ id: yearClassId });
 
-      await $router.push(`/course/search?${searchQuery.toString()}`);
+      await routerPush(`/course/search?${searchQuery.toString()}`);
     };
 
     return {

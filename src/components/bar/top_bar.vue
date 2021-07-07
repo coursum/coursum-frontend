@@ -33,6 +33,7 @@ import {
   toggleSideBarKey,
   visibilityKey,
 } from '@/util/injection-keys';
+import useRouter from '@/util/use-router';
 
 const useStoredSearchInput = () => {
   const searchInput = ref('');
@@ -66,16 +67,15 @@ const useCoursumTitle = (context: SetupContext, {
   setSearchInput: (value: string) => void;
   setAdvancedQuery: (value: AdvancedQuery) => void;
 }) => {
-  const { $vuetify, $router } = context.root;
+  const { routerPush } = useRouter(context.root.$router);
+  const { $vuetify } = context.root;
 
   const isMdAndUp = computed(() => $vuetify.breakpoint.mdAndUp);
 
   const goResult = async () => {
-    if ($router.currentRoute.path !== '/') {
-      await $router.push('/');
-      setSearchInput('');
-      setAdvancedQuery({});
-    }
+    setSearchInput('');
+    setAdvancedQuery({});
+    await routerPush('/');
   };
 
   return { isMdAndUp, goResult };
