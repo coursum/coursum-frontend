@@ -18,8 +18,6 @@ import type { Course } from 'coursum-types';
 import SideBar from '@/components/bar/side_bar.vue';
 import TopBar from '@/components/bar/top_bar.vue';
 import {
-  isLoadingKey,
-  setLoadingStateKey,
   setTimetableCoursesKey,
   timetableCoursesKey,
   toggleSideBarKey,
@@ -52,20 +50,6 @@ const useToggleSideBar = () => {
   };
 };
 
-const useLoading = () => {
-  const isLoading = ref(false);
-  const setLoadingState = (value: boolean) => {
-    isLoading.value = value;
-  };
-
-  provide(isLoadingKey, isLoading);
-  provide(setLoadingStateKey, setLoadingState);
-
-  return {
-    isLoading,
-  };
-};
-
 const useTimetable = () => {
   const { getItem, setItem } = useStorage(localStorage);
   const courses: Course[] = getItem('timetable/courses') || [];
@@ -95,7 +79,6 @@ export default defineComponent({
 
     return {
       ...useToggleSideBar(),
-      ...useLoading(),
       ...useTimetable(),
     };
   },
