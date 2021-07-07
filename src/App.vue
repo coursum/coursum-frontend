@@ -10,9 +10,7 @@
 
 <script lang="ts">
 import type { SetupContext } from '@vue/composition-api';
-import {
-  defineComponent, onBeforeMount, provide, ref,
-} from '@vue/composition-api';
+import { defineComponent, provide, ref } from '@vue/composition-api';
 import type { Course } from 'coursum-types';
 
 import SideBar from '@/components/bar/side_bar.vue';
@@ -27,13 +25,10 @@ import useStorage from '@/util/use-storage';
 
 const useConfigInStorage = (context: SetupContext) => {
   const { $vuetify, $i18n } = context.root;
-
   const { getItem } = useStorage(localStorage);
 
-  onBeforeMount(() => {
-    $vuetify.theme.dark = getItem('vuetify.theme.dark') || $vuetify.theme.dark;
-    $i18n.locale = getItem('i18n.locale') || $i18n.locale;
-  });
+  $vuetify.theme.dark = getItem('vuetify.theme.dark') || $vuetify.theme.dark;
+  $i18n.locale = getItem('i18n.locale') || $i18n.locale;
 };
 
 const useToggleSideBar = () => {
