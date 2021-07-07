@@ -11,7 +11,7 @@
     prepend-inner-icon="mdi-magnify"
     clearable
 
-    @keydown.enter="search"
+    @input="search"
   />
 </template>
 
@@ -35,12 +35,18 @@ const useSearch = (context: SetupContext) => {
     input.value = searchInput.value;
   });
 
+  let timer: number;
+
   const search = async () => {
-    setSearchInput(input.value);
+    window.clearTimeout(timer);
 
-    const searchQuery = buildQuery({ query: input.value, advanced: advancedInputs.value });
+    timer = window.setTimeout(async () => {
+      setSearchInput(input.value);
 
-    await $router.push(`/search?${searchQuery.toString()}`);
+      const searchQuery = buildQuery({ query: input.value, advanced: advancedInputs.value });
+
+      await $router.push(`/search?${searchQuery.toString()}`);
+    }, 500);
   };
 
   return { input, search };
