@@ -10,10 +10,6 @@
 
     <v-card class="px-12 py-6">
       <div class="d-flex align-center">
-        <search-input />
-      </div>
-
-      <div class="d-flex align-center">
         <div class="input-label">
           {{ $t("giga") }}
         </div>
@@ -74,7 +70,6 @@ import {
 } from '@vue/composition-api';
 import type { SetupContext } from '@vue/composition-api';
 
-import SearchInput from '@/components/search/search_input.vue';
 import type { AdvancedQuery } from '@/types/Search';
 import injectStrict from '@/util/inject-strict';
 import { advancedQueryKey, searchInputKey, setAdvancedQueryKey } from '@/util/injection-keys';
@@ -108,9 +103,6 @@ const useTranslate = (context: SetupContext) => {
 
 export default defineComponent({
   name: 'AdvancedInputs',
-  components: {
-    SearchInput,
-  },
   setup: (_, context) => {
     const { routerPush } = useRouter(context.root.$router);
 

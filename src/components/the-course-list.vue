@@ -9,7 +9,7 @@
 
     <template v-else-if="courses !== null">
       <div class="d-flex flex-wrap justify-space-around px-3 align-content-start">
-        <course-show v-for="course in currentShowingCourses" :key="course.yearClassId"
+        <course-card v-for="course in currentShowingCourses" :key="course.yearClassId"
                      :course-data="course"
                      :has-width="true"
                      :has-height="true"
@@ -37,7 +37,7 @@ import {
 import type { Course, SearchResponse } from 'coursum-types';
 import qs from 'qs';
 
-import CourseShow from '@/components/course/course_show.vue';
+import CourseCard from '@/components/course-card.vue';
 import { axios } from '@/util/request';
 
 const usePagination = () => {
@@ -64,9 +64,9 @@ const usePagination = () => {
 };
 
 export default defineComponent({
-  name: 'CourseIndex',
+  name: 'TheCourseLists',
   components: {
-    CourseShow,
+    CourseCard,
   },
   setup: (_, context) => {
     const {

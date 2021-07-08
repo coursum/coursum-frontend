@@ -1,10 +1,10 @@
 <template>
   <v-navigation-drawer v-model="visibility" app color="primary" @input="toggleSideBar">
     <v-list nav dense>
-      <timetable-link />
+      <the-link-timetable />
     </v-list>
     <template #append>
-      <setting-show class="mt-auto" />
+      <the-app-setting class="mt-auto" />
     </template>
   </v-navigation-drawer>
 </template>
@@ -12,16 +12,16 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
 
-import SettingShow from '@/components/setting/setting_show.vue';
-import TimetableLink from '@/components/timetable/timetable_link.vue';
+import TheAppSetting from '@/components/the-app-setting.vue';
+import TheLinkTimetable from '@/components/the-link-timetable.vue';
 import injectStrict from '@/util/inject-strict';
 import { toggleSideBarKey, visibilityKey } from '@/util/injection-keys';
 
 export default defineComponent({
   name: 'SideBar',
   components: {
-    SettingShow,
-    TimetableLink,
+    TheAppSetting,
+    TheLinkTimetable,
   },
   setup: () => {
     const visibility = injectStrict(visibilityKey);

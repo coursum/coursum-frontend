@@ -25,7 +25,7 @@ import injectStrict from '@/util/inject-strict';
 import { setTimetableCoursesKey, timetableCoursesKey } from '@/util/injection-keys';
 
 export default defineComponent({
-  name: 'TimetableMutationButton',
+  name: 'ButtonBookmark',
   props: {
     course: {
       type: Object as PropType<Course>,

@@ -77,7 +77,7 @@ import { computed, defineComponent } from '@vue/composition-api';
 import type { Course } from 'coursum-types';
 
 export default defineComponent({
-  name: 'DetailShow',
+  name: 'CourseDetail',
   props: {
     courseData: {
       type: Object as PropType<Course>,

@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <top-bar />
-    <side-bar />
+    <the-topbar />
+    <the-sidebar />
     <v-main>
       <router-view />
     </v-main>
@@ -13,8 +13,8 @@ import type { SetupContext } from '@vue/composition-api';
 import { defineComponent, provide, ref } from '@vue/composition-api';
 import type { Course } from 'coursum-types';
 
-import SideBar from '@/components/bar/side_bar.vue';
-import TopBar from '@/components/bar/top_bar.vue';
+import TheSidebar from '@/components/the-sidebar.vue';
+import TheTopbar from '@/components/the-topbar.vue';
 import {
   setTimetableCoursesKey,
   timetableCoursesKey,
@@ -66,8 +66,8 @@ const useTimetable = () => {
 export default defineComponent({
   name: 'App',
   components: {
-    SideBar,
-    TopBar,
+    TheSidebar,
+    TheTopbar,
   },
   setup: (_, context) => {
     useConfigInStorage(context);

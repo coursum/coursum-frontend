@@ -8,8 +8,8 @@
 
     <v-spacer />
 
-    <search-input :style="searchBarWidth" class="mx-auto" />
-    <advanced-inputs />
+    <the-search-bar :style="searchBarWidth" class="mx-auto" />
+    <the-search-filters />
 
     <v-spacer />
   </v-app-bar>
@@ -21,8 +21,8 @@ import {
   computed, defineComponent, provide, ref,
 } from '@vue/composition-api';
 
-import AdvancedInputs from '@/components/search/advanced_inputs.vue';
-import SearchInput from '@/components/search/search_input.vue';
+import TheSearchBar from '@/components/the-search-bar.vue';
+import TheSearchFilters from '@/components/the-search-filters.vue';
 import type { AdvancedQuery } from '@/types/Search';
 import injectStrict from '@/util/inject-strict';
 import {
@@ -99,8 +99,8 @@ const useSearchBarInTopBar = (context: SetupContext) => {
 export default defineComponent({
   name: 'TopBar',
   components: {
-    AdvancedInputs,
-    SearchInput,
+    TheSearchFilters,
+    TheSearchBar,
   },
   setup: (_, context) => {
     const visibility = injectStrict(visibilityKey);

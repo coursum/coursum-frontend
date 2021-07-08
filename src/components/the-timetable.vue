@@ -1,6 +1,6 @@
 <template>
   <div class="pa-6">
-    <course-show v-for="course in timetableCourses" :key="course.yearClassId"
+    <course-card v-for="course in timetableCourses" :key="course.yearClassId"
                  :has-width="true"
                  :course-data="course"
                  :show-summary="false"
@@ -11,14 +11,14 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
 
-import CourseShow from '@/components/course/course_show.vue';
+import CourseCard from '@/components/course-card.vue';
 import injectStrict from '@/util/inject-strict';
 import { timetableCoursesKey } from '@/util/injection-keys';
 
 export default defineComponent({
-  name: 'TimetableShow',
+  name: 'TheTimetable',
   components: {
-    CourseShow,
+    CourseCard,
   },
   setup: () => {
     const timetableCourses = injectStrict(timetableCoursesKey);

@@ -3,15 +3,9 @@
     <div v-if="isLoading">
       now loading...
     </div>
-    <div v-else
-         class="mx-auto"
-         :style="width"
-    >
-      <course-show :course-data="course"
-                   :text-truncate="false"
-      />
-
-      <detail-show :course-data="course" />
+    <div v-else class="mx-auto" :style="width">
+      <course-card :course-data="course" :text-truncate="false" />
+      <course-detail :course-data="course" />
     </div>
   </div>
 </template>
@@ -23,15 +17,15 @@ import {
 import type { Course, SearchResponse } from 'coursum-types';
 import qs from 'qs';
 
-import CourseShow from '@/components/course/course_show.vue';
-import DetailShow from '@/components/detail/detail_show.vue';
+import CourseCard from '@/components/course-card.vue';
+import CourseDetail from '@/components/course-detail.vue';
 import { axios } from '@/util/request';
 
 export default defineComponent({
-  name: 'DetailIndex',
+  name: 'TheCourse',
   components: {
-    DetailShow,
-    CourseShow,
+    CourseCard,
+    CourseDetail,
   },
   setup: (_, context) => {
     const isLoading = ref(false);
@@ -62,30 +56,12 @@ export default defineComponent({
     watch(() => context.root.$route, fetchCourse);
 
     const width = computed(() => {
-      const breakpoint = context.root.$vuetify.breakpoint.name;
-      let size;
+      const { name } = context.root.$vuetify.breakpoint;
+      const widths = {
+        xs: 100, sm: 100, md: 80, lg: 60, xl: 60,
+      };
 
-      switch (breakpoint) {
-        case 'xs':
-          size = 100;
-          break;
-        case 'sm':
-          size = 100;
-          break;
-        case 'md':
-          size = 80;
-          break;
-        case 'lg':
-          size = 60;
-          break;
-        case 'xl':
-          size = 60;
-          break;
-        default:
-          size = 30;
-          break;
-      }
-      return { width: `${size}%` };
+      return { width: `${(name in widths) ? widths[name] : 30}%` };
     });
 
     return {

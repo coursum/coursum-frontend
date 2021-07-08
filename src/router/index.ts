@@ -2,10 +2,10 @@ import Vue from 'vue';
 import type { RouteConfig } from 'vue-router';
 import VueRouter from 'vue-router';
 
-import CourseIndex from '@/components/course/course_index.vue';
-import DetailIndex from '@/components/detail/detail_index.vue';
 import Index from '@/components/index.vue';
-import TimetableShow from '@/components/timetable/timetable_show.vue';
+import TheCourseList from '@/components/the-course-list.vue';
+import TheCourse from '@/components/the-course.vue';
+import TheTimetable from '@/components/the-timetable.vue';
 
 Vue.use(VueRouter);
 
@@ -16,15 +16,15 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/search',
-    component: CourseIndex,
+    component: TheCourseList,
   },
   {
     path: '/course/:id',
-    component: DetailIndex,
+    component: TheCourse,
   },
   {
     path: '/timetable',
-    component: TimetableShow,
+    component: TheTimetable,
   },
 ];
 
