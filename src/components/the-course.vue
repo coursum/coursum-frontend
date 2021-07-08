@@ -14,12 +14,11 @@
 import {
   computed, defineComponent, ref, watch,
 } from '@vue/composition-api';
-import type { Course, SearchResponse } from 'coursum-types';
-import qs from 'qs';
+import type { Course } from 'coursum-types';
 
 import CourseCard from '@/components/course-card.vue';
 import CourseDetail from '@/components/course-detail.vue';
-import { axios } from '@/util/request';
+import { fetch } from '@/util/request';
 
 export default defineComponent({
   name: 'TheCourse',
@@ -33,21 +32,13 @@ export default defineComponent({
     const course = ref<Course>();
 
     const fetchCourse = async () => {
-      try {
-        isLoading.value = true;
+      isLoading.value = true;
+      const courseHits = await fetch(context.root.$route.query);
+      isLoading.value = false;
 
-        const querystring = qs.stringify(context.root.$route.query);
-        const response = await axios.get<SearchResponse<Course>>(`/search?${querystring}`);
-        const courseHits = response.data.hits;
-
-        if (courseHits) {
-          const courseHit = courseHits[0];
-          course.value = courseHit;
-        }
-      } catch (e) {
-        console.error(e.message);
-      } finally {
-        isLoading.value = false;
+      if (courseHits) {
+        const courseHit = courseHits[0];
+        course.value = courseHit;
       }
     };
 

@@ -34,11 +34,10 @@
 import {
   computed, defineComponent, ref, watch,
 } from '@vue/composition-api';
-import type { Course, SearchResponse } from 'coursum-types';
-import qs from 'qs';
+import type { Course } from 'coursum-types';
 
 import CourseCard from '@/components/course-card.vue';
-import { axios } from '@/util/request';
+import { fetch } from '@/util/request';
 
 const usePagination = () => {
   const currentSelectedPage = ref(1);
@@ -93,21 +92,12 @@ export default defineComponent({
     const pgTotalLength = computed(() => Math.ceil(courses.value.length / coursePerPage));
 
     const fetchCourses = async () => {
-      try {
-        isLoading.value = true;
+      isLoading.value = true;
+      const courseHits = await fetch(context.root.$route.query);
+      isLoading.value = false;
 
-        // TODO: wrap request function
-        const querystring = qs.stringify(context.root.$route.query);
-        const response = await axios.get<SearchResponse<Course>>(`/search?${querystring}`);
-        const courseHits = response.data.hits;
-
-        if (courseHits) {
-          courses.value = courseHits;
-        }
-      } catch (e) {
-        console.error(e.message);
-      } finally {
-        isLoading.value = false;
+      if (courseHits) {
+        courses.value = courseHits;
       }
     };
 
