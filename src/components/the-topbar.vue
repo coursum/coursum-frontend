@@ -97,7 +97,7 @@ const useSearchBarInTopBar = (context: SetupContext) => {
 };
 
 export default defineComponent({
-  name: 'TopBar',
+  name: 'TheTopBar',
   components: {
     TheSearchFilters,
     TheSearchBar,

@@ -102,7 +102,7 @@ const useTranslate = (context: SetupContext) => {
 };
 
 export default defineComponent({
-  name: 'AdvancedInputs',
+  name: 'TheSearchFilters',
   setup: (_, context) => {
     const { routerPush } = useRouter(context.root.$router);
 

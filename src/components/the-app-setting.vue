@@ -30,7 +30,7 @@ import { defineComponent, ref, watch } from '@vue/composition-api';
 import useStorage from '@/util/use-storage';
 
 export default defineComponent({
-  name: 'SettingShow',
+  name: 'TheAppSetting',
   setup: (_, context) => {
     const { root: { $vuetify, $i18n } } = context;
     const { setItem } = useStorage(localStorage);

@@ -23,7 +23,7 @@ import { timetableCoursesKey } from '@/util/injection-keys';
 import useRouter from '@/util/use-router';
 
 export default defineComponent({
-  name: 'TimetableLink',
+  name: 'TheLinkTimetable',
   setup: (_, context) => {
     const { routerPush } = useRouter(context.root.$router);
 

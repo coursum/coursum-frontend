@@ -63,7 +63,7 @@ const usePagination = () => {
 };
 
 export default defineComponent({
-  name: 'TheCourseLists',
+  name: 'TheCourseList',
   components: {
     CourseCard,
   },

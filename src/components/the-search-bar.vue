@@ -54,7 +54,7 @@ const useSearch = (context: SetupContext) => {
 };
 
 export default defineComponent({
-  name: 'SearchInput',
+  name: 'TheSearchBar',
   setup: (_, context) => ({
     ...useSearch(context),
   }),

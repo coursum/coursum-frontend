@@ -18,7 +18,7 @@ import injectStrict from '@/util/inject-strict';
 import { toggleSideBarKey, visibilityKey } from '@/util/injection-keys';
 
 export default defineComponent({
-  name: 'SideBar',
+  name: 'TheSideBar',
   components: {
     TheAppSetting,
     TheLinkTimetable,
