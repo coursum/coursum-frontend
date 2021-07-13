@@ -5,7 +5,6 @@
     <div class="d-flex justify-space-between">
       <v-icon>mdi-theme-light-dark</v-icon>
       <v-switch v-model="isDark"
-                color="secondary"
                 @click.stop
       />
     </div>

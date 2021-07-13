@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="primary">
+  <v-app-bar app color="menuBackground">
     <v-app-bar-nav-icon @click.stop="toggleSideBar(!visibility)" />
 
     <span v-if="isMdAndUp" class="coursum-title" @click="goResult">

@@ -18,7 +18,6 @@
 
       <div class="pagination mx-auto my-6">
         <v-pagination class="mb-12"
-                      color="pg"
                       :value="currentSelectedPage"
                       :length="pgTotalLength"
                       @previous="goPreviousPage"

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="visibility" app color="primary" @input="toggleSideBar">
+  <v-navigation-drawer v-model="visibility" app color="menuBackground" @input="toggleSideBar">
     <v-list nav dense>
       <the-link-timetable />
     </v-list>

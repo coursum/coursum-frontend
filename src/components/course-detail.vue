@@ -116,18 +116,17 @@ table {
 }
 
 table tr:nth-child(2n) {
-  background-color: var(--v-lightgrey-base);
+  background-color: var(--v-stripedTableOddRow-base);
 }
 
 table tr:nth-child(2n + 1) {
-  background-color: var(--v-darkgrey-base);
+  background-color: var(--v-stripedTableEvenRow-base);
 }
 
 table th {
   position: relative;
   text-align: left;
   width: 30%;
-  color: var(--v-word-base);
   text-align: center;
   padding: 10px 0;
 }

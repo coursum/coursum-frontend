@@ -6,21 +6,16 @@
               @click.prevent="goResult"
       >
         <div>
-          <div class="text-truncate caption--text course-category">
+          <div class="text-truncate course-category">
             {{ category || $t("others") }}
           </div>
           <div v-if="titleName"
-               class="text-truncate font-weight-bold word--text course-title"
+               class="text-truncate font-weight-bold course-title"
           >
             {{ titleName }}
           </div>
-          <span v-if="postscript"
-                class="px-6 text-caption text-truncate course-postscript"
-          >
-            {{ postscript }}
-          </span>
           <div v-if="showSummary && summary"
-               class="caption--text course-summary" :class="{summary: textTruncate}"
+               class="course-summary" :class="{summary: textTruncate}"
           >
             <p class="my-0">
               {{ summary }}
@@ -31,16 +26,16 @@
         <div>
           <div class="d-flex d-column justify-space-between">
             <div>
-              <v-chip v-if="credit" color="caption" outlined x-small>
+              <v-chip v-if="credit" outlined x-small>
                 {{ credit }}{{ $t("credit") }}
               </v-chip>
-              <v-chip v-if="semester" color="caption" outlined x-small>
+              <v-chip v-if="semester" outlined x-small>
                 {{ semester }}
               </v-chip>
             </div>
             <span v-if="times">
               <v-chip v-for="(time, i) in times" :key="i"
-                      color="caption" outlined x-small
+                      outlined x-small
               >
                 {{ time }}
               </v-chip>
@@ -167,7 +162,6 @@ export default defineComponent({
     ));
     const titleName = computed(() => course.title.name[curLang.value]);
     const category = computed(() => course.tag.category[curLang.value]);
-    const postscript = computed(() => course.title.postscript[curLang.value]);
     const semester = computed(() => course.schedule.semester[curLang.value]);
     const times = computed(() => (
       (course.schedule.times[curLang.value] || '')
@@ -196,7 +190,6 @@ export default defineComponent({
       goResult,
       category,
       titleName,
-      postscript,
       summary,
       credit,
       semester,
@@ -215,10 +208,6 @@ div.course-category {
 
 div.course-title {
   font-size: 0.9rem;
-}
-
-span.course-postscript {
-  color: #929292;
 }
 
 div.course-summary {
