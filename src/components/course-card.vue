@@ -34,9 +34,7 @@
               </v-chip>
             </div>
             <span v-if="times">
-              <v-chip v-for="(time, i) in times" :key="i"
-                      outlined x-small
-              >
+              <v-chip v-for="(time, i) in times" :key="i" outlined x-small>
                 {{ time }}
               </v-chip>
             </span>
@@ -163,11 +161,7 @@ export default defineComponent({
     const titleName = computed(() => course.title.name[curLang.value]);
     const category = computed(() => course.tag.category[curLang.value]);
     const semester = computed(() => course.schedule.semester[curLang.value]);
-    const times = computed(() => (
-      (course.schedule.times[curLang.value] || '')
-        .split(',')
-        .map((time) => time.trim())
-    ));
+    const times = computed(() => course.schedule.times[curLang.value]);
     const summary = computed(() => {
       const titleJp = course.title.name.ja || '';
       const summaryLang = ['研究会Ａ', '研究会Ｂ'].includes(titleJp) ? 'en' : curLang.value;

@@ -38,7 +38,7 @@ export default defineComponent({
 
       if (courseHits) {
         const courseHit = courseHits[0];
-        course.value = courseHit;
+        course.value = courseHit.data;
       }
     };
 

@@ -96,7 +96,7 @@ export default defineComponent({
       isLoading.value = false;
 
       if (courseHits) {
-        courses.value = courseHits;
+        courses.value = courseHits.map(({ data }) => data);
       }
     };
 
