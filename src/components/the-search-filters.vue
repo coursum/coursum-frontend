@@ -81,7 +81,7 @@ const useTranslate = (context: SetupContext) => {
   const semesters = computed(() => translateArray(['', 'spring', 'autumn']));
 
   const days = computed(() => translateArray(
-    ['', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+    ['', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
   ));
 
   const times = computed(() => (
