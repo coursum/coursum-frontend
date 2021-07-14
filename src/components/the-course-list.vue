@@ -1,65 +1,45 @@
 <template>
   <div class="mx-0 my-6">
-    <div v-if="isLoading" class="d-flex flex-wrap justify-space-around px-3">
-      <v-skeleton-loader v-for="n in coursePerPage" :key="n"
-                         height="300" width="500"
-                         type="card" class="my-1"
-      />
-    </div>
-
-    <template v-else-if="courses !== null">
-      <div class="d-flex flex-wrap justify-space-around px-3 align-content-start">
-        <course-card v-for="course in currentShowingCourses" :key="course.yearClassId"
-                     :course-data="course"
-                     :has-width="true"
-                     :has-height="true"
-        />
-      </div>
-
-      <div class="pagination mx-auto my-6">
-        <v-pagination class="mb-12"
-                      :value="currentSelectedPage"
-                      :length="pgTotalLength"
-                      @previous="goPreviousPage"
-                      @next="goNextPage"
-                      @input="goTargetPage"
-        />
-      </div>
-    </template>
+    <v-container>
+      <v-row v-if="isLoading">
+        <v-col v-for="(skeleton, idx) in Array(50).fill(0).map(() => ({ isActive: false }))"
+               :key="idx"
+               lg="3" md="4" sm="6" cols="12"
+        >
+          <v-sheet min-height="250" class="fill-height" color="transparent">
+            <v-lazy v-model="skeleton.isActive" class="fill-height">
+              <v-skeleton-loader type="card" />
+            </v-lazy>
+          </v-sheet>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col v-for="courseCard in courseCards"
+               :key="courseCard.course.yearClassId"
+               lg="3" md="4" sm="6" cols="12"
+        >
+          <v-sheet min-height="250" class="fill-height" color="transparent">
+            <v-lazy v-model="courseCard.isActive" class="fill-height">
+              <course-card :course-data="courseCard.course" />
+            </v-lazy>
+          </v-sheet>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  computed, defineComponent, ref, watch,
-} from '@vue/composition-api';
+import { defineComponent, ref, watch } from '@vue/composition-api';
 import type { Course } from 'coursum-types';
 
 import CourseCard from '@/components/course-card.vue';
 import { fetch } from '@/util/request';
 
-const usePagination = () => {
-  const currentSelectedPage = ref(1);
-
-  const goPreviousPage = () => {
-    currentSelectedPage.value -= 1;
-  };
-
-  const goNextPage = () => {
-    currentSelectedPage.value += 1;
-  };
-
-  const goTargetPage = (updatedValue: number) => {
-    currentSelectedPage.value = updatedValue;
-  };
-
-  return {
-    currentSelectedPage,
-    goPreviousPage,
-    goNextPage,
-    goTargetPage,
-  };
-};
+interface LazyCourseCard {
+  course: Course;
+  isActive: boolean;
+}
 
 export default defineComponent({
   name: 'TheCourseList',
@@ -67,28 +47,8 @@ export default defineComponent({
     CourseCard,
   },
   setup: (_, context) => {
-    const {
-      currentSelectedPage,
-      goPreviousPage,
-      goNextPage,
-      goTargetPage,
-    } = usePagination();
-
     const isLoading = ref(false);
-    const courses = ref<Course[]>([]);
-
-    // TODO: find an appropriate number
-    const coursePerPage = 12;
-
-    const currentShowingCourses = computed<Course[]>(() => {
-      // currentSelectedPageは1から始まる
-      const start = (currentSelectedPage.value - 1) * coursePerPage;
-      const end = start + coursePerPage;
-
-      return courses.value.slice(start, end);
-    });
-
-    const pgTotalLength = computed(() => Math.ceil(courses.value.length / coursePerPage));
+    const courseCards = ref<LazyCourseCard[]>([]);
 
     const fetchCourses = async () => {
       isLoading.value = true;
@@ -96,7 +56,7 @@ export default defineComponent({
       isLoading.value = false;
 
       if (courseHits) {
-        courses.value = courseHits.map(({ data }) => data);
+        courseCards.value = courseHits.map(({ data }) => ({ course: data, isActive: false }));
       }
     };
 
@@ -106,21 +66,8 @@ export default defineComponent({
 
     return {
       isLoading,
-      coursePerPage,
-      courses,
-      currentShowingCourses,
-      currentSelectedPage,
-      pgTotalLength,
-      goPreviousPage,
-      goNextPage,
-      goTargetPage,
+      courseCards,
     };
   },
 });
 </script>
-
-<style scoped>
-div.pagination {
-  width: 500px;
-}
-</style>
