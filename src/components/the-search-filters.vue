@@ -76,18 +76,18 @@ import useRouter from '@/util/use-router';
 const useTranslate = (context: SetupContext) => {
   const translateArray = (keys: string[]) => keys.map((key) => context.root.$i18n.t(key));
 
-  const languages = computed(() => translateArray(['english', 'japanese']));
+  const languages = computed(() => translateArray(['', 'english', 'japanese']));
 
-  const semesters = computed(() => translateArray(['spring', 'autumn']));
+  const semesters = computed(() => translateArray(['', 'spring', 'autumn']));
 
   const days = computed(() => translateArray(
-    ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+    ['', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
   ));
 
   const times = computed(() => (
-    Array(7).fill(0)
+    ['', ...Array(7).fill(0)
       .map((_, num) => num + 1)
-      .map((period) => `${period} ${context.root.$i18n.t('period')}`)
+      .map((period) => `${period} ${context.root.$i18n.t('period')}`)]
   ));
 
   return {
