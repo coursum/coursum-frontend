@@ -56,9 +56,6 @@
         <v-btn @click="resetValues">
           reset
         </v-btn>
-        <v-btn @click="advancedSearch">
-          submit
-        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -154,9 +151,15 @@ export default defineComponent({
       await routerPush(`/search?${searchQuery.toString()}`);
     };
 
+    watch(teacher, advancedSearch);
+    watch(semester, advancedSearch);
+    watch(day, advancedSearch);
+    watch(time, advancedSearch);
+    watch(language, advancedSearch);
+    watch(giga, advancedSearch);
+
     return {
       dialog,
-      advancedSearch,
       teacher,
       semester,
       day,
