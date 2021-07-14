@@ -16,12 +16,12 @@
         <v-checkbox v-model="giga" class="pa-0 ma-0" hide-details />
       </div>
 
-      <div class="d-flex align-center">
+      <!-- <div class="d-flex align-center">
         <div class="input-label">
           {{ $t("lecturer") }}
         </div>
         <v-text-field v-model="teacher" dense hide-details solo />
-      </div>
+      </div> -->
 
       <div class="d-flex align-center">
         <div class="input-label">
@@ -85,9 +85,7 @@ const useTranslate = (context: SetupContext) => {
   ));
 
   const times = computed(() => (
-    ['', ...Array(7).fill(0)
-      .map((_, num) => num + 1)
-      .map((period) => `${period} ${context.root.$i18n.t('period')}`)]
+    ['', ...Array(7).fill(0).map((_, num) => num + 1)]
   ));
 
   return {
@@ -108,7 +106,7 @@ export default defineComponent({
     const setAdvancedQuery = injectStrict(setAdvancedQueryKey);
 
     const dialog = ref(false);
-    const teacher = ref('');
+    // const teacher = ref('');
     const semester = ref('');
     const day = ref('');
     const time = ref('');
@@ -116,7 +114,7 @@ export default defineComponent({
     const giga = ref(false);
 
     const resetValues = () => {
-      teacher.value = '';
+      // teacher.value = '';
       semester.value = '';
       day.value = '';
       time.value = '';
@@ -126,7 +124,7 @@ export default defineComponent({
 
     // TODO: try to refill day & time
     watch(advancedInputs, () => {
-      teacher.value = advancedInputs.value.teacher;
+      // teacher.value = advancedInputs.value.teacher;
       semester.value = advancedInputs.value.semester;
       language.value = advancedInputs.value.language;
       giga.value = advancedInputs.value.giga === '';
@@ -138,7 +136,7 @@ export default defineComponent({
       const advanced: AdvancedQuery = {};
       const times = day.value + time.value;
 
-      if (teacher.value) advanced.teacher = teacher.value;
+      // if (teacher.value) advanced.teacher = teacher.value;
       if (semester.value) advanced.semester = semester.value;
       if (times) advanced.times = times;
       if (language.value) advanced.language = language.value;
@@ -151,7 +149,7 @@ export default defineComponent({
       await routerPush(`/search?${searchQuery.toString()}`);
     };
 
-    watch(teacher, advancedSearch);
+    // watch(teacher, advancedSearch);
     watch(semester, advancedSearch);
     watch(day, advancedSearch);
     watch(time, advancedSearch);
@@ -160,7 +158,7 @@ export default defineComponent({
 
     return {
       dialog,
-      teacher,
+      // teacher,
       semester,
       day,
       time,
