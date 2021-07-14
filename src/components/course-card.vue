@@ -69,10 +69,9 @@ interface Props {
   showSummary: boolean;
   textTruncate: boolean;
   hasWidth: boolean;
-  hasHeight: boolean;
 }
 
-const useCard = ({ textTruncate, hasWidth, hasHeight }: Partial<Props>, context: SetupContext) => {
+const useCard = ({ textTruncate, hasWidth }: Partial<Props>, context: SetupContext) => {
   const cardWidth = computed(() => {
     const { name } = context.root.$vuetify.breakpoint;
     const widths = {
@@ -85,29 +84,18 @@ const useCard = ({ textTruncate, hasWidth, hasHeight }: Partial<Props>, context:
   });
 
   const cardClass = computed(() => (hover: boolean) => {
-    let height;
     const classes: string[] = [];
+    const height = textTruncate && hover ? 4 : 1;
 
-    if (textTruncate) {
-      height = hover ? 4 : 1;
-      classes.push('transition-swing');
-    } else {
-      height = 1;
-    }
+    if (textTruncate) classes.push('transition-swing');
     classes.push(`elevation-${height}`);
 
     return classes.join(' ');
   });
 
-  const cardStyle = computed(() => {
-    const width = hasWidth ? { width: `${cardWidth.value}%` } : {};
-    const height = (hasWidth && hasHeight) ? { height: '230px' } : {};
-
-    return { ...width, ...height };
-  });
+  const cardStyle = computed(() => (hasWidth ? { width: `${cardWidth.value}%` } : {}));
 
   return {
-    cardWidth,
     cardClass,
     cardStyle,
   };
@@ -132,10 +120,6 @@ export default defineComponent({
       default: true,
     },
     hasWidth: {
-      type: Boolean,
-      default: false,
-    },
-    hasHeight: {
       type: Boolean,
       default: false,
     },
@@ -169,8 +153,8 @@ export default defineComponent({
       return course.summary[summaryLang];
     });
 
-    const { textTruncate, hasWidth, hasHeight } = props;
-    const { cardClass, cardStyle } = useCard({ textTruncate, hasWidth, hasHeight }, context);
+    const { textTruncate, hasWidth } = props;
+    const { cardClass, cardStyle } = useCard({ textTruncate, hasWidth }, context);
 
     const goResult = async () => {
       const searchQuery = new URLSearchParams({ id: yearClassId });

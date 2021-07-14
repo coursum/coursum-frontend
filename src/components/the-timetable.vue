@@ -1,9 +1,7 @@
 <template>
   <div class="pa-6">
     <course-card v-for="course in timetableCourses" :key="course.yearClassId"
-                 :has-width="true"
-                 :course-data="course"
-                 :show-summary="false"
+                 :course-data="course" :show-summary="false" :has-width="true"
     />
   </div>
 </template>
