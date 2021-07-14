@@ -5,51 +5,52 @@
               :class="cardClass(hover)" :style="cardStyle"
               @click.prevent="goResult"
       >
-        <div>
-          <div class="text-truncate course-category">
-            {{ category || $t("others") }}
+        <v-card-title class="font-weight-bold text-caption">
+          {{ titleName }}
+        </v-card-title>
+        <v-card-subtitle class="font-weight-bold text-caption">
+          {{ category || $t("others") }}
+        </v-card-subtitle>
+        <!-- By default, v-card-text has padding buttom.
+        This will make textTruncate not working, so add a class "pb-0" here -->
+        <v-card-text v-if="showSummary && summary"
+                     class="pb-0"
+                     :class="{ 'truncate-course-summary': textTruncate }"
+        >
+          {{ summary }}
+        </v-card-text>
+
+        <v-divider class="my-2" />
+
+        <div class="d-flex justify-space-between">
+          <div>
+            <v-chip v-if="semester" outlined x-small class="mr-2">
+              {{ semester }}
+            </v-chip>
+            <template v-if="times">
+              <v-chip v-for="(time, i) in times" :key="i" outlined x-small class="mr-2">
+                {{ time }}
+              </v-chip>
+            </template>
           </div>
-          <div v-if="titleName"
-               class="text-truncate font-weight-bold course-title"
-          >
-            {{ titleName }}
-          </div>
-          <div v-if="showSummary && summary"
-               class="course-summary" :class="{summary: textTruncate}"
-          >
-            <p class="my-0">
-              {{ summary }}
-            </p>
+          <div>
+            <v-chip v-if="credit" outlined x-small>
+              {{ credit }}{{ $t("credit") }}
+            </v-chip>
           </div>
         </div>
 
-        <div>
-          <div class="d-flex d-column justify-space-between">
-            <div>
-              <v-chip v-if="credit" outlined x-small>
-                {{ credit }}{{ $t("credit") }}
-              </v-chip>
-              <v-chip v-if="semester" outlined x-small>
-                {{ semester }}
-              </v-chip>
-            </div>
-            <span v-if="times">
-              <v-chip v-for="(time, i) in times" :key="i" outlined x-small>
-                {{ time }}
-              </v-chip>
-            </span>
-          </div>
-
-          <v-divider class="my-1" />
-
-          <div class="d-flex justify-space-between align-center">
-            <button-bookmark :course="course" />
-            <span v-for="(lecturer) in lecturers" :key="lecturer.name"
-                  class="mr-2 course-lecturer" :class="{'text-truncate': textTruncate}"
+        <div class="d-flex justify-space-between">
+          <!-- TODO: solve overflow of lecturers -->
+          <div>
+            <v-chip v-for="(lecturer) in lecturers" :key="lecturer.name"
+                    outlined x-small
+                    class="mr-2" :class="{'text-truncate': textTruncate}"
             >
               {{ lecturer.name }}
-            </span>
+            </v-chip>
           </div>
+          <button-bookmark :course="course" />
         </div>
       </v-card>
     </template>
@@ -145,7 +146,7 @@ export default defineComponent({
     const titleName = computed(() => course.title.name[curLang.value]);
     const category = computed(() => course.tag.category[curLang.value]);
     const semester = computed(() => course.schedule.semester[curLang.value]);
-    const times = computed(() => course.schedule.times[curLang.value]);
+    const times = computed(() => course.schedule.times[curLang.value].map((time) => time || 'TBD'));
     const summary = computed(() => {
       const titleJp = course.title.name.ja || '';
       const summaryLang = ['研究会Ａ', '研究会Ｂ'].includes(titleJp) ? 'en' : curLang.value;
@@ -166,8 +167,8 @@ export default defineComponent({
       cardClass,
       cardStyle,
       goResult,
-      category,
       titleName,
+      category,
       summary,
       credit,
       semester,
@@ -180,27 +181,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-div.course-category {
-  font-size: 0.7rem;
-}
-
-div.course-title {
-  font-size: 0.9rem;
-}
-
-div.course-summary {
-  font-size: 0.85rem;
-}
-
-span.course-lecturer {
-  font-size: 0.85rem;
-}
-
-div.course-summary p {
+div.truncate-course-summary {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 

@@ -1,7 +1,9 @@
 <template>
-  <div class="mx-0 my-6">
-    <v-container>
-      <v-row v-if="isLoading">
+  <!-- 6 looks good to me -->
+  <div class="mx-6">
+    <v-row justify="space-around">
+      <template v-if="isLoading">
+        <!-- TODO: find a better solution instead of hard coding 50 -->
         <v-col v-for="(skeleton, idx) in Array(50).fill(0).map(() => ({ isActive: false }))"
                :key="idx"
                lg="3" md="4" sm="6" cols="12"
@@ -12,32 +14,32 @@
             </v-lazy>
           </v-sheet>
         </v-col>
-      </v-row>
-      <v-row v-else>
+      </template>
+      <template v-else>
         <v-col v-for="courseCard in courseCards"
-               :key="courseCard.course.yearClassId"
+               :key="courseCard.courseHit.data.yearClassId"
                lg="3" md="4" sm="6" cols="12"
         >
           <v-sheet min-height="250" class="fill-height" color="transparent">
             <v-lazy v-model="courseCard.isActive" class="fill-height">
-              <course-card :course-data="courseCard.course" />
+              <course-card :course-data="courseCard.courseHit.data" />
             </v-lazy>
           </v-sheet>
         </v-col>
-      </v-row>
-    </v-container>
+      </template>
+    </v-row>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, watch } from '@vue/composition-api';
-import type { Course } from 'coursum-types';
+import type { Course, SearchResponse } from 'coursum-types';
 
 import CourseCard from '@/components/course-card.vue';
 import { fetch } from '@/util/request';
 
 interface LazyCourseCard {
-  course: Course;
+  courseHit: SearchResponse<Course>['hits'][0];
   isActive: boolean;
 }
 
@@ -56,7 +58,7 @@ export default defineComponent({
       isLoading.value = false;
 
       if (courseHits) {
-        courseCards.value = courseHits.map(({ data }) => ({ course: data, isActive: false }));
+        courseCards.value = courseHits.map((courseHit) => ({ courseHit, isActive: false }));
       }
     };
 
