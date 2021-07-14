@@ -88,11 +88,12 @@ export default defineComponent({
     const curLang = computed(() => context.root.$i18n.locale as 'en' | 'ja');
 
     const {
-      classroom, types, registration, related, tag,
+      classroom, registration, related, tag,
     } = courseData;
     const { prerequisite } = registration;
     const requirement = registration.requirement[curLang.value];
     const suggestion = registration.suggestion[curLang.value];
+    const types = courseData.types[curLang.value];
 
     return {
       registration,
