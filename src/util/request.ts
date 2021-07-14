@@ -20,7 +20,7 @@ const fetch = async (query: Route['query']) => {
   const querystring = qs.stringify(query);
   const response = await customAxios.get<SearchResponse<Course>>(`/search?${querystring}`);
 
-  return response.data.hits;
+  return response.data;
 };
 
 export {

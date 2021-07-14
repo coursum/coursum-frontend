@@ -1,6 +1,9 @@
 <template>
   <!-- 6 looks good to me -->
   <div class="mx-6">
+    <v-row v-if="!isLoading">
+      <v-col>{{ searchMsg }}</v-col>
+    </v-row>
     <v-row justify="space-around">
       <template v-if="isLoading">
         <!-- TODO: find a better solution instead of hard coding 50 -->
@@ -52,14 +55,20 @@ export default defineComponent({
     const isLoading = ref(false);
     const courseCards = ref<LazyCourseCard[]>([]);
 
+    const searchMsg = ref('');
+
     const fetchCourses = async () => {
       isLoading.value = true;
-      const courseHits = await fetch(context.root.$route.query);
+      const response = await fetch(context.root.$route.query);
+      const courseHits = response.hits;
       isLoading.value = false;
 
       if (courseHits) {
         courseCards.value = courseHits.map((courseHit) => ({ courseHit, isActive: false }));
       }
+
+      const latency = response.stat.latency / 1000;
+      searchMsg.value = `${courseCards.value.length} results (${latency > 0 ? latency : 'less then 0.001'} seconds)`;
     };
 
     fetchCourses();
@@ -67,6 +76,7 @@ export default defineComponent({
     watch(() => context.root.$route, fetchCourses);
 
     return {
+      searchMsg,
       isLoading,
       courseCards,
     };

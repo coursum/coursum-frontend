@@ -33,7 +33,8 @@ export default defineComponent({
 
     const fetchCourse = async () => {
       isLoading.value = true;
-      const courseHits = await fetch(context.root.$route.query);
+      const response = await fetch(context.root.$route.query);
+      const courseHits = response.hits;
       isLoading.value = false;
 
       if (courseHits) {
