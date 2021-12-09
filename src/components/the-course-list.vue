@@ -63,7 +63,7 @@ export default defineComponent({
       const courseHits = response.hits;
       isLoading.value = false;
 
-      if (courseHits) {
+      if (courseHits.length) {
         courseCards.value = courseHits.map((courseHit) => ({ courseHit, isActive: false }));
       }
 
