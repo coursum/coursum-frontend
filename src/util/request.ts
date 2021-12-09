@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Course, SearchResponse } from 'coursum-types';
+import type { CourseV2, SearchResponse } from 'coursum-types';
 import qs from 'qs';
 import type { Route } from 'vue-router';
 
@@ -18,7 +18,7 @@ const buildQuery = ({ query, advanced }: QueryParams) => (
 
 const fetch = async (query: Route['query']) => {
   const querystring = qs.stringify(query);
-  const response = await customAxios.get<SearchResponse<Course>>(`/search?${querystring}`);
+  const response = await customAxios.get<SearchResponse<CourseV2>>(`/search?${querystring}`);
 
   return response.data;
 };

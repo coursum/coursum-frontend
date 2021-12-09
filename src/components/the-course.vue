@@ -14,7 +14,7 @@
 import {
   computed, defineComponent, ref, watch,
 } from '@vue/composition-api';
-import type { Course } from 'coursum-types';
+import type { CourseV2 } from 'coursum-types';
 
 import CourseCard from '@/components/course-card.vue';
 import CourseDetail from '@/components/course-detail.vue';
@@ -29,7 +29,7 @@ export default defineComponent({
   setup: (_, context) => {
     const isLoading = ref(false);
 
-    const course = ref<Course>();
+    const course = ref<CourseV2>();
 
     const fetchCourse = async () => {
       isLoading.value = true;

@@ -3,12 +3,6 @@
     <table>
       <template v-if="registration">
         <tr>
-          <th>{{ $t('registrationNumber') }}</th>
-          <td>
-            <span v-if="registration.number">{{ registration.number }}</span>
-          </td>
-        </tr>
-        <tr>
           <th>{{ $t('prerequisite') }}</th>
           <td>
             <span v-if="prerequisite">
@@ -36,10 +30,10 @@
         </tr>
       </template>
       <tr>
-        <th>{{ $t('classroom') }}</th>
+        <th>{{ $t('location') }}</th>
         <td>
-          <span v-if="classroom">
-            {{ classroom }}
+          <span v-if="location">
+            {{ location }}
           </span>
         </td>
       </tr>
@@ -74,13 +68,13 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-import type { Course } from 'coursum-types';
+import type { CourseV2 } from 'coursum-types';
 
 export default defineComponent({
   name: 'CourseDetail',
   props: {
     courseData: {
-      type: Object as PropType<Course>,
+      type: Object as PropType<CourseV2>,
       required: true,
     },
   },
@@ -88,12 +82,12 @@ export default defineComponent({
     const curLang = computed(() => context.root.$i18n.locale as 'en' | 'ja');
 
     const {
-      classroom, registration, related, tag,
+      location, registration, related, tag,
     } = courseData;
     const { prerequisite } = registration;
     const requirement = registration.requirement[curLang.value];
     const suggestion = registration.suggestion[curLang.value];
-    const types = courseData.types[curLang.value];
+    const types = courseData.tag.types[curLang.value];
 
     return {
       registration,
@@ -101,7 +95,7 @@ export default defineComponent({
       requirement,
       suggestion,
       related,
-      classroom,
+      location,
       types,
       tag,
     };
@@ -112,8 +106,10 @@ export default defineComponent({
 <style scope>
 table {
   width: 100%;
-  border-collapse: collapse;
+
   empty-cells: show;
+
+  border-collapse: collapse;
 }
 
 table tr:nth-child(2n) {
@@ -126,39 +122,40 @@ table tr:nth-child(2n + 1) {
 
 table th {
   position: relative;
-  text-align: left;
+
   width: 30%;
-  text-align: center;
   padding: 10px 0;
+
+  text-align: left;
+  text-align: center;
 }
 
 table td {
-  text-align: left;
   width: 70%;
-  text-align: center;
   padding: 10px 0;
+
+  text-align: left;
+  text-align: center;
 }
 </style>
 
 <i18n>
 {
   "en": {
-    "registrationNumber": "Number",
     "prerequisite": "Prerequisite",
     "requirement": "Requirement",
     "suggestion": "Suggestion",
     "related": "Related",
-    "classroom": "Classroom",
+    "location": "Location",
     "types": "Types",
     "curriculumCode": "Curriculum Code"
   },
   "ja": {
-    "registrationNumber":"登録番号",
     "prerequisite":"前提科目（推奨）",
     "requirement":"前提科目（必須）",
     "suggestion":"履修条件",
     "related":"関連科目",
-    "classroom":"開講場所",
+    "location":"開講場所",
     "types":"授業形態",
     "curriculumCode":"カリキュラムコード"
   }

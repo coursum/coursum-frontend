@@ -11,7 +11,7 @@
 <script lang="ts">
 import type { SetupContext } from '@vue/composition-api';
 import { defineComponent, provide, ref } from '@vue/composition-api';
-import type { Course } from 'coursum-types';
+import type { CourseV2 } from 'coursum-types';
 
 import TheSidebar from '@/components/the-sidebar.vue';
 import TheTopbar from '@/components/the-topbar.vue';
@@ -47,10 +47,10 @@ const useToggleSideBar = () => {
 
 const useTimetable = () => {
   const { getItem, setItem } = useStorage(localStorage);
-  const courses: Course[] = getItem('timetable/courses') || [];
+  const courses: CourseV2[] = getItem('timetable/courses') || [];
 
   const timetableCourses = ref(courses);
-  const setTimetableCourses = (value: Course[]) => {
+  const setTimetableCourses = (value: CourseV2[]) => {
     timetableCourses.value = value;
     setItem('timetable/courses', value);
   };

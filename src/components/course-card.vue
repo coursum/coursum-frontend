@@ -60,13 +60,13 @@
 <script lang="ts">
 import type { PropType, SetupContext } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-import type { Course } from 'coursum-types';
+import type { CourseV2 } from 'coursum-types';
 
 import ButtonBookmark from '@/components/button-bookmark.vue';
 import useRouter from '@/util/use-router';
 
 interface Props {
-  courseData: PropType<Course>;
+  courseData: PropType<CourseV2>;
   showSummary: boolean;
   textTruncate: boolean;
   hasWidth: boolean;
@@ -109,7 +109,7 @@ export default defineComponent({
   },
   props: {
     courseData: {
-      type: Object as PropType<Course>,
+      type: Object as PropType<CourseV2>,
       required: true,
     },
     showSummary: {
@@ -132,7 +132,7 @@ export default defineComponent({
 
     const course = props.courseData;
 
-    const { credit, yearClassId } = course;
+    const { credit, id } = course;
 
     const lecturers = computed(() => (
       course.lecturers
@@ -143,12 +143,12 @@ export default defineComponent({
         })
         .filter((lecturer) => lecturer.name)
     ));
-    const titleName = computed(() => course.title.name[curLang.value]);
+    const titleName = computed(() => course.title[curLang.value]);
     const category = computed(() => course.tag.category[curLang.value]);
     const semester = computed(() => course.schedule.semester[curLang.value]);
     const times = computed(() => course.schedule.times[curLang.value].map((time) => time || 'TBD'));
     const summary = computed(() => {
-      const titleJp = course.title.name.ja || '';
+      const titleJp = course.title.ja || '';
       const summaryLang = ['研究会Ａ', '研究会Ｂ'].includes(titleJp) ? 'en' : curLang.value;
 
       return course.summary[summaryLang];
@@ -158,7 +158,7 @@ export default defineComponent({
     const { cardClass, cardStyle } = useCard({ textTruncate, hasWidth }, context);
 
     const goResult = async () => {
-      const searchQuery = new URLSearchParams({ id: yearClassId });
+      const searchQuery = new URLSearchParams({ id });
 
       await routerPush(`/course/search?${searchQuery.toString()}`);
     };
@@ -183,10 +183,12 @@ export default defineComponent({
 <style scoped>
 div.truncate-course-summary {
   display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
   overflow: hidden;
+  -webkit-box-orient: vertical;
+
   text-overflow: ellipsis;
+
+  -webkit-line-clamp: 5;
 }
 </style>
 

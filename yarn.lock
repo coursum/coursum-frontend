@@ -2800,7 +2800,7 @@ cosmiconfig@^6.0.0:
 
 "coursum-types@https://github.com/coursum/coursum-types":
   version "1.0.0"
-  resolved "https://github.com/coursum/coursum-types#ec5714312c7db80c9a05a2986eb3e44fc35565c6"
+  resolved "https://github.com/coursum/coursum-types#2443a7fa3ee6a6f35fdc872d040cba1e616e0ddc"
 
 create-ecdh@^4.0.0:
   version "4.0.4"

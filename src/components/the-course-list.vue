@@ -20,7 +20,7 @@
       </template>
       <template v-else>
         <v-col v-for="courseCard in courseCards"
-               :key="courseCard.courseHit.data.yearClassId"
+               :key="courseCard.courseHit.data.id"
                lg="3" md="4" sm="6" cols="12"
         >
           <v-sheet min-height="250" class="fill-height" color="transparent">
@@ -36,13 +36,13 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from '@vue/composition-api';
-import type { Course, SearchResponse } from 'coursum-types';
+import type { CourseV2, SearchResponse } from 'coursum-types';
 
 import CourseCard from '@/components/course-card.vue';
 import { fetch } from '@/util/request';
 
 interface LazyCourseCard {
-  courseHit: SearchResponse<Course>['hits'][0];
+  courseHit: SearchResponse<CourseV2>['hits'][0];
   isActive: boolean;
 }
 

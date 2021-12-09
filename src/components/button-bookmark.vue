@@ -19,7 +19,7 @@
 <script lang="ts">
 import type { PropType } from '@vue/composition-api';
 import { computed, defineComponent } from '@vue/composition-api';
-import type { Course } from 'coursum-types';
+import type { CourseV2 } from 'coursum-types';
 
 import injectStrict from '@/util/inject-strict';
 import { setTimetableCoursesKey, timetableCoursesKey } from '@/util/injection-keys';
@@ -28,7 +28,7 @@ export default defineComponent({
   name: 'ButtonBookmark',
   props: {
     course: {
-      type: Object as PropType<Course>,
+      type: Object as PropType<CourseV2>,
       required: true,
     },
   },
@@ -36,18 +36,14 @@ export default defineComponent({
     const timetableCourses = injectStrict(timetableCoursesKey);
     const setTimetableCourses = injectStrict(setTimetableCoursesKey);
 
-    const isCourseInTimetable = (course: Course) => (
-      timetableCourses.value.some((timetableCourse) => (
-        timetableCourse.yearClassId === course.yearClassId
-      ))
+    const isCourseInTimetable = (course: CourseV2) => (
+      timetableCourses.value.some(({ id }) => id === course.id)
     );
 
     const isInclude = computed(() => isCourseInTimetable(props.course));
 
     const removeCourse = () => {
-      const courses = timetableCourses.value.filter((timetableCourse) => (
-        timetableCourse.yearClassId !== props.course.yearClassId
-      ));
+      const courses = timetableCourses.value.filter(({ id }) => id !== props.course.id);
 
       setTimetableCourses(courses);
     };
