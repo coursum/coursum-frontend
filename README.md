@@ -1,5 +1,7 @@
 # coursum-frontend
 
+The coursum frontend client that use [Course Schema V2](https://github.com/coursum/coursum-types/#v2-currently-using).
+
 ## Project setup
 ```
 yarn install
